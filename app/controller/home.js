@@ -3,14 +3,38 @@
 const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
-  async index() {
-    this.ctx.body = 'hi, egg';
-  }
+    async index() {
+        this.ctx.body = 'hi, egg';
+    }
 
-  async getUserList() {
-      const userList = await this.app.mysql.select('user_info');
-      this.ctx.body = userList;
-  }
+    async login() {
+        const ctx = this.ctx;
+        const params = ctx.request.body;
+        const user = await ctx.service.home.login(params);
+        if(user){
+            ctx.body = {
+                success: true,
+                backData: user
+            };
+        }else {
+            ctx.body = {
+                success: false,
+                backMsg: "用户编码或密码不正确！"
+            };
+        }
+    }
+
+    async getUserList() {
+        const ctx = this.ctx;
+        const adminList = await ctx.service.admin.queryList();
+        ctx.body = adminList;
+    }
+
+    async add() {
+        const ctx = this.ctx;
+        const result = await ctx.service.admin.add();
+        ctx.body = result;
+    }
 }
 
 module.exports = HomeController;
