@@ -9,7 +9,7 @@ module.exports = app => {
     /* 获取 */
     router.get('/api/admin/queryList', controller.admin.queryList);
     /* 后台新增管理人员 */
-    router.get('/api/add', controller.home.add);
+    router.post('/api/admin/add', controller.admin.add);
     /* 后台管理登录 */
-    router.post('/api/login', controller.home.login);
+    router.post('/api/admin/login', controller.admin.login);
 };
