@@ -24,7 +24,7 @@ class HomeController extends Controller {
         }
     }
 
-    async getUserList() {
+    async queryList() {
         const ctx = this.ctx;
         const adminList = await ctx.service.admin.queryList();
         ctx.body = adminList;
