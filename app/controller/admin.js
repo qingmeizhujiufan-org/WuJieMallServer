@@ -24,25 +24,37 @@ class AdminController extends Controller {
   async queryList() {
     const ctx = this.ctx;
     const adminList = await ctx.service.admin.queryList();
-    ctx.body = adminList;
+    ctx.body = {
+      success: true,
+      backMsg: "获取用户列表成功！",
+      backData: adminList
+    };
   }
 
   async add() {
     const ctx = this.ctx;
     const params = ctx.request.body;
-    console.log('params ===', params);
-    const result = await ctx.service.admin.add(params);
-    console.log('result ===', result);
+    // console.log('params ===', params);
+    const uniqueUser = await ctx.service.admin.findByName({ user_name: params.userName })
 
-    if (result.affectedRows === 1) {
-      ctx.body = {
-        success: true,
-        backData: result
-      };
+    if (uniqueUser !== null) {
+      const result = await ctx.service.admin.add(params);
+      if (result.affectedRows === 1) {
+        ctx.body = {
+          success: true,
+          backMsg: "新增用户成功！",
+          backData: result
+        };
+      } else {
+        ctx.body = {
+          success: false,
+          backMsg: "新增用户失败！"
+        };
+      }
     } else {
       ctx.body = {
         success: false,
-        backMsg: "新增用户失败！"
+        backMsg: "用户名已存在!"
       };
     }
   }

@@ -27,10 +27,21 @@ class AdminService extends Service {
       create_time: this.app.mysql.literals.now,
       is_frozen: 0
     };
+
     const result = await this.app.mysql.insert('admin_info', data);
     console.log('result ===', result);
 
     return result;
+  }
+
+  async findByName(params) {
+    const user = await this.app.mysql.get('admin_info', params);
+    return user;
+  }
+
+  async findByPhone(params) {
+    const user = await this.app.mysql.get('admin_info', params);
+    return user;
   }
 }
 
