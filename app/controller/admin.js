@@ -31,14 +31,34 @@ class AdminController extends Controller {
     };
   }
 
+  async qureyOneUser() {
+    const ctx = this.ctx;
+    const params = ctx.request.body;
+    const result = await ctx.service.admin.qureyOneUser(params);
+    if (result) {
+      ctx.body = {
+        success: true,
+        backMsg: "用户详情查询成功！",
+        backData: result
+      };
+    } else {
+      ctx.body = {
+        success: true,
+        backMsg: "用户详情查询成功！",
+        backData: result
+      };
+    }
+  }
+
   async add() {
     const ctx = this.ctx;
     const params = ctx.request.body;
     // console.log('params ===', params);
-    const uniqueUser = await ctx.service.admin.findByName({ user_name: params.userName })
 
-    if (uniqueUser !== null) {
-      const result = await ctx.service.admin.add(params);
+    const uniqueUser = await ctx.service.admin.findByName({ user_name: params.user_name })
+
+    if (uniqueUser === null) {
+      const result = await ctx.service.admin.add(data);
       if (result.affectedRows === 1) {
         ctx.body = {
           success: true,
@@ -55,6 +75,81 @@ class AdminController extends Controller {
       ctx.body = {
         success: false,
         backMsg: "用户名已存在!"
+      };
+    }
+  }
+
+  async updateUser() {
+    const ctx = this.ctx;
+    const params = ctx.request.body;
+    const result = await ctx.service.admin.updateUser(params);
+    if (result.affectedRows === 1) {
+      ctx.body = {
+        success: true,
+        backMsg: "人员信息修改成功",
+        backData: result
+      };
+    } else {
+      ctx.body = {
+        success: false,
+        backMsg: "人员信息修改失败！"
+      };
+    }
+  }
+
+  async delete() {
+    const ctx = this.ctx;
+    const params = ctx.request.body;
+    const result = await ctx.service.admin.delete(params);
+    console.log('result ===', result)
+    if (result.affectedRows === 1) {
+      ctx.body = {
+        success: true,
+        backMsg: "用户删除成功",
+        backData: result
+      };
+    } else {
+      ctx.body = {
+        success: false,
+        backMsg: "用户删除失败！"
+      };
+    }
+  }
+
+  async frozen() {
+    const ctx = this.ctx;
+    const params = ctx.request.body;
+    const isFrozen = params.is_frozen;
+    const result = await ctx.service.admin.frozen(params);
+    if (result.affectedRows === 1) {
+      ctx.body = {
+        success: true,
+        backMsg: isFrozen ? "用户冻结成功！" : "用户解冻成功！",
+        backData: result
+      };
+    } else {
+      ctx.body = {
+        success: false,
+        backMsg: isFrozen ? "用户冻结成失败！" : "用户解冻失败！"
+      };
+    }
+  }
+
+  async resetPassword() {
+    const ctx = this.ctx;
+    const params = ctx.request.body;
+
+    const result = await ctx.service.admin.resetPassword(params)
+    if (result.affectedRows === 1) {
+      ctx.body = {
+        success: true,
+        backMsg: "重置密码成功，新密码为000000",
+        backData: result
+      };
+    } else {
+      ctx.body = {
+        success: false,
+        backMsg: "重置密码失败！"
       };
     }
   }
