@@ -13,8 +13,8 @@ class AdminService extends Service {
 
   async queryList() {
     // 假如 我们拿到用户 id 从数据库获取用户详细信息
-    const Admin = await this.app.mysql.select('admin_info');
-    return Admin;
+    const users = await this.app.mysql.select('admin_info');
+    return users;
   }
 
   async add(params) {
@@ -29,6 +29,7 @@ class AdminService extends Service {
   }
 
   async updateUser(params) {
+    params.create_time = new Date(params.create_time);
     const res = await this.app.mysql.update('admin_info', params);
     return res;
   }

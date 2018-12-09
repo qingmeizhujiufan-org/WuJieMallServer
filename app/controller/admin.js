@@ -58,7 +58,7 @@ class AdminController extends Controller {
     const uniqueUser = await ctx.service.admin.findByName({ user_name: params.user_name })
 
     if (uniqueUser === null) {
-      const result = await ctx.service.admin.add(data);
+      const result = await ctx.service.admin.add(params);
       if (result.affectedRows === 1) {
         ctx.body = {
           success: true,
