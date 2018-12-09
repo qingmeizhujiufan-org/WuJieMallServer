@@ -9,8 +9,12 @@
         "egg-mysql": "^3.0.0",
         "egg-passport": "^2.0.1",
         "egg-scripts": "^2.10.0",
+        "mz": "^2.7.0",
+        "mz-modules": "^2.1.0",
         "node-uuid": "^1.4.8",
-        "passport-local": "^1.0.0"
+        "passport-local": "^1.0.0",
+        "stream-to-array": "^2.3.0",
+        "stream-wormhole": "^1.1.0"
     },
     "devDependencies": {
         "autod": "^3.0.1",

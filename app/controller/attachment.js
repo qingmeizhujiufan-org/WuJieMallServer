@@ -1,25 +1,30 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+//管道读入一个虫洞
+const sendToWormhole = require('stream-wormhole');
+const toArray = require('stream-to-array');
 const Controller = require('egg').Controller;
+const pump = require('mz-modules/pump');
+//异步二进制 写入流
+// const awaitWriteStream = require('await-stream-ready').write;
 
 class AttachmentController extends Controller {
 
     async upload() {
         const ctx = this.ctx;
-        const fieldsValue = ctx.request.body;
-        const result = await ctx.service.attachment.upload(fieldsValue);
-        if (result.affectedRows === 1) {
-            ctx.body = {
-                success: true,
-                backData: result,
-                backMsg: "上传成功！"
-            };
-        } else {
-            ctx.body = {
-                success: false,
-                backMsg: "上传失败！"
-            };
-        }
+        const stream = await ctx.getFileStream();
+        console.log('stream == ', stream);
+        // const filename = encodeURIComponent(stream.fieldname) + path.extname(stream.filename).toLowerCase();
+        const filename = stream.filename;
+        const target = path.join(this.config.baseDir, 'app/public', filename);
+        const writeStream = fs.createWriteStream(target);
+        await pump(stream, writeStream);
+
+        ctx.body = {
+            url: '/public/' + filename
+        };
     }
 }
 
