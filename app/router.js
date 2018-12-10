@@ -29,6 +29,8 @@ module.exports = app => {
 
     /* 查询产品列表 */
     router.get('/api/product/queryList', controller.product.queryList);
+    /* 查询产品详情 */
+    router.get('/api/product/queryDetail', controller.product.queryDetail);
     /* 新增产品 */
     router.post('/api/product/add', controller.product.add);
 

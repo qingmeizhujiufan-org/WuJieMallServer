@@ -23,7 +23,7 @@ class AttachmentController extends Controller {
         await pump(stream, writeStream);
 
         ctx.body = {
-            url: '/public/' + filename
+            url: '/upload/' + filename
         };
     }
 }

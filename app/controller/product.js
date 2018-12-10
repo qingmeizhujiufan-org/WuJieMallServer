@@ -1,22 +1,38 @@
 'use strict';
 
-const Controller = require('egg').Controller;
+const BaseController = require('../core/BaseController');
 
-class HomeController extends Controller {
+class HomeController extends BaseController {
     async queryList() {
         const ctx = this.ctx;
-        const result = await ctx.service.product.queryList();
+        const params = ctx.query;
+        const result = await ctx.service.product.queryList(params);
         if (result) {
-            ctx.body = {
-                success: true,
-                backData: result,
+            this.success({
+                backData: {
+                    content: result,
+                    pageSize: parseInt(params.pageSize),
+                    pageNumber: parseInt(params.pageNumber),
+                    totalElements: result.length
+                },
                 backMsg: "查询列表成功！"
-            };
+            })
         } else {
-            ctx.body = {
-                success: false,
-                backMsg: "查询失败！"
-            };
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
+    async queryDetail() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        const result = await ctx.service.product.queryDetail(params);
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: '查询成功！'
+            });
+        }else {
+            this.fail({backMsg: "查询失败！"});
         }
     }
 
