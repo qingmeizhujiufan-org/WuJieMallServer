@@ -18,7 +18,7 @@ class AttachmentController extends Controller {
         console.log('stream == ', stream);
         // const filename = encodeURIComponent(stream.fieldname) + path.extname(stream.filename).toLowerCase();
         const filename = stream.filename;
-        const target = path.join(this.config.baseDir, 'app/public', filename);
+        const target = path.join(this.config.baseDir, 'app/upload', filename);
         const writeStream = fs.createWriteStream(target);
         await pump(stream, writeStream);
 
