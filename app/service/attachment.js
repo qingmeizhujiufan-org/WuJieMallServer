@@ -3,14 +3,15 @@
 const Service = require('egg').Service;
 const UUID = require('uuid');
 
-class ProductService extends Service {
+class AttachmentService extends Service {
 
     async upload(fieldsValue) {
         const params = {
             id: UUID.v1(),
             ...fieldsValue,
+            create_time: this.app.mysql.literals.now
         };
-        const res = await this.app.mysql.insert('product_info', params);
+        const res = await this.app.mysql.insert('file_info', params);
 
         return {
             ...res,
@@ -19,4 +20,4 @@ class ProductService extends Service {
     }
 }
 
-module.exports = ProductService;
+module.exports = AttachmentService;

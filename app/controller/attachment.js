@@ -1,30 +1,40 @@
 'use strict';
 
+const BaseController = require('../core/BaseController');
 const fs = require('fs');
 const path = require('path');
-//管道读入一个虫洞
-const sendToWormhole = require('stream-wormhole');
-const toArray = require('stream-to-array');
-const Controller = require('egg').Controller;
 const pump = require('mz-modules/pump');
-//异步二进制 写入流
-// const awaitWriteStream = require('await-stream-ready').write;
 
-class AttachmentController extends Controller {
+class AttachmentController extends BaseController {
 
     async upload() {
         const ctx = this.ctx;
         const stream = await ctx.getFileStream();
         console.log('stream == ', stream);
-        // const filename = encodeURIComponent(stream.fieldname) + path.extname(stream.filename).toLowerCase();
+        // console.log(' _readableState == ', stream._readableState.ReadableState);
+        // const readableState = stream._readableState.ReadableState;
         const filename = stream.filename;
         const target = path.join(this.config.baseDir, 'app/upload', filename);
-        const writeStream = fs.createWriteStream(target);
-        await pump(stream, writeStream);
 
-        ctx.body = {
-            url: '/upload/' + filename
-        };
+        const result = this.service.attachment.upload({
+            file_name: filename,
+            mime_type: stream.mimeType,
+            // file_size: readableState.length,
+            file_path: `app/upload/${filename}`
+        });
+
+        if (result) {
+            const writeStream = fs.createWriteStream(target);
+            await pump(stream, writeStream);
+
+            this.success({
+                url: '/upload/' + filename
+            });
+        } else {
+            this.fail({
+                backMsg: '上传失败'
+            });
+        }
     }
 }
 
