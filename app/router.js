@@ -33,7 +33,11 @@ module.exports = app => {
     router.get('/api/product/queryDetail', controller.product.queryDetail);
     /* 新增产品 */
     router.post('/api/product/add', controller.product.add);
+    /* 更新产品信息 */
+    router.post('/api/product/update', controller.product.update);
 
+    /* 获取获取 */
+    router.get('/api/attachment/upload', controller.attachment.upload);
     /* 附件上传 */
     router.post('/api/attachment/upload', controller.attachment.upload);
 };

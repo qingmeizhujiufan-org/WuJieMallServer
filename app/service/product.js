@@ -26,16 +26,27 @@ class ProductService extends Service {
     }
 
     async add(fieldsValue) {
-        const params = {
+        const row = {
             id: UUID.v1(),
             ...fieldsValue,
+            create_time: this.app.mysql.literals.now
         };
-        const res = await this.app.mysql.insert('product_info', params);
+        const res = await this.app.mysql.insert('product_info', row);
 
         return {
             ...res,
-            id: params.id
+            id: row.id
         };
+    }
+
+    async update(fieldsValue) {
+        const row = {
+            ...fieldsValue,
+            update_time: this.app.mysql.literals.now
+        };
+        const res = await this.app.mysql.update('product_info', row);
+
+        return res;
     }
 }
 

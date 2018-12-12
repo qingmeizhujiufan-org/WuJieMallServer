@@ -31,7 +31,7 @@ class HomeController extends BaseController {
                 backData: result,
                 backMsg: '查询成功！'
             });
-        }else {
+        } else {
             this.fail({backMsg: "查询失败！"});
         }
     }
@@ -41,16 +41,30 @@ class HomeController extends BaseController {
         const fieldsValue = ctx.request.body;
         const result = await ctx.service.product.add(fieldsValue);
         if (result.affectedRows === 1) {
-            ctx.body = {
-                success: true,
+            this.success({
                 backData: result,
-                backMsg: "新增用户成功！"
-            };
+                backMsg: "新增产品成功！"
+            });
         } else {
-            ctx.body = {
-                success: false,
+            this.fail({
                 backMsg: "新增失败！"
-            };
+            });
+        }
+    }
+
+    async update() {
+        const ctx = this.ctx;
+        const fieldsValue = ctx.request.body;
+        const result = await ctx.service.product.update(fieldsValue);
+        if (result.affectedRows === 1) {
+            this.success({
+                backData: result,
+                backMsg: "修改产品信息成功！"
+            });
+        } else {
+            this.fail({
+                backMsg: "修改产品信息失败！"
+            });
         }
     }
 }
