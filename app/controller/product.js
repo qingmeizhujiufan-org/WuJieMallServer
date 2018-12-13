@@ -6,13 +6,15 @@ class HomeController extends BaseController {
     async queryList() {
         const ctx = this.ctx;
         const params = ctx.query;
+        params.pageNumber = parseInt(params.pageNumber);
+        params.pageSize = parseInt(params.pageSize);
         const result = await ctx.service.product.queryList(params);
         if (result) {
             this.success({
                 backData: {
                     content: result,
-                    pageSize: parseInt(params.pageSize),
-                    pageNumber: parseInt(params.pageNumber),
+                    pageSize: params.pageSize,
+                    pageNumber: params.pageNumber,
                     totalElements: result.length
                 },
                 backMsg: "查询列表成功！"
