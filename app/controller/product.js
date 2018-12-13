@@ -12,10 +12,9 @@ class HomeController extends BaseController {
         if (result) {
             this.success({
                 backData: {
-                    content: result,
+                    ...result,
                     pageSize: params.pageSize,
-                    pageNumber: params.pageNumber,
-                    totalElements: result.length
+                    pageNumber: params.pageNumber
                 },
                 backMsg: "查询列表成功！"
             })
@@ -29,6 +28,11 @@ class HomeController extends BaseController {
         const params = ctx.query;
         const result = await ctx.service.product.queryDetail(params);
         if (result) {
+            const headerPicList = await ctx.service.attachment.queryListByIds(result.header_pic);
+            const detailPicList = await ctx.service.attachment.queryListByIds(result.detail_pic);
+            result.header_pic = headerPicList;
+            result.detail_pic = detailPicList;
+
             this.success({
                 backData: result,
                 backMsg: '查询成功！'

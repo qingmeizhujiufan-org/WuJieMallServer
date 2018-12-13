@@ -7,23 +7,20 @@ class ProductService extends Service {
 
     async queryList(params) {
         const {pageNumber, pageSize} = params;
-        // const res = await this.app.mysql.select('product_info', {
-        //     // where: { status: 'draft', author: ['author1', 'author2'] }, // WHERE 条件
-        //     // columns: ['author', 'title'], // 要查询的表字段
-        //     orders: [['create_time', 'desc']], // 排序方式
-        //     limit: pageSize, // 返回数据量
-        //     offset: (pageNumber - 1) * pageSize, // 数据偏移量
-        // });
+        const total = await this.app.mysql.select('product_info', {
+            where: {shop_id: '123456789', product_category_id: '123'}
+        });
+        const res = await this.app.mysql.select('product_info', {
+            where: {shop_id: '123456789', product_category_id: '123'},
+            orders: [['create_time', 'desc']], // 排序方式
+            limit: pageSize, // 返回数据量
+            offset: (pageNumber - 1) * pageSize, // 数据偏移量
+        });
 
-        const res = await this.app.mysql.query('select ' +
-            'p.id, ' +
-            'p.header_pic, ' +
-            'p.product_name ' +
-            'from product_info p ' +
-            'left join file_info f ' +
-            'on p.header_pic = f.id');
-
-        return res;
+        return {
+            content: res,
+            totalElements: total.length
+        };
     }
 
     async queryDetail(params) {

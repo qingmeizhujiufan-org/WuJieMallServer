@@ -40,4 +40,6 @@ module.exports = app => {
     router.get('/api/attachment/upload', controller.attachment.upload);
     /* 附件上传 */
     router.post('/api/attachment/upload', controller.attachment.upload);
+    /* 根据id查找附件 */
+    router.get('/api/attachment/queryListByIds', controller.attachment.queryListByIds);
 };

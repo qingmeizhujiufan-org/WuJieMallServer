@@ -18,6 +18,16 @@ class AttachmentService extends Service {
             id: params.id
         };
     }
+
+    async queryListByIds(ids) {
+        const res = await this.app.mysql.select('file_info', {
+            where: {id: ids.split(',')},
+            columns: ['id', 'file_name', 'file_type', 'mime_type', 'create_time'],
+            orders: [['create_time', 'asc']],
+        });
+
+        return res;
+    }
 }
 
 module.exports = AttachmentService;

@@ -16,6 +16,7 @@ class AttachmentController extends BaseController {
         const filename = stream.filename;
         const result = await ctx.service.attachment.upload({
             file_name: filename,
+            file_type: path.extname(filename),
             mime_type: stream.mimeType,
             // file_size: readableState.length,
             // file_path: `app/upload/${filename}`
@@ -33,6 +34,25 @@ class AttachmentController extends BaseController {
             this.fail({
                 backMsg: '上传失败'
             });
+        }
+    }
+
+    async queryListByIds() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        console.log('params === ', params.ids);
+        if (!params.ids) {
+            this.fail({backMsg: "缺少参数ids！"});
+        } else {
+            const result = await ctx.service.attachment.queryListByIds(params.ids);
+            if (result) {
+                this.success({
+                    backData: result,
+                    backMsg: '查询成功！'
+                });
+            } else {
+                this.fail({backMsg: "查询失败！"});
+            }
         }
     }
 }
