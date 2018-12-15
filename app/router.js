@@ -36,6 +36,18 @@ module.exports = app => {
     /* 更新产品信息 */
     router.post('/api/product/update', controller.product.update);
 
+
+    /* 查询产品分类列表 */
+    router.get('/api/product/queryCategoryList', controller.product.queryCategoryList);
+    /* 新增产品分类 */
+    router.post('/api/product/categoryAdd', controller.product.categoryAdd);
+     /* 查看产品分类信息 */
+    router.get('/api/product/categoryDetail', controller.product.categoryDetail);
+    /* 更新产品分类信息 */
+    router.post('/api/product/categoryUpdate', controller.product.categoryUpdate);
+     /* 删除产品分类信息 */
+    router.post('/api/product/categoryDelete', controller.product.categoryDelete);
+
     /* 获取获取 */
     router.get('/api/attachment/upload', controller.attachment.upload);
     /* 附件上传 */

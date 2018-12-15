@@ -54,6 +54,33 @@ class ProductService extends Service {
 
         return {rowsAffected: res};
     }
+
+    //产品类别
+    async queryCategoryList(params) {
+        const ctx = this.ctx;
+        const {pageNumber, pageSize} = params;
+        const total = await ctx.model.ProductCategory.findAll({
+            where: {}
+        });
+        const res = await ctx.model.ProductCategory.findAll({
+            where: {},
+            orders: [['create_time', 'desc']], // 排序方式
+            limit: pageSize, // 返回数据量
+            offset: (pageNumber - 1) * pageSize, // 数据偏移量
+        });
+
+        return {
+            content: res,
+            totalElements: total.length
+        };
+    }
+
+    async categoryAdd(row) {
+        const ctx = this.ctx;
+        const res = await ctx.model.ProductCategory.create(row);
+
+        return res;
+    }
 }
 
 module.exports = ProductService;
