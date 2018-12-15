@@ -27,11 +27,12 @@ class HomeController extends BaseController {
         const ctx = this.ctx;
         const params = ctx.query;
         const result = await ctx.service.product.queryDetail(params);
+
         if (result) {
-            const headerPicList = await ctx.service.attachment.queryListByIds(result.header_pic);
-            const detailPicList = await ctx.service.attachment.queryListByIds(result.detail_pic);
-            result.header_pic = headerPicList;
-            result.detail_pic = detailPicList;
+            const headerPicList = await ctx.service.attachment.queryListByIds(result.headerPic);
+            const detailPicList = await ctx.service.attachment.queryListByIds(result.detailPic);
+            result.headerPic = headerPicList;
+            result.detailPic = detailPicList;
 
             this.success({
                 backData: result,
@@ -46,6 +47,7 @@ class HomeController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         const result = await ctx.service.product.add(fieldsValue);
+
         if (result.affectedRows === 1) {
             this.success({
                 backData: result,
@@ -62,7 +64,8 @@ class HomeController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         const result = await ctx.service.product.update(fieldsValue);
-        if (result.affectedRows === 1) {
+
+        if (result) {
             this.success({
                 backData: result,
                 backMsg: "修改产品信息成功！"

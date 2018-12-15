@@ -45,5 +45,14 @@ module.exports = appInfo => {
         mode: 'stream',
     };
 
+    config.sequelize = {
+        dialect: 'mysql',
+        host: '39.104.166.165',
+        port: 3306,
+        database: 'wujiemalldb',
+        username: 'root',
+        password: 'root',
+    };
+
     return config;
 };

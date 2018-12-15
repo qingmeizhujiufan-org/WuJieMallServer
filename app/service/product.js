@@ -6,11 +6,12 @@ const UUID = require('uuid');
 class ProductService extends Service {
 
     async queryList(params) {
+        const ctx = this.ctx;
         const {pageNumber, pageSize} = params;
-        const total = await this.app.mysql.select('product_info', {
+        const total = await ctx.model.Product.findAll({
             where: {shop_id: '123456789', product_category_id: '123'}
         });
-        const res = await this.app.mysql.select('product_info', {
+        const res = await ctx.model.Product.findAll({
             where: {shop_id: '123456789', product_category_id: '123'},
             orders: [['create_time', 'desc']], // 排序方式
             limit: pageSize, // 返回数据量
@@ -24,8 +25,11 @@ class ProductService extends Service {
     }
 
     async queryDetail(params) {
+        const ctx = this.ctx;
         const {id} = params;
-        const res = await this.app.mysql.get('product_info', {id});
+        const res = await ctx.model.Product.findOne({
+            where: {id}
+        });
 
         return res;
     }
@@ -45,11 +49,15 @@ class ProductService extends Service {
     }
 
     async update(fieldsValue) {
+        const ctx = this.ctx;
         const row = {
             ...fieldsValue,
-            update_time: this.app.mysql.literals.now
+            update_time: new Date()
         };
-        const res = await this.app.mysql.update('product_info', row);
+        const {id, ...restFieldsValue} = row;
+        const res = await ctx.model.Product.update(restFieldsValue, {
+            where: {id}
+        });
 
         return res;
     }
