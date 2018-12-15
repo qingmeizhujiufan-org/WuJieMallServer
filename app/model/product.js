@@ -108,7 +108,10 @@ module.exports = app => {
         /* 产品保质期 */
         productDate: {
             type: STRING(255),
-            field: 'product_date'
+            field: 'product_date',
+            get() {
+                return this.getDataValue('productDate') && Moment(this.getDataValue('productDate')).format('YYYY-MM-DD HH:mm:ss');
+            }
         },
         /* 产品净含量 */
         productNetWeight: {
