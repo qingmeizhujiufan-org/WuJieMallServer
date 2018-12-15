@@ -35,15 +35,15 @@ class ProductService extends Service {
     }
 
     async add(fieldsValue) {
+        const ctx = this.ctx;
         const row = {
-            id: UUID.v1(),
             ...fieldsValue,
-            create_time: this.app.mysql.literals.now
+            id: UUID.v1(),
         };
-        const res = await this.app.mysql.insert('product_info', row);
+        const res = await ctx.model.Product.create(row);
 
         return {
-            ...res,
+            rowsAffected: res,
             id: row.id
         };
     }
@@ -59,7 +59,7 @@ class ProductService extends Service {
             where: {id}
         });
 
-        return res;
+        return {rowsAffected: res};
     }
 }
 

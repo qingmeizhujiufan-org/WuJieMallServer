@@ -48,7 +48,7 @@ class HomeController extends BaseController {
         const fieldsValue = ctx.request.body;
         const result = await ctx.service.product.add(fieldsValue);
 
-        if (result.affectedRows === 1) {
+        if (result.rowsAffected) {
             this.success({
                 backData: result,
                 backMsg: "新增产品成功！"
@@ -65,7 +65,7 @@ class HomeController extends BaseController {
         const fieldsValue = ctx.request.body;
         const result = await ctx.service.product.update(fieldsValue);
 
-        if (result) {
+        if (result.rowsAffected) {
             this.success({
                 backData: result,
                 backMsg: "修改产品信息成功！"

@@ -20,11 +20,14 @@ class AttachmentService extends Service {
     }
 
     async queryListByIds(ids) {
-        const res = await this.app.mysql.select('file_info', {
-            where: {id: ids.split(',')},
-            columns: ['id', 'file_name', 'file_type', 'mime_type', 'create_time'],
-            orders: [['create_time', 'asc']],
-        });
+        let res = [];
+        if (ids && typeof ids === 'string') {
+            res = await this.app.mysql.select('file_info', {
+                where: {id: ids.split(',')},
+                columns: ['id', 'file_name', 'file_type', 'mime_type', 'create_time'],
+                orders: [['create_time', 'asc']],
+            });
+        }
 
         return res;
     }
