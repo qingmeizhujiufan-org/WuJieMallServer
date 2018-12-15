@@ -1,12 +1,16 @@
 'use strict';
+
+const Moment = require('moment');
+
 module.exports = app => {
-    const {INTEGER, STRING, DECIMAL, DATE} = app.Sequelize;
+    const {UUIDV1, INTEGER, STRING, DECIMAL, DATE} = app.Sequelize;
     const Product = app.model.define('Product', {
         /* 产品ID */
         id: {
-            type: STRING(255),
+            type: UUIDV1,
             primaryKey: true,
-            field: 'id'
+            field: 'id',
+            defaultValue: UUIDV1
         },
         /* 产品店铺ID */
         shopId: {
@@ -133,6 +137,18 @@ module.exports = app => {
             type: STRING(255),
             field: 'create_by'
         },
+        created_at: {
+            type: DATE,
+            get() {
+                return Moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+            }
+        },
+        updated_at: {
+            type: DATE,
+            get() {
+                return Moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+            }
+        }
     }, {
         freezeTableName: true,
         tableName: 'product_info',

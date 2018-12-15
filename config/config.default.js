@@ -1,5 +1,7 @@
 'use strict';
 
+const sequelizeConfig = require('./config.sequelize');
+
 module.exports = appInfo => {
     const config = exports = {};
 
@@ -45,14 +47,7 @@ module.exports = appInfo => {
         mode: 'stream',
     };
 
-    config.sequelize = {
-        dialect: 'mysql',
-        host: '39.104.166.165',
-        port: 3306,
-        database: 'wujiemalldb',
-        username: 'root',
-        password: 'root',
-    };
+    config.sequelize = sequelizeConfig;
 
     return config;
 };

@@ -27,9 +27,7 @@ class ProductService extends Service {
     async queryDetail(params) {
         const ctx = this.ctx;
         const {id} = params;
-        const res = await ctx.model.Product.findOne({
-            where: {id}
-        });
+        const res = await ctx.model.Product.findById(id);
 
         return res;
     }
@@ -37,24 +35,19 @@ class ProductService extends Service {
     async add(fieldsValue) {
         const ctx = this.ctx;
         const row = {
-            ...fieldsValue,
-            id: UUID.v1(),
+            // id: UUID.v1(),
+            ...fieldsValue
         };
         const res = await ctx.model.Product.create(row);
 
         return {
             rowsAffected: res,
-            id: row.id
         };
     }
 
     async update(fieldsValue) {
         const ctx = this.ctx;
-        const row = {
-            ...fieldsValue,
-            update_time: new Date()
-        };
-        const {id, ...restFieldsValue} = row;
+        const {id, ...restFieldsValue} = fieldsValue;
         const res = await ctx.model.Product.update(restFieldsValue, {
             where: {id}
         });
