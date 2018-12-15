@@ -45,7 +45,10 @@ module.exports = app => {
         /* 产品成本价 */
         productCostprice: {
             type: DECIMAL,
-            field: 'product_costprice'
+            field: 'product_costprice',
+            get() {
+                return this.getDataValue('productCostprice') && parseFloat(this.getDataValue('productCostprice'));
+            }
         },
         /* 产品单位 */
         productUnit: {
@@ -140,13 +143,13 @@ module.exports = app => {
         created_at: {
             type: DATE,
             get() {
-                return Moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+                return this.getDataValue('created_at') && Moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
             }
         },
         updated_at: {
             type: DATE,
             get() {
-                return Moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+                return this.getDataValue('updated_at') && Moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
             }
         }
     }, {
