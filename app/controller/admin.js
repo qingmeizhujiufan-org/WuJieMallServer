@@ -1,52 +1,55 @@
 'use strict';
 
-const Controller = require('egg').Controller;
+const BaseController = require('../core/BaseController');
 
-class AdminController extends Controller {
+class AdminController extends BaseController {
 
   async login() {
     const ctx = this.ctx;
     const params = ctx.request.body;
     const user = await ctx.service.admin.login(params);
     if (user) {
-      ctx.body = {
-        success: true,
+      this.success({
+        backMsg: "登录成功！",
         backData: user
-      };
+      });
     } else {
-      ctx.body = {
-        success: false,
+      this.fail({
         backMsg: "用户编码或密码不正确！"
-      };
+      });
     }
   }
 
   async queryList() {
     const ctx = this.ctx;
-    const adminList = await ctx.service.admin.queryList();
-    ctx.body = {
-      success: true,
+    const params = ctx.query;
+    params.pageNumber = parseInt(params.pageNumber);
+    params.pageSize = parseInt(params.pageSize);
+    const adminList = await ctx.service.admin.queryList(params);
+    this.success({
       backMsg: "获取用户列表成功！",
       backData: adminList
-    };
+    });
   }
 
   async qureyOneUser() {
     const ctx = this.ctx;
-    const params = ctx.request.body;
+    const params = ctx.query;
+    console.log('params ===', params);
+
     const result = await ctx.service.admin.qureyOneUser(params);
+
     if (result) {
-      ctx.body = {
-        success: true,
+      const picList = await ctx.service.attachment.queryListByIds(result.avatarSrc);
+      result.avatarSrc = picList;
+      this.success({
         backMsg: "用户详情查询成功！",
         backData: result
-      };
+      });
     } else {
-      ctx.body = {
-        success: true,
-        backMsg: "用户详情查询成功！",
-        backData: result
-      };
+      this.fail({
+        backMsg: "用户详情查询失败！",
+      });
     }
   }
 
@@ -55,27 +58,25 @@ class AdminController extends Controller {
     const params = ctx.request.body;
     // console.log('params ===', params);
 
-    const uniqueUser = await ctx.service.admin.findByName({ user_name: params.user_name })
+    const uniqueUser = await ctx.service.admin.findByName({ userName: params.userName })
 
     if (uniqueUser === null) {
       const result = await ctx.service.admin.add(params);
-      if (result.affectedRows === 1) {
-        ctx.body = {
-          success: true,
+
+      if (result.dataValues) {
+        this.success({
           backMsg: "新增用户成功！",
           backData: result
-        };
+        });
       } else {
-        ctx.body = {
-          success: false,
+        this.fail({
           backMsg: "新增用户失败！"
-        };
+        });
       }
     } else {
-      ctx.body = {
-        success: false,
+      this.fail({
         backMsg: "用户名已存在!"
-      };
+      });
     }
   }
 
@@ -83,55 +84,51 @@ class AdminController extends Controller {
     const ctx = this.ctx;
     const params = ctx.request.body;
     const result = await ctx.service.admin.updateUser(params);
-    if (result.affectedRows === 1) {
-      ctx.body = {
-        success: true,
+    console.log('result ===', result);
+
+    if (result) {
+      this.success({
         backMsg: "人员信息修改成功",
-        backData: result
-      };
+      });
     } else {
-      ctx.body = {
-        success: false,
+      this.fail({
         backMsg: "人员信息修改失败！"
-      };
+      });
     }
   }
 
   async delete() {
     const ctx = this.ctx;
     const params = ctx.request.body;
+    console.log('params ===', params);
+
     const result = await ctx.service.admin.delete(params);
     console.log('result ===', result)
-    if (result.affectedRows === 1) {
-      ctx.body = {
-        success: true,
+    if (result) {
+      this.success({
         backMsg: "用户删除成功",
-        backData: result
-      };
+      });
     } else {
-      ctx.body = {
-        success: false,
+      this.fail({
         backMsg: "用户删除失败！"
-      };
+      });
     }
   }
 
   async frozen() {
     const ctx = this.ctx;
     const params = ctx.request.body;
-    const isFrozen = params.is_frozen;
+    const isFrozen = params.isFrozen;
     const result = await ctx.service.admin.frozen(params);
-    if (result.affectedRows === 1) {
-      ctx.body = {
-        success: true,
+    if (result) {
+      this.success({
         backMsg: isFrozen ? "用户冻结成功！" : "用户解冻成功！",
         backData: result
-      };
+      });
     } else {
-      ctx.body = {
-        success: false,
+      this.fail({
         backMsg: isFrozen ? "用户冻结成失败！" : "用户解冻失败！"
-      };
+      });
     }
   }
 
@@ -140,17 +137,15 @@ class AdminController extends Controller {
     const params = ctx.request.body;
 
     const result = await ctx.service.admin.resetPassword(params)
-    if (result.affectedRows === 1) {
-      ctx.body = {
-        success: true,
+    if (result) {
+      this.success({
         backMsg: "重置密码成功，新密码为000000",
         backData: result
-      };
+      });
     } else {
-      ctx.body = {
-        success: false,
+      this.fail({
         backMsg: "重置密码失败！"
-      };
+      });
     }
   }
 }

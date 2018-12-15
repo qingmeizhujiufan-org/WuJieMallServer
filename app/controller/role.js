@@ -8,7 +8,7 @@ class RoleController extends Controller {
     const roleList = await ctx.service.role.queryList();
     ctx.body = {
       success: true,
-      backMsg: "获取用户列表成功！",
+      backMsg: "获取j角色列表成功！",
       backData: roleList
     };
   }
@@ -24,19 +24,19 @@ class RoleController extends Controller {
       if (result.affectedRows === 1) {
         ctx.body = {
           success: true,
-          backMsg: "新增用户成功！",
+          backMsg: "新增角色成功！",
           backData: result
         };
       } else {
         ctx.body = {
           success: false,
-          backMsg: "新增用户失败！"
+          backMsg: "新增角色失败！"
         };
       }
     } else {
       ctx.body = {
         success: false,
-        backMsg: "用户名已存在!"
+        backMsg: "当前角色已存在!"
       };
     }
   }

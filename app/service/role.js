@@ -7,8 +7,8 @@ class RoleService extends Service {
 
   async queryList() {
     // 角色列表
-    const Admin = await this.app.mysql.select('role_info');
-    return Admin;
+    const Role = await this.ctx.model.Role.findAll()
+    return Role;
   }
 
   // 增加角色

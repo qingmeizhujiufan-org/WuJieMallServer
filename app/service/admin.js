@@ -6,70 +6,89 @@ const UUID = require('uuid');
 class AdminService extends Service {
 
   async login(params) {
-    // 假如 我们拿到用户 id 从数据库获取用户详细信息
-    const user = await this.app.mysql.get('admin_info', params);
+    // 假如 我们拿到用户名以及密码从数据库获取用户详细信息
+    const user = await this.model.Admin.findOne({ where: params });
     return user;
   }
 
-  async queryList() {
-    // 假如 我们拿到用户 id 从数据库获取用户详细信息
-    const users = await this.app.mysql.select('admin_info');
-    return users;
+  async queryList(params) {
+    const ctx = this.ctx;
+    const { pageNumber, pageSize } = params;
+
+    const total = await ctx.model.Admin.findAll({
+      where: {}
+    })
+    const res = await ctx.model.Admin.findAll({
+      where: {},
+      orders: [
+        ['create_time', 'desc']
+      ], // 排序方式
+      limit: pageSize, // 返回数据量
+      offset: (pageNumber - 1) * pageSize, // 数据偏移量
+    });
+
+    return {
+      content: res,
+      totalElements: total.length
+    };
   }
 
   async add(params) {
     const data = {
-      id: UUID.v1(),
       ...params,
-      create_time: this.app.mysql.literals.now,
-      is_frozen: 0
+      isFrozen: 0
     };
-    const res = await this.app.mysql.insert('admin_info', data);
+    const res = await this.ctx.model.Admin.create(data);
     return res;
   }
 
   async updateUser(params) {
-    params.create_time = new Date(params.create_time);
-    const res = await this.app.mysql.update('admin_info', params);
+    // params.create_time = new Date(params.create_time);
+    const res = await this.ctx.model.Admin.update(params, {
+      where: { id: params.id }
+    });
     return res;
   }
 
   async qureyOneUser(params) {
-    const res = await this.app.mysql.get('admin_info', params);
+    const res = await this.ctx.model.Admin.findOne({
+      where: { id: params.id }
+    });
     return res;
   }
 
   async delete(params) {
-    const res = await this.app.mysql.delete('admin_info', params);
+    const res = await this.ctx.model.Admin.destroy({
+      where: { id: params.id }
+    });
     return res;
   }
 
   async findByName(params) {
-    const user = await this.app.mysql.get('admin_info', params);
-    return user;
-  }
-
-  async findByPhone(params) {
-    const user = await this.app.mysql.get('admin_info', params);
+    const user = await this.ctx.model.Admin.findOne({
+      where: params
+    });
     return user;
   }
 
   async resetPassword(params) {
     const newData = {
       ...params,
-      user_pwd: '000000',
-      update_time: this.app.mysql.literals.now
+      password: '000000',
     }
-    const res = await this.app.mysql.update('admin_info', params);
+    const res = await this.ctx.model.Admin.update(newData, {
+      where: { id: params.id }
+    });
     return res;
   }
 
   async frozen(params) {
-      const newData = {
-      ...params,
-      update_time: this.app.mysql.literals.now
+    const newData = {
+      ...params
     }
-    const res = await this.app.mysql.update('admin_info', params);
+    const res = await this.ctx.model.Admin.update(newData, {
+      where: { id: params.id }
+    });
     return res;
   }
 }
