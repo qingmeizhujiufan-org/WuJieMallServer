@@ -84,8 +84,7 @@ class AdminController extends BaseController {
     const ctx = this.ctx;
     const params = ctx.request.body;
     const result = await ctx.service.admin.updateUser(params);
-    console.log('result ===', result);
-
+  
     if (result) {
       this.success({
         backMsg: "人员信息修改成功",

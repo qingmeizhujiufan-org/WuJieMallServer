@@ -7,7 +7,7 @@ class AdminService extends Service {
 
   async login(params) {
     // 假如 我们拿到用户名以及密码从数据库获取用户详细信息
-    const user = await this.model.Admin.findOne({ where: params });
+    const user = await this.ctx.model.Admin.findOne({ where: params });
     return user;
   }
 
@@ -43,7 +43,6 @@ class AdminService extends Service {
   }
 
   async updateUser(params) {
-    // params.create_time = new Date(params.create_time);
     const res = await this.ctx.model.Admin.update(params, {
       where: { id: params.id }
     });
