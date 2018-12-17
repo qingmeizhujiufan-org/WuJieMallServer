@@ -77,6 +77,20 @@ class HomeController extends BaseController {
     }
   }
 
+  //查询所有产品
+  async queryAllCategoryList() {
+    const ctx = this.ctx;
+    const result = await ctx.service.product.queryAllCategoryList();
+    if(result) {
+    this.success({
+        backData: result,
+        backMsg: "查询列表成功！"
+      })
+    } else {
+      this.fail({ backMsg: "查询失败！" });
+    }
+  }
+
   //产品分类列表
   async queryCategoryList() {
     const ctx = this.ctx;
@@ -85,6 +99,11 @@ class HomeController extends BaseController {
     params.pageSize = parseInt(params.pageSize);
     const result = await ctx.service.product.queryCategoryList(params);
     if (result) {
+      for (let item of result.content) {
+        const pic = await ctx.service.attachment.queryListByIds(item.productCategoryPic);
+        item.productCategoryPic = pic;
+      }
+
       this.success({
         backData: {
           ...result,
@@ -103,14 +122,14 @@ class HomeController extends BaseController {
     const ctx = this.ctx;
     const params = ctx.request.body;
     const result = await ctx.service.product.categoryAdd(params);
-    if (result.dataValues) {
+    if (result[1]) {
       this.success({
         backData: result,
         backMsg: "新增产品类别成功！"
       });
     } else {
       this.fail({
-        backMsg: "新增产品类别失败！"
+        backMsg: "新增产品类别失败,当前分类已存在！"
       });
     }
   }

@@ -4,7 +4,7 @@ const Moment = require('moment');
 
 module.exports = app => {
     const {UUIDV1, INTEGER, STRING, DECIMAL, DATE} = app.Sequelize;
-    const ProductCategory = app.model.define('file', {
+    const File = app.model.define('file', {
         /* 附件ID */
         id: {
             type: UUIDV1,
