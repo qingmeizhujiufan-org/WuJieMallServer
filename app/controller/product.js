@@ -81,8 +81,8 @@ class HomeController extends BaseController {
   async queryAllCategoryList() {
     const ctx = this.ctx;
     const result = await ctx.service.product.queryAllCategoryList();
-    if(result) {
-    this.success({
+    if (result) {
+      this.success({
         backData: result,
         backMsg: "查询列表成功！"
       })

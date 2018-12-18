@@ -35,7 +35,6 @@ module.exports = app => {
   router.post('/api/product/add', controller.product.add);
   /* 更新产品信息 */
   router.post('/api/product/update', controller.product.update);
-
   /* 查询产品全部分类列表 */
   router.get('/api/product/queryAllCategoryList', controller.product.queryAllCategoryList);
   /* 查询产品分类列表 */
@@ -48,6 +47,15 @@ module.exports = app => {
   router.post('/api/product/categoryUpdate', controller.product.categoryUpdate);
   /* 删除产品分类信息 */
   router.post('/api/product/categoryDelete', controller.product.categoryDelete);
+
+  /* 查询商铺列表 */
+  router.get('/api/shop/queryList', controller.shop.queryList);
+  /* 查询产品详情 */
+  router.get('/api/shop/queryDetail', controller.shop.queryDetail);
+  /* 新增产品 */
+  router.post('/api/shop/add', controller.shop.add);
+  /* 更新产品信息 */
+  router.post('/api/shop/update', controller.shop.update);
 
   /* 获取获取 */
   router.get('/api/attachment/upload', controller.attachment.upload);

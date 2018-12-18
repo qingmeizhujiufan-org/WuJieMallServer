@@ -7,18 +7,30 @@ class ProductService extends Service {
 
   async queryList(params) {
     const ctx = this.ctx;
+    const Product = ctx.model.Product;
+    const ProductCategory = ctx.model.ProductCategory;
+    Product.belongsTo(ProductCategory, { foreignKey: 'productCategoryId', targetKey: 'productCategoryCode' })
     const { pageNumber, pageSize } = params;
-    const total = await ctx.model.Product.findAll({
-      where: { shop_id: '123456789', product_category_id: '123' }
+    const total = await Product.findAll({
+      where: {}
     });
-    const res = await ctx.model.Product.findAll({
-      where: { shop_id: '123456789', product_category_id: '123' },
-      orders: [
-        ['create_time', 'desc']
+    const res = await Product.findAll({
+      where: {},
+      include: [{
+        model: ProductCategory,
+        attributes: ['productCategoryName']
+      }],
+      order: [
+        ['created_at', 'DESC']
       ], // 排序方式
       limit: pageSize, // 返回数据量
       offset: (pageNumber - 1) * pageSize, // 数据偏移量
     });
+
+    // for (let item of res) {
+    //   item.productCategoryName = item.ProductCategory.productCategoryName
+    // }
+    // console.log('res ===', res)
 
     return {
       content: res,
@@ -73,8 +85,8 @@ class ProductService extends Service {
     });
     const res = await ctx.model.ProductCategory.findAll({
       where: {},
-      orders: [
-        ['create_time', 'desc']
+      order: [
+        ['created_at', 'desc']
       ], // 排序方式
       limit: pageSize, // 返回数据量
       offset: (pageNumber - 1) * pageSize, // 数据偏移量
@@ -89,9 +101,9 @@ class ProductService extends Service {
   async categoryAdd(row) {
     const ctx = this.ctx;
     const res = await ctx.model.ProductCategory.findOrCreate({
-        where: {productCategoryName: row.productCategoryName}, defaults: {...row}
+      where: { productCategoryName: row.productCategoryName },
+      defaults: { ...row }
     });
-    console.log('res ===', res)
 
     return res;
   }
