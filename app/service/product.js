@@ -1,7 +1,6 @@
 'use strict';
 
 const Service = require('egg').Service;
-const UUID = require('uuid');
 
 class ProductService extends Service {
 
@@ -11,32 +10,59 @@ class ProductService extends Service {
         const Product = ctx.model.Product;
         const ProductCategory = ctx.model.ProductCategory;
         Product.belongsTo(ProductCategory, {foreignKey: 'productCategoryId'});
-        const {pageNumber, pageSize} = params;
-        const total = await Product.findAll({
-            where: {}
-        });
-        const res = await Product.findAll({
-            attributes: [
-                'id',
-                'shopId',
-                [Sequelize.col('ProductCategory.product_category_name'), 'productCategoryName'],
-                'productCode',
-                'productName',
-            ],
-            include: [{
-                model: ProductCategory,
-                attributes: []
-            }],
-            order: [
-                ['created_at', 'DESC']
-            ],
-            limit: pageSize,
-            offset: (pageNumber - 1) * pageSize,
-        });
+        const {pageNumber = 1, pageSize = 10} = params;
+
+        const dataList = await Promise.all([
+            Product.findAll({
+                where: {}
+            }),
+            Product.findAll({
+                attributes: [
+                    'id',
+                    'shopId',
+                    'productCategoryId',
+                    [Sequelize.col('ProductCategory.product_category_name'), 'productCategoryName'],
+                    'productCode',
+                    'productName',
+                    'productSummary',
+                    'productSellingprice',
+                    'productCostprice',
+                    'productUnit',
+                    'productSpec',
+                    'productModel',
+                    'productState',
+                    'productOrigin',
+                    'productUsage',
+                    'productStorage',
+                    'productTaste',
+                    'distributionScope',
+                    'productBrand',
+                    'productBatching',
+                    'productDate',
+                    'productNetWeight',
+                    'mark',
+                    'update_by',
+                    'create_by',
+                    'updated_at',
+                    'created_at',
+                ],
+                include: [{
+                    model: ProductCategory,
+                    attributes: []
+                }],
+                order: [
+                    ['created_at', 'DESC']
+                ],
+                limit: pageSize,
+                offset: (pageNumber - 1) * pageSize,
+            })
+        ]);
 
         return {
-            content: res,
-            totalElements: total.length
+            content: dataList[1],
+            pageNumber,
+            pageSize,
+            totalElements: dataList[0].length
         };
     }
 
@@ -51,7 +77,6 @@ class ProductService extends Service {
     async add(fieldsValue) {
         const ctx = this.ctx;
         const row = {
-            // id: UUID.v1(),
             ...fieldsValue
         };
         const res = await ctx.model.Product.create(row);
