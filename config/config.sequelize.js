@@ -1,10 +1,8 @@
 'use strict';
 
-// const Sequelize = require('egg-sequelize');
-// const Moment = require('moment');
-
 const sequelize = {
     dialect: 'mysql',
+    // host: 'localhost',
     host: '39.104.166.165',
     port: 3306,
     database: 'wujiemalldb',
