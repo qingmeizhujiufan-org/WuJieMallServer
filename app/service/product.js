@@ -7,19 +7,33 @@ class ProductService extends Service {
     async queryList(params) {
         const ctx = this.ctx;
         const Sequelize = this.app.Sequelize;
-        const Product = ctx.model.Product;
+        const Shop = ctx.model.Shop;
         const ProductCategory = ctx.model.ProductCategory;
+        const Product = ctx.model.Product;
+        Product.belongsTo(Shop, {foreignKey: 'shopId'});
         Product.belongsTo(ProductCategory, {foreignKey: 'productCategoryId'});
-        const {pageNumber = 1, pageSize = 10} = params;
+        const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
+        const whereCondition = {
+            '$or': {
+                productName: {
+                    '$like': '%' + keyWords + '%'
+                },
+                productBrand: {
+                    '$like': '%' + keyWords + '%'
+                },
+            }
+        };
 
         const dataList = await Promise.all([
             Product.findAll({
-                where: {}
+                where: whereCondition,
             }),
             Product.findAll({
+                where: whereCondition,
                 attributes: [
                     'id',
                     'shopId',
+                    [Sequelize.col('Shop.shop_name'), 'shopName'],
                     'productCategoryId',
                     [Sequelize.col('ProductCategory.product_category_name'), 'productCategoryName'],
                     'productCode',
@@ -47,6 +61,9 @@ class ProductService extends Service {
                     'created_at',
                 ],
                 include: [{
+                    model: Shop,
+                    attributes: []
+                }, {
                     model: ProductCategory,
                     attributes: []
                 }],

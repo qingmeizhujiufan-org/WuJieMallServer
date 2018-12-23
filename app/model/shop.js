@@ -6,10 +6,10 @@ module.exports = app => {
     const {UUIDV1, STRING, DATE} = app.Sequelize;
     const Shop = app.model.define('shop', {
         /* 店铺ID */
-        shopId: {
+        id: {
             type: UUIDV1,
             primaryKey: true,
-            field: 'shop_id',
+            field: 'id',
             defaultValue: UUIDV1
         },
 
@@ -38,31 +38,27 @@ module.exports = app => {
             type: STRING(255),
             field: 'shop_pic'
         },
+        //店铺更新者
+        updateBy: {
+            type: STRING(255),
+            field: 'update_by'
+        },
         //店铺创建者
         createBy: {
             type: STRING(255),
             field: 'create_by'
         },
-        //创建时间
-        createdAt: {
-            type: DATE,
-            field: 'created_at',
-            get() {
-                return this.getDataValue('created_at') && Moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
-            }
-        },
-        //修改人
-        updatedAt: {
+        updated_at: {
             type: DATE,
             field: 'update_by',
             get() {
-                return this.getDataValue('created_at') && Moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+                return this.getDataValue('updated_at') && Moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
             }
         },
         //修改时间
-        updatedAt: {
+        created_at: {
             type: DATE,
-            field: 'updated_at',
+            field: 'created_at',
             get() {
                 return this.getDataValue('created_at') && Moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
             }

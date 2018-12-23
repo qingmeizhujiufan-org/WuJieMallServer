@@ -15,14 +15,14 @@ class AttachmentController extends BaseController {
         // const readableState = stream._readableState.ReadableState;
         const filename = stream.filename;
         const result = await ctx.service.attachment.upload({
-            file_name: filename,
-            file_type: path.extname(filename),
-            mime_type: stream.mimeType,
+            fileName: filename,
+            fileType: path.extname(filename),
+            mimeType: stream.mimeType,
             // file_size: readableState.length,
             // file_path: `app/upload/${filename}`
         });
-        console.log('result == ', result);
-        if (result.affectedRows === 1) {
+
+        if (result.rowsAffected) {
             const target = path.join(this.config.baseDir, 'app/public', result.id + path.extname(filename));
             const writeStream = fs.createWriteStream(target);
             await pump(stream, writeStream);

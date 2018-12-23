@@ -6,27 +6,30 @@ const UUID = require('uuid');
 class AttachmentService extends Service {
 
     async upload(fieldsValue) {
+        const ctx = this.ctx;
         const params = {
             id: UUID.v1(),
             ...fieldsValue
         };
-        const res = await this.ctx.model.file.create(params);
+        const res = await ctx.model.Attachment.create(params);
 
         return {
-            ...res,
+            rowsAffected: res,
             id: params.id
         };
     }
 
     async queryListByIds(ids) {
+        const ctx = this.ctx;
         let res = [];
-        // if (ids && typeof ids === 'string') {
-        //     res = await this.app.mysql.select('file_info', {
-        //         where: {id: ids.split(',')},
-        //         columns: ['id', 'file_name', 'file_type', 'mime_type', 'create_time'],
-        //         orders: [['create_time', 'asc']],
-        //     });
-        // }
+        debugger;
+        if (ids && typeof ids === 'string') {
+            res = await ctx.model.Attachment.findAll({
+                where: {id: ids.split(',')},
+                attributes: ['id', 'fileName', 'fileType', 'mimeType', 'created_at'],
+                order: [['created_at', 'asc']],
+            });
+        }
 
         return res;
     }

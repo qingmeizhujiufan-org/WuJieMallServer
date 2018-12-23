@@ -4,7 +4,7 @@ const Moment = require('moment');
 
 module.exports = app => {
     const {UUIDV1, INTEGER, STRING, DECIMAL, DATE} = app.Sequelize;
-    const File = app.model.define('file', {
+    const File = app.model.define('File', {
         /* 附件ID */
         id: {
             type: UUIDV1,
@@ -23,7 +23,7 @@ module.exports = app => {
             field: 'file_type'
         },
         /* MIME类型 */
-        mime_type: {
+        mimeType: {
             type: STRING(255),
             field: 'mime_type'
         },
