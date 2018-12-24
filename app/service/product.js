@@ -21,6 +21,9 @@ class ProductService extends Service {
                 productBrand: {
                     '$like': '%' + keyWords + '%'
                 },
+                productOrigin: {
+                    '$like': '%' + keyWords + '%'
+                },
             }
         };
 
