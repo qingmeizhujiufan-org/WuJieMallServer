@@ -13,23 +13,38 @@ class AdminService extends Service {
 
   async queryList(params) {
     const ctx = this.ctx;
-    const { pageNumber, pageSize } = params;
+    const Admin = ctx.model.Admin;
+    const { pageNumber = 1, pageSize = 10, keyWords = '' } = params;
+    const whereCondition = {
+      '$or': {
+        realName: {
+          '$like': '%' + keyWords + '%'
+        },
+        userName: {
+          '$like': '%' + keyWords + '%'
+        }
+      }
+    };
 
-    const total = await ctx.model.Admin.findAll({
-      where: {}
-    })
-    const res = await ctx.model.Admin.findAll({
-      where: {},
-      orders: [
-        ['create_time', 'desc']
-      ], // 排序方式
-      limit: pageSize, // 返回数据量
-      offset: (pageNumber - 1) * pageSize, // 数据偏移量
-    });
+    const dataList = await Promise.all([
+      Admin.findAll({
+        where: whereCondition,
+      }),
+      Admin.findAll({
+        where: whereCondition,
+        order: [
+          ['created_at', 'DESC']
+        ],
+        limit: pageSize,
+        offset: (pageNumber - 1) * pageSize,
+      })
+    ]);
 
     return {
-      content: res,
-      totalElements: total.length
+      content: dataList[1],
+      pageNumber,
+      pageSize,
+      totalElements: dataList[0].length
     };
   }
 

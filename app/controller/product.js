@@ -101,11 +101,7 @@ class HomeController extends BaseController {
             }
 
             this.success({
-                backData: {
-                    ...result,
-                    pageSize: params.pageSize,
-                    pageNumber: params.pageNumber
-                },
+                backData: result,
                 backMsg: "查询列表成功！"
             })
         } else {

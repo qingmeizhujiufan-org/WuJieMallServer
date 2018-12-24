@@ -50,12 +50,14 @@ module.exports = app => {
 
   /* 查询商铺列表 */
   router.get('/api/shop/queryList', controller.shop.queryList);
-  /* 查询产品详情 */
+  /* 查询商铺详情 */
   router.get('/api/shop/queryDetail', controller.shop.queryDetail);
-  /* 新增产品 */
+  /* 新增商铺 */
   router.post('/api/shop/add', controller.shop.add);
-  /* 更新产品信息 */
+  /* 更新商铺信息 */
   router.post('/api/shop/update', controller.shop.update);
+   /* 删除商铺信息 */
+  router.post('/api/shop/delete', controller.shop.delete);
 
   /* 获取获取 */
   router.get('/api/attachment/upload', controller.attachment.upload);

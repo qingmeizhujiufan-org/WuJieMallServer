@@ -33,10 +33,35 @@ module.exports = app => {
             type: STRING(255),
             field: 'shop_owner'
         },
+         //手机号码
+        shopTelephone: {
+            type: STRING(255),
+            field: 'shop_telephone'
+        },
+         //固定电话
+        shopPhone: {
+            type: STRING(255),
+            field: 'shop_phone'
+        },
+         //店铺微信
+        shopWeixin: {
+            type: STRING(255),
+            field: 'shop_weixin'
+        },
+         //店铺备注
+        mark: {
+            type: STRING(255),
+            field: 'mark'
+        },
         //店铺图片
         shopPic: {
             type: STRING(255),
             field: 'shop_pic'
+        },
+         //店铺证书
+        shopCertificate: {
+            type: STRING(255),
+            field: 'shop_certificate'
         },
         //店铺更新者
         updateBy: {

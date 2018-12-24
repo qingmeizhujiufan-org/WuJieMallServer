@@ -8,7 +8,7 @@ class RoleController extends Controller {
     const roleList = await ctx.service.role.queryList();
     ctx.body = {
       success: true,
-      backMsg: "获取j角色列表成功！",
+      backMsg: "获取角色列表成功！",
       backData: roleList
     };
   }

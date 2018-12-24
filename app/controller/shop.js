@@ -11,11 +11,7 @@ class ShopController extends BaseController {
     const result = await ctx.service.shop.queryList(params);
     if (result) {
       this.success({
-        backData: {
-          ...result,
-          pageSize: params.pageSize,
-          pageNumber: params.pageNumber
-        },
+        backData: result,
         backMsg: "查询列表成功！"
       })
     } else {
@@ -30,7 +26,11 @@ class ShopController extends BaseController {
 
     if (result) {
       const shopPic = await ctx.service.attachment.queryListByIds(result.shopPic);
+      const shopCertificate = await ctx.service.attachment.queryListByIds(result.shopCertificate);
+
       result.shopPic = shopPic;
+      result.shopCertificate = shopCertificate;
+
 
       this.success({
         backData: result,
@@ -46,7 +46,7 @@ class ShopController extends BaseController {
     const fieldsValue = ctx.request.body;
     const result = await ctx.service.shop.add(fieldsValue);
 
-    if (result.rowsAffected) {
+    if (result[1]) {
       this.success({
         backData: result,
         backMsg: "新增店铺成功！"
@@ -61,9 +61,9 @@ class ShopController extends BaseController {
   async update() {
     const ctx = this.ctx;
     const fieldsValue = ctx.request.body;
-    const result = await ctx.service.Shop.update(fieldsValue);
+    const result = await ctx.service.shop.update(fieldsValue);
 
-    if (result.rowsAffected) {
+    if (result) {
       this.success({
         backData: result,
         backMsg: "修改店铺信息成功！"
@@ -72,6 +72,30 @@ class ShopController extends BaseController {
       this.fail({
         backMsg: "修改店铺信息失败！"
       });
+    }
+  }
+
+  async delete() {
+    const ctx = this.ctx;
+    const params = ctx.request.body;
+    console.log('params ===', params);
+    const product = await ctx.service.product.findProductByShopId(params);
+    if (product) {
+      this.fail({
+        backMsg: "当前店铺不可删除，请确保此商铺没有关联商品！"
+      });
+    } else {
+      const result = await ctx.service.shop.delete(params);
+      console.log('result ===', result)
+      if (result) {
+        this.success({
+          backMsg: "店铺删除成功",
+        });
+      } else {
+        this.fail({
+          backMsg: "店铺删除失败！"
+        });
+      }
     }
   }
 }
