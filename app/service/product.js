@@ -132,6 +132,13 @@ class ProductService extends Service {
     return { rowsAffected: res };
   }
 
+  async delete(params) {
+    const res = await this.ctx.model.Product.destroy({
+      where: { id: params.id }
+    });
+    return res;
+  }
+
   //查询所有分类
   async queryAllCategoryList() {
     const ctx = this.ctx;
@@ -152,7 +159,7 @@ class ProductService extends Service {
       }
     };
 
-     const dataList = await Promise.all([
+    const dataList = await Promise.all([
       ProductCategory.findAll({
         where: whereCondition,
       }),
@@ -172,7 +179,7 @@ class ProductService extends Service {
       pageSize,
       totalElements: dataList[0].length
     };
-  
+
   }
 
   async categoryAdd(row) {
@@ -182,6 +189,32 @@ class ProductService extends Service {
       defaults: { ...row }
     });
 
+    return res;
+  }
+
+  async categoryDetail(params) {
+    const ctx = this.ctx;
+    const { id } = params;
+    const res = await ctx.model.ProductCategory.findById(id);
+
+    return res;
+  }
+
+  async categoryUpdate(fieldsValue) {
+    const ctx = this.ctx;
+    const { id, ...restFieldsValue } = fieldsValue;
+    const res = await ctx.model.ProductCategory.update(restFieldsValue, {
+      where: { id }
+    });
+
+    return res;
+  }
+
+  async categoryDelete(params) {
+    const { id } = params;
+    const res = await this.ctx.model.ProductCategory.destroy({
+      where: { id }
+    });
     return res;
   }
 }
