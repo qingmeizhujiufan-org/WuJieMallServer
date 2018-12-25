@@ -16,10 +16,12 @@ module.exports = appInfo => {
         csrf: {
             enable: false
         },
-        domainWhiteList: ['*']
+        domainWhiteList: ['http://localhost:8000']
     };
 
     config.cors = {
+        origin: 'http://localhost:8000',
+        credentials: true,
         allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH, OPTIONS'
     };
 
@@ -28,6 +30,15 @@ module.exports = appInfo => {
     };
 
     config.sequelize = sequelizeConfig;
+
+    config.redis = {
+        client: {
+            port: 6379,
+            host: '127.0.0.1',
+            password: '123456',
+            db: 0
+        }
+    };
 
     return config;
 };
