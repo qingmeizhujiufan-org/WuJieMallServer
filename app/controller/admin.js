@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const BaseController = require('../core/BaseController');
 
 function generateToken(data, time) {
-    let created = Math.floor(Date.now() / 1000);
+    let created = Math.floor(Date.now());
     // let cert = fs.readFileSync(path.join(__dirname, '../public/rsa_private_key.pem'));//私钥
     let token = jwt.sign({
         data,
@@ -21,13 +21,12 @@ class AdminController extends BaseController {
         const user = await ctx.service.admin.login(params);
         if (user) {
             //生成cookie
-            let token = generateToken({_id: user.id}, 100000);
+            let token = generateToken({_id: user.id}, 0.5 * 60 * 60 * 1000);
             //保存到客户端浏览器的cookie中
             ctx.cookies.set('token', token, {
-                maxAge: 100000 * 1000,
+                maxAge: 0.5 * 60 * 60 * 1000,
                 path: '/',
-                domain: 'localhost',
-                httpOnly: false,
+                domain: 'localhost'
             });
             // 保存到redis
             ctx.app.redis.set('username', token);
