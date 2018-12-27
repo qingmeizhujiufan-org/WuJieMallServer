@@ -40,5 +40,25 @@ module.exports = appInfo => {
         }
     };
 
+    config.io = {
+        init: {},
+        namespace: {
+            '/': {
+                connectionMiddleware: [],
+                packetMiddleware: [],
+            },
+            '/example': {
+                connectionMiddleware: [],
+                packetMiddleware: [],
+            },
+        },
+        redis: {
+            host: '127.0.0.1',
+            port: 6379,
+            auth_pass: '123456',
+            db: 0,
+        },
+    };
+
     return config;
 };

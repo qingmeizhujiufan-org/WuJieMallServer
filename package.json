@@ -10,6 +10,7 @@
     "egg-redis": "^2.3.0",
     "egg-scripts": "^2.10.0",
     "egg-sequelize": "^4.2.0",
+    "egg-socket.io": "^4.1.5",
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.23.0",
     "mysql2": "^1.6.4",
