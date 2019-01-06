@@ -10,7 +10,7 @@ module.exports = () => {
         // 用户信息
         const {room, userId} = query;
         const rooms = [room];
-
+        console.log('query == ', query);
         logger.debug('#user_info', id, room, userId);
 
         const tick = (id, msg) => {

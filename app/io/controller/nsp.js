@@ -19,6 +19,17 @@ class NspController extends Controller {
             app.logger.error(error);
         }
     }
+
+    async addProductToAdmin() {
+        const {ctx, app} = this;
+        const nsp = app.io.of('/');
+
+        try {
+            nsp.emit('有新产品等待审核，请及时处理');
+        } catch(error) {
+            app.logger.error(error);
+        }
+    }
 }
 
 module.exports = NspController;
