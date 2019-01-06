@@ -4,7 +4,7 @@
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
-    const {router, controller} = app;
+    const {router, controller, io} = app;
     const UserInterceptor = app.middleware.userInterceptor({}, app);
     router.get('/api', controller.home.index);
 
@@ -68,4 +68,8 @@ module.exports = app => {
     router.post('/api/attachment/upload', UserInterceptor, controller.attachment.upload);
     /* 根据id查找附件 */
     router.get('/api/attachment/queryListByIds', UserInterceptor, controller.attachment.queryListByIds);
+
+
+    // socket.io
+    io.of('/').route('exchange', io.controller.nsp.exchange);
 };
