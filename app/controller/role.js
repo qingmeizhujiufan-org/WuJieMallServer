@@ -1,8 +1,8 @@
 'use strict';
 
-const Controller = require('egg').Controller;
+const BaseController = require('../core/BaseController');
 
-class RoleController extends Controller {
+class RoleController extends BaseController {
   async queryList() {
     const ctx = this.ctx;
     const roleList = await ctx.service.role.queryList();
