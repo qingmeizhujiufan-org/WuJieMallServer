@@ -1,13 +1,12 @@
 'use strict';
 
 const Service = require('egg').Service;
-const UUID = require('uuid');
 
 class RoleService extends Service {
 
     //获取app滚动图列表
     async queryList() {
-        const topSliderList = await this.ctx.model.APPTopSlider.findAll();
+        const topSliderList = await this.ctx.model.AppTopSlider.findAll();
         return topSliderList;
     }
 

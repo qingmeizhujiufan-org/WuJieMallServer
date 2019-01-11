@@ -69,6 +69,13 @@ module.exports = app => {
     /* 根据id查找附件 */
     router.get('/api/attachment/queryListByIds', UserInterceptor, controller.attachment.queryListByIds);
 
+    /*
+    * APP接口
+    */
+    /* 移动获取顶部滚动图片 */
+    router.get('/api/app/queryTopSliderList', controller.app.queryTopSliderList);
+    /* 新增移动端滚动图片 */
+    router.post('/api/app/upload', UserInterceptor, controller.app.addTopSlider);
 
     // socket.io
     io.of('/').route('exchange', io.controller.nsp.exchange);
