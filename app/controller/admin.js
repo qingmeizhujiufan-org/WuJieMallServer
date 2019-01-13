@@ -21,10 +21,10 @@ class AdminController extends BaseController {
         const user = await ctx.service.admin.login(params);
         if (user) {
             //生成cookie
-            let token = generateToken({_id: user.id}, 0.5 * 60 * 60 * 1000);
+            let token = generateToken({_id: user.id}, 3 * 60 * 60 * 1000);
             //保存到客户端浏览器的cookie中
             ctx.cookies.set('token', token, {
-                maxAge: 0.5 * 60 * 60 * 1000,
+                maxAge: 3 * 60 * 60 * 1000,
                 path: '/',
                 domain: 'localhost'
             });

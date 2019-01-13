@@ -5,106 +5,106 @@ const UUID = require('uuid');
 
 class AdminService extends Service {
 
-  async login(params) {
-    // 假如 我们拿到用户名以及密码从数据库获取用户详细信息
-    const user = await this.ctx.model.Admin.findOne({ where: params });
-    return user;
-  }
+    async login(params) {
+        // 假如 我们拿到用户名以及密码从数据库获取用户详细信息
+        const user = await this.ctx.model.Admin.findOne({where: params});
+        return user;
+    }
 
-  async queryList(params) {
-    const ctx = this.ctx;
-    const Admin = ctx.model.Admin;
-    const { pageNumber = 1, pageSize = 10, keyWords = '' } = params;
-    const whereCondition = {
-      '$or': {
-        realName: {
-          '$like': '%' + keyWords + '%'
-        },
-        userName: {
-          '$like': '%' + keyWords + '%'
+    async queryList(params) {
+        const ctx = this.ctx;
+        const Admin = ctx.model.Admin;
+        const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
+        const whereCondition = {
+            '$or': {
+                realName: {
+                    '$like': '%' + keyWords + '%'
+                },
+                userName: {
+                    '$like': '%' + keyWords + '%'
+                }
+            }
+        };
+
+        const dataList = await Promise.all([
+            Admin.findAll({
+                where: whereCondition,
+            }),
+            Admin.findAll({
+                where: whereCondition,
+                order: [
+                    ['created_at', 'DESC']
+                ],
+                limit: pageSize,
+                offset: (pageNumber - 1) * pageSize,
+            })
+        ]);
+
+        return {
+            content: dataList[1],
+            pageNumber,
+            pageSize,
+            totalElements: dataList[0].length
+        };
+    }
+
+    async add(params) {
+        const data = {
+            ...params,
+            isFrozen: 0
+        };
+        const res = await this.ctx.model.Admin.create(data);
+        return res;
+    }
+
+    async updateUser(params) {
+        const res = await this.ctx.model.Admin.update(params, {
+            where: {id: params.id}
+        });
+        return res;
+    }
+
+    async qureyOneUser(params) {
+        const res = await this.ctx.model.Admin.findOne({
+            where: {id: params.id}
+        });
+        return res;
+    }
+
+    async delete(params) {
+        const res = await this.ctx.model.Admin.destroy({
+            where: {id: params.id}
+        });
+        return res;
+    }
+
+    async findByName(params) {
+        const user = await this.ctx.model.Admin.findOne({
+            where: params
+        });
+        return user;
+    }
+
+    async resetPassword(params) {
+        const newData = {
+            ...params,
+            password: '000000',
         }
-      }
-    };
-
-    const dataList = await Promise.all([
-      Admin.findAll({
-        where: whereCondition,
-      }),
-      Admin.findAll({
-        where: whereCondition,
-        order: [
-          ['created_at', 'DESC']
-        ],
-        limit: pageSize,
-        offset: (pageNumber - 1) * pageSize,
-      })
-    ]);
-
-    return {
-      content: dataList[1],
-      pageNumber,
-      pageSize,
-      totalElements: dataList[0].length
-    };
-  }
-
-  async add(params) {
-    const data = {
-      ...params,
-      isFrozen: 0
-    };
-    const res = await this.ctx.model.Admin.create(data);
-    return res;
-  }
-
-  async updateUser(params) {
-    const res = await this.ctx.model.Admin.update(params, {
-      where: { id: params.id }
-    });
-    return res;
-  }
-
-  async qureyOneUser(params) {
-    const res = await this.ctx.model.Admin.findOne({
-      where: { id: params.id }
-    });
-    return res;
-  }
-
-  async delete(params) {
-    const res = await this.ctx.model.Admin.destroy({
-      where: { id: params.id }
-    });
-    return res;
-  }
-
-  async findByName(params) {
-    const user = await this.ctx.model.Admin.findOne({
-      where: params
-    });
-    return user;
-  }
-
-  async resetPassword(params) {
-    const newData = {
-      ...params,
-      password: '000000',
+        const res = await this.ctx.model.Admin.update(newData, {
+            where: {id: params.id}
+        });
+        return res;
     }
-    const res = await this.ctx.model.Admin.update(newData, {
-      where: { id: params.id }
-    });
-    return res;
-  }
 
-  async frozen(params) {
-    const newData = {
-      ...params
+    async frozen(params) {
+        const newData = {
+            ...params
+        }
+        const res = await this.ctx.model.Admin.update(newData, {
+            where: {id: params.id}
+        });
+        return res;
     }
-    const res = await this.ctx.model.Admin.update(newData, {
-      where: { id: params.id }
-    });
-    return res;
-  }
 }
 
 module.exports = AdminService;

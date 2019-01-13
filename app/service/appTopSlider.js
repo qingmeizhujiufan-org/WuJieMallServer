@@ -6,7 +6,26 @@ class RoleService extends Service {
 
     //获取app滚动图列表
     async queryList() {
-        const topSliderList = await this.ctx.model.AppTopSlider.findAll();
+        const ctx = this.ctx;
+        const Attachment = ctx.model.Attachment;
+        const AppTopSlider = ctx.model.AppTopSlider;
+        AppTopSlider.belongsTo(Attachment, {foreignKey: 'imgId'});
+        const topSliderList = await AppTopSlider.findAll({
+            attributes: [
+                'id',
+                'productLink',
+                'desc',
+                'no',
+            ],
+            include: [{
+                model: Attachment,
+                attributes: ['id', 'fileType']
+            }],
+            order: [
+                ['created_at', 'DESC']
+            ],
+        });
+
         return topSliderList;
     }
 

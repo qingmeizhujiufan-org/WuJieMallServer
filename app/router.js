@@ -75,7 +75,7 @@ module.exports = app => {
     /* 移动获取顶部滚动图片 */
     router.get('/api/app/queryTopSliderList', controller.app.queryTopSliderList);
     /* 新增移动端滚动图片 */
-    router.post('/api/app/upload', UserInterceptor, controller.app.addTopSlider);
+    router.post('/api/app/addTopSlider', UserInterceptor, controller.app.addTopSlider);
 
     // socket.io
     io.of('/').route('exchange', io.controller.nsp.exchange);
