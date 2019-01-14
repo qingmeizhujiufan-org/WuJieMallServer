@@ -74,9 +74,13 @@ module.exports = app => {
     */
     /* 移动获取顶部滚动图片 */
     router.get('/api/app/queryTopSliderList', controller.app.queryTopSliderList);
+    /* 查询顶部滚动图片详情 */
+    router.get('/api/app/queryTopSliderDetail', controller.app.queryTopSliderDetail);
     /* 新增移动端滚动图片 */
     router.post('/api/app/addTopSlider', UserInterceptor, controller.app.addTopSlider);
-    /* 新增移动端滚动图片 */
+    /* 修改移动端滚动图片 */
+    router.post('/api/app/updateTopSlider', UserInterceptor, controller.app.updateTopSlider);
+    /* 删除移动端滚动图片 */
     router.post('/api/app/delTopSlider', UserInterceptor, controller.app.delTopSlider);
 
     // socket.io

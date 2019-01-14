@@ -29,6 +29,15 @@ class RoleService extends Service {
         return topSliderList;
     }
 
+    //查询详情
+    async queryDetail(params) {
+        const ctx = this.ctx;
+        const {id} = params;
+        const res = await ctx.model.AppTopSlider.findById(id);
+
+        return res;
+    }
+
     //增加app滚动图
     async add(fieldsValue) {
         const ctx = this.ctx;
@@ -42,10 +51,21 @@ class RoleService extends Service {
         };
     }
 
-    //删除app滚动图
-    async del(params) {
+    //修改app滚动图
+    async update(fieldsValue) {
         const ctx = this.ctx;
-        const res = await ctx.model.AppTopSlider.destroy({where: {id: params.id}});
+        const {id, ...restFieldsValue} = fieldsValue;
+        const res = await ctx.model.AppTopSlider.update(restFieldsValue, {
+            where: {id}
+        });
+
+        return {rowsAffected: res};
+    }
+
+    //删除app滚动图
+    async del(fieldsValue) {
+        const ctx = this.ctx;
+        const res = await ctx.model.AppTopSlider.destroy({where: {id: fieldsValue.id}});
 
         return {
             rowsAffected: res,
