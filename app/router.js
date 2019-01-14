@@ -76,6 +76,8 @@ module.exports = app => {
     router.get('/api/app/queryTopSliderList', controller.app.queryTopSliderList);
     /* 新增移动端滚动图片 */
     router.post('/api/app/addTopSlider', UserInterceptor, controller.app.addTopSlider);
+    /* 新增移动端滚动图片 */
+    router.post('/api/app/delTopSlider', UserInterceptor, controller.app.delTopSlider);
 
     // socket.io
     io.of('/').route('exchange', io.controller.nsp.exchange);

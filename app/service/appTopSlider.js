@@ -42,6 +42,16 @@ class RoleService extends Service {
         };
     }
 
+    //删除app滚动图
+    async del(params) {
+        const ctx = this.ctx;
+        const res = await ctx.model.AppTopSlider.destroy({where: {id: params.id}});
+
+        return {
+            rowsAffected: res,
+        };
+    }
+
 }
 
 module.exports = RoleService;
