@@ -4,15 +4,14 @@ const BaseController = require('../core/BaseController');
 const fs = require('fs');
 const path = require('path');
 const pump = require('mz-modules/pump');
+const images = require('images');
 
 class AttachmentController extends BaseController {
 
     async upload() {
         const ctx = this.ctx;
         const stream = await ctx.getFileStream();
-        console.log('stream == ', stream);
-        // console.log(' _readableState == ', stream._readableState.ReadableState);
-        // const readableState = stream._readableState.ReadableState;
+        // console.log('stream == ', stream);
         const filename = stream.filename;
         const result = await ctx.service.attachment.upload({
             fileName: filename,
@@ -23,6 +22,12 @@ class AttachmentController extends BaseController {
         });
 
         if (result.rowsAffected) {
+            let buffer = [];
+            stream.on('data', data => buffer.push(data));
+            stream.on('end', () => Buffer.concat(buffer));
+            const size = images(buffer).size();
+            console.log('buffer == ', buffer);
+            console.log('size == ', size);
             const target = path.join(this.config.baseDir, 'app/public', result.id + path.extname(filename));
             const writeStream = fs.createWriteStream(target);
             await pump(stream, writeStream);
