@@ -1,17 +1,31 @@
 'use strict';
 
 const BaseController = require('../core/BaseController');
-const fs = require('fs');
 const path = require('path');
-const pump = require('mz-modules/pump');
 const images = require('images');
+const Duplex = require('stream').Duplex;
 
 class AttachmentController extends BaseController {
+
+    streamToBuffer(stream) {
+        return new Promise((resolve, reject) => {
+            const buffers = [];
+            stream.on('error', reject);
+            stream.on('data', data => buffers.push(data));
+            stream.on('end', () => resolve(Buffer.concat(buffers)));
+        });
+    }
+
+    bufferToStream(buffer) {
+        let stream = new Duplex();
+        stream.push(buffer);
+        stream.push(null);
+        return stream;
+    }
 
     async upload() {
         const ctx = this.ctx;
         const stream = await ctx.getFileStream();
-        // console.log('stream == ', stream);
         const filename = stream.filename;
         const result = await ctx.service.attachment.upload({
             fileName: filename,
@@ -22,15 +36,10 @@ class AttachmentController extends BaseController {
         });
 
         if (result.rowsAffected) {
-            let buffer = [];
-            stream.on('data', data => buffer.push(data));
-            stream.on('end', () => Buffer.concat(buffer));
-            const size = images(buffer).size();
-            console.log('buffer == ', buffer);
-            console.log('size == ', size);
-            const target = path.join(this.config.baseDir, 'app/public', result.id + path.extname(filename));
-            const writeStream = fs.createWriteStream(target);
-            await pump(stream, writeStream);
+            let buffer = await this.streamToBuffer(stream);
+            const target = path.join(this.config.baseDir, 'app/public', result.id + path.extname(filename).toLowerCase());
+
+            images(buffer).save(target, {quality : 50});
 
             this.success({
                 id: result.id

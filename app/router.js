@@ -39,7 +39,7 @@ module.exports = app => {
     /* 新增产品 */
     router.post('/api/product/delete', UserInterceptor, controller.product.delete);
     /* 查询产品全部分类列表 */
-    router.get('/api/product/queryAllCategoryList', UserInterceptor, controller.product.queryAllCategoryList);
+    router.get('/api/product/queryAllCategoryList', controller.product.queryAllCategoryList);
     /* 查询产品分类列表 */
     router.get('/api/product/queryCategoryList', UserInterceptor, controller.product.queryCategoryList);
     /* 新增产品分类 */
