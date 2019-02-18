@@ -38,8 +38,7 @@ class AttachmentController extends BaseController {
         if (result.rowsAffected) {
             let buffer = await this.streamToBuffer(stream);
             const target = path.join(this.config.baseDir, 'app/public', result.id + path.extname(filename).toLowerCase());
-
-            images(buffer).save(target, {quality : 50});
+            images(buffer).save(target, {quality: 50});
 
             this.success({
                 id: result.id

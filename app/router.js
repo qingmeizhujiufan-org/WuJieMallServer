@@ -29,7 +29,7 @@ module.exports = app => {
     router.get('/api/role/queryList', UserInterceptor, controller.role.queryList);
 
     /* 查询产品列表 */
-    router.get('/api/product/queryList', UserInterceptor, UserInterceptor, controller.product.queryList);
+    router.get('/api/product/queryList', controller.product.queryList);
     /* 查询产品详情 */
     router.get('/api/product/queryDetail', UserInterceptor, controller.product.queryDetail);
     /* 新增产品 */
@@ -62,12 +62,10 @@ module.exports = app => {
     /* 删除商铺信息 */
     router.post('/api/shop/delete', UserInterceptor, controller.shop.delete);
 
-    /* 获取获取 */
-    router.get('/api/attachment/upload', UserInterceptor, controller.attachment.upload);
     /* 附件上传 */
-    router.post('/api/attachment/upload', UserInterceptor, controller.attachment.upload);
+    router.post('/api/attachment/upload', controller.attachment.upload);
     /* 根据id查找附件 */
-    router.get('/api/attachment/queryListByIds', UserInterceptor, controller.attachment.queryListByIds);
+    router.get('/api/attachment/queryListByIds', controller.attachment.queryListByIds);
 
     /*
     * APP接口

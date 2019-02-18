@@ -10,8 +10,10 @@ class ProductService extends Service {
         const Shop = ctx.model.Shop;
         const ProductCategory = ctx.model.ProductCategory;
         const Product = ctx.model.Product;
+        const Attachment = ctx.model.Attachment;
         Product.belongsTo(Shop, {foreignKey: 'shopId'});
         Product.belongsTo(ProductCategory, {foreignKey: 'productCategoryId'});
+        Product.belongsTo(Attachment, {foreignKey: 'thumbnail'});
         const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
         const whereCondition = {
             '$or': {
@@ -37,6 +39,7 @@ class ProductService extends Service {
                     'id',
                     'shopId',
                     [Sequelize.col('Shop.shop_name'), 'shopName'],
+                    [Sequelize.col('Shop.shop_address'), 'shopAddress'],
                     'productCategoryId',
                     [Sequelize.col('ProductCategory.product_category_name'), 'productCategoryName'],
                     'productCode',
@@ -69,6 +72,9 @@ class ProductService extends Service {
                 }, {
                     model: ProductCategory,
                     attributes: []
+                }, {
+                    model: Attachment,
+                    attributes: ['id', 'fileType']
                 }],
                 order: [
                     ['created_at', 'DESC']
@@ -82,7 +88,8 @@ class ProductService extends Service {
             content: dataList[1],
             pageNumber,
             pageSize,
-            totalElements: dataList[0].length
+            totalElements: dataList[0].length,
+            totalPages: Math.ceil(dataList[0].length / pageSize)
         };
     }
 

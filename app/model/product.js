@@ -118,6 +118,11 @@ module.exports = app => {
             type: STRING(255),
             field: 'product_net_weight'
         },
+        /* 产品缩略图 */
+        thumbnail: {
+            type: STRING(255),
+            field: 'thumbnail'
+        },
         /* 产品示意图 */
         headerPic: {
             type: STRING(500),
