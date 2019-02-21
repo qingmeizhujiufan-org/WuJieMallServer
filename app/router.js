@@ -36,7 +36,7 @@ module.exports = app => {
     router.post('/api/product/add', UserInterceptor, controller.product.add);
     /* 更新产品信息 */
     router.post('/api/product/update', UserInterceptor, controller.product.update);
-    /* 新增产品 */
+    /* 删除产品 */
     router.post('/api/product/delete', UserInterceptor, controller.product.delete);
     /* 查询产品全部分类列表 */
     router.get('/api/product/queryAllCategoryList', controller.product.queryAllCategoryList);
@@ -80,6 +80,15 @@ module.exports = app => {
     router.post('/api/app/updateTopSlider', UserInterceptor, controller.app.updateTopSlider);
     /* 删除移动端滚动图片 */
     router.post('/api/app/delTopSlider', UserInterceptor, controller.app.delTopSlider);
+
+    /* 查询主题旅游列表 */
+    router.get('/api/travel/queryList', controller.travel.queryList);
+    /* 查询旅游详情 */
+    router.get('/api/travel/queryDetail', controller.travel.queryDetail);
+    /* 新增主题旅游 */
+    router.post('/api/travel/add', UserInterceptor, controller.travel.add);
+    /* 更新主题旅游信息 */
+    router.post('/api/travel/update', UserInterceptor, controller.travel.update);
 
     // socket.io
     io.of('/').route('exchange', io.controller.nsp.exchange);
