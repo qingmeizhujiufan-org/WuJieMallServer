@@ -65,22 +65,6 @@ class TravelService extends Service {
         };
     }
 
-    async findProductByShopId(params) {
-        const {id} = params;
-        const res = await this.ctx.model.Product.findAll({
-            where: {shopId: id}
-        });
-        return res
-    }
-
-    async findProductByCategoryId(params) {
-        const {id} = params;
-        const res = await this.ctx.model.Product.findAll({
-            where: {productCategoryId: id}
-        });
-        return res
-    }
-
     async queryDetail(params) {
         const ctx = this.ctx;
         const {id} = params;

@@ -27,6 +27,11 @@ module.exports = app => {
             type: STRING(255),
             field: 'travel_theme'
         },
+        /* 咨询电话 */
+        telephone: {
+            type: STRING(255),
+            field: 'telephone'
+        },
         /* 旅游时间 */
         travelLastTime: {
             type: STRING(255),
