@@ -22,6 +22,11 @@ module.exports = app => {
             type: STRING(255),
             field: 'header_pic'
         },
+        /* 旅游详情图 */
+        detailPic: {
+            type: STRING(255),
+            field: 'detail_pic'
+        },
         /* 旅游主题 */
         travelTheme: {
             type: STRING(255),
