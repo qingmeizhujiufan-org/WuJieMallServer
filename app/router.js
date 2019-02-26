@@ -30,8 +30,12 @@ module.exports = app => {
 
     /* 查询产品列表 */
     router.get('/api/product/queryList', controller.product.queryList);
+
+    /* 查询商铺推荐产品列表 */
+    router.get('/api/product/queryListByShopId', controller.product.queryListByShopId);
+
     /* 查询产品详情 */
-    router.get('/api/product/queryDetail', UserInterceptor, controller.product.queryDetail);
+    router.get('/api/product/queryDetail', controller.product.queryDetail);
     /* 新增产品 */
     router.post('/api/product/add', UserInterceptor, controller.product.add);
     /* 更新产品信息 */
@@ -51,10 +55,12 @@ module.exports = app => {
     /* 删除产品分类信息 */
     router.post('/api/product/categoryDelete', UserInterceptor, controller.product.categoryDelete);
 
+
+
     /* 查询商铺列表 */
     router.get('/api/shop/queryList', UserInterceptor, controller.shop.queryList);
     /* 查询商铺详情 */
-    router.get('/api/shop/queryDetail', UserInterceptor, controller.shop.queryDetail);
+    router.get('/api/shop/queryDetail', controller.shop.queryDetail);
     /* 新增商铺 */
     router.post('/api/shop/add', UserInterceptor, controller.shop.add);
     /* 更新商铺信息 */

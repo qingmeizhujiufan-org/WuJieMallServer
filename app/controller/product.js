@@ -5,7 +5,7 @@ const BaseController = require('../core/BaseController');
 class HomeController extends BaseController {
   async queryList() {
     const ctx = this.ctx;
-    const params = ctx.request.body;
+    const params = ctx.query;
     console.log('params ===', params)
     params.pageNumber = ctx.helper.parseInt(params.pageNumber);
     params.pageSize = ctx.helper.parseInt(params.pageSize);
@@ -23,7 +23,7 @@ class HomeController extends BaseController {
 
   async queryListByShopId() {
     const ctx = this.ctx;
-    const params = ctx.request.body;
+    const params = ctx.query;
     console.log('params ===', params);
     params.pageNumber = ctx.helper.parseInt(params.pageNumber);
     params.pageSize = ctx.helper.parseInt(params.pageSize);
