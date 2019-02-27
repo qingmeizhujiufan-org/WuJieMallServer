@@ -1,6 +1,7 @@
 'use strict';
 
 const BaseController = require('../core/BaseController');
+const uuidv1 = require('uuid/v1');
 
 class TravelController extends BaseController {
     async queryList() {
@@ -42,26 +43,18 @@ class TravelController extends BaseController {
     async add() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
+        fieldsValue.id = uuidv1();
         const result = await ctx.service.travel.add(fieldsValue);
+        const travelDay = fieldsValue.travelDay;
+        travelDay.map(item => {
+            item.travelId = fieldsValue.id;
+        });
+        const result_travel_day = await ctx.service.travel.addTravelDay(travelDay);
 
         if (result.rowsAffected) {
-            try {
-                /* 广播新增产品消息给管理员及时审核 */
-                const {app} = this;
-                const nsp = app.io.of('/');
-
-                try {
-                    nsp.emit('review_product', '有新产品等待审核，请及时处理');
-                } catch (error) {
-                    app.logger.error(error);
-                }
-            } catch (e) {
-
-            }
-
             this.success({
                 backData: result,
-                backMsg: "新增产品成功！"
+                backMsg: "新增主题旅游成功！"
             });
         } else {
             this.fail({

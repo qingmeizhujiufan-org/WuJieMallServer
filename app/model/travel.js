@@ -10,7 +10,7 @@ module.exports = app => {
             type: UUIDV1,
             primaryKey: true,
             field: 'id',
-            defaultValue: UUIDV1
+            defaultValue: UUIDV1,
         },
         /* 旅游缩略图 */
         thumbnail: {

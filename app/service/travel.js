@@ -67,8 +67,19 @@ class TravelService extends Service {
 
     async queryDetail(params) {
         const ctx = this.ctx;
+        const Travel = ctx.model.Travel;
+        const TravelDay = ctx.model.TravelDay;
         const {id} = params;
-        const res = await ctx.model.Travel.findById(id);
+        const res = await ctx.model.Travel.findOne({
+            where: {
+                id
+            },
+            include: [{
+                associate: Travel.hasMany(TravelDay, {foreignKey: 'travelId', sourceKey: 'id'}),
+                model: TravelDay,
+
+            }]
+        });
 
         return res;
     }
@@ -100,6 +111,15 @@ class TravelService extends Service {
             where: {id: params.id}
         });
         return res;
+    }
+
+    async addTravelDay(fieldsValueList) {
+        const ctx = this.ctx;
+        const res = await ctx.model.TravelDay.bulkCreate(fieldsValueList);
+
+        return {
+            rowsAffected: res,
+        };
     }
 }
 
