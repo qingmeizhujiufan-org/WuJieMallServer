@@ -57,7 +57,7 @@ module.exports = app => {
             type: DATE,
             field: 'travel_begin_time',
             get() {
-                return this.getDataValue('travelBeginTime') && Moment(this.getDataValue('travelBeginTime')).format('YYYY-MM-DD HH:mm:ss');
+                return this.getDataValue('travelBeginTime') && Moment(this.getDataValue('travelBeginTime')).format('YYYY-MM-DD');
             }
         },
         /* 旅游结束时间 */
@@ -65,7 +65,7 @@ module.exports = app => {
             type: DATE,
             field: 'travel_end_time',
             get() {
-                return this.getDataValue('travelEndTime') && Moment(this.getDataValue('travelEndTime')).format('YYYY-MM-DD HH:mm:ss');
+                return this.getDataValue('travelEndTime') && Moment(this.getDataValue('travelEndTime')).format('YYYY-MM-DD');
             }
         },
         /* 旅游价格 */

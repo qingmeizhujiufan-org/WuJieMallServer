@@ -66,7 +66,9 @@ class TravelController extends BaseController {
     async update() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
+        const travelDay = fieldsValue.travelDay;
         const result = await ctx.service.travel.update(fieldsValue);
+        const result_travel_day = await ctx.service.travel.updateTravelDay(travelDay);
 
         if (result.rowsAffected && result.rowsAffected[0] > 0) {
             this.success({

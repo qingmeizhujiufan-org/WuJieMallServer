@@ -121,6 +121,22 @@ class TravelService extends Service {
             rowsAffected: res,
         };
     }
+
+    async updateTravelDay(fieldsValueList) {
+        const ctx = this.ctx;
+        let updateList = [];
+        for (let i = 0; i < fieldsValueList.length; i++) {
+            let item = fieldsValueList[i];
+            updateList.push(
+                ctx.model.TravelDay.update(item, {
+                    where: {id: item.id}
+                })
+            );
+        }
+        const res = await Promise.all(updateList);
+
+        return {rowsAffected: res};
+    }
 }
 
 module.exports = TravelService;
