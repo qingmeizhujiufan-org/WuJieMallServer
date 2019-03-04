@@ -18,12 +18,11 @@ class AddressService extends Service {
 
     async add(row) {
         const ctx = this.ctx;
-        const res = await ctx.model.Address.create({
-            where: {shopName: row.shopName},
-            defaults: {...row}
-        });
+        const res = await ctx.model.Address.create(row);
 
-        return res
+        return {
+            rowsAffected: res,
+        };
     }
 
     async update(params) {

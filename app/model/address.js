@@ -17,10 +17,15 @@ module.exports = app => {
             type: STRING(255),
             field: 'recriver'
         },
-        //收件地区
+        //收获地区
         region: {
             type: STRING(255),
             field: 'region'
+        },
+        //收获地编号
+        regionCode: {
+            type: STRING(255),
+            field: 'region_code'
         },
         //详细地址
         subArea: {

@@ -96,10 +96,10 @@ module.exports = app => {
   /* 更新主题旅游信息 */
   router.post('/api/travel/update', UserInterceptor, controller.travel.update);
 
-  /*
-  收获地址查询
-   */
+  /* 收获地址查询*/
   router.get('/api/address/queryList', controller.address.queryList);
+  /*收获地址查询*/
+  router.post('/api/address/add', controller.address.add);
 
   // socket.io
   io.of('/').route('exchange', io.controller.nsp.exchange);

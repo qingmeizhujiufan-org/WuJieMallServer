@@ -20,9 +20,10 @@ class AddressController extends BaseController {
   async add() {
     const ctx = this.ctx;
     const fieldsValue = ctx.request.body;
+    fieldsValue.isDefault = fieldsValue.isDefault ? 1 : 0;
     const result = await ctx.service.address.add(fieldsValue);
 
-    if (result[1]) {
+    if (result.rowsAffected) {
       this.success({
         backData: result,
         backMsg: "新增地址成功！"
