@@ -17,10 +17,26 @@ class AddressController extends BaseController {
     }
   }
 
+  async queryDetail() {
+    const ctx = this.ctx;
+    const params = ctx.query;
+    const result = await ctx.service.address.queryDetail(params);
+
+    if (result) {
+      this.success({
+        backData: result,
+        backMsg: '查询成功！'
+      });
+    } else {
+      this.fail({ backMsg: "查询失败！" });
+    }
+  }
+
   async add() {
     const ctx = this.ctx;
     const fieldsValue = ctx.request.body;
     fieldsValue.isDefault = fieldsValue.isDefault ? 1 : 0;
+    
     const result = await ctx.service.address.add(fieldsValue);
 
     if (result.rowsAffected) {
