@@ -3,13 +3,13 @@
 const BaseController = require('../core/BaseController');
 const uuidv1 = require('uuid/v1');
 
-class TravelController extends BaseController {
+class HotelController extends BaseController {
     async queryList() {
         const ctx = this.ctx;
         const params = ctx.query;
         params.pageNumber = ctx.helper.parseInt(params.pageNumber);
         params.pageSize = ctx.helper.parseInt(params.pageSize);
-        const result = await ctx.service.travel.queryList(params);
+        const result = await ctx.service.hotel.queryList(params);
         if (result) {
             this.success({
                 backData: result,
@@ -138,4 +138,4 @@ class TravelController extends BaseController {
     }
 }
 
-module.exports = TravelController;
+module.exports = HotelController;

@@ -4,114 +4,118 @@ const Moment = require('moment');
 
 module.exports = app => {
     const {UUIDV1, INTEGER, STRING, DECIMAL, DATE, TEXT} = app.Sequelize;
-    const Travel = app.model.define('Travel', {
-        /* 旅游ID */
+    const Hotel = app.model.define('Hotel', {
+        /* 民宿ID */
         id: {
             type: UUIDV1,
             primaryKey: true,
             field: 'id',
             defaultValue: UUIDV1,
         },
-        /* 旅游缩略图 */
+        /* 民宿缩略图 */
         thumbnail: {
             type: STRING(255),
             field: 'thumbnail'
         },
-        /* 旅游图 */
+        /* 民宿图 */
         headerPic: {
             type: STRING(255),
             field: 'header_pic'
         },
-        /* 旅游详情图 */
+        /* 民宿详情图 */
         detailPic: {
             type: STRING(255),
             field: 'detail_pic'
         },
-        /* 旅游主题 */
-        travelTheme: {
+        /* 民宿名称 */
+        hotelName: {
             type: STRING(255),
-            field: 'travel_theme'
+            field: 'hotel_name'
         },
         /* 咨询电话 */
         telephone: {
             type: STRING(255),
             field: 'telephone'
         },
-        /* 旅游时间 */
-        travelLastTime: {
+        /* 地址 */
+        hotelAddress: {
             type: STRING(255),
-            field: 'travel_last_time'
+            field: 'hotel_address'
         },
-        /* 包含元素 */
-        travelHas: {
+        /* 民宿类型 */
+        hotelType: {
             type: STRING(255),
-            field: 'travel_has'
+            field: 'hotel_type'
         },
-        /* 限行人数 */
-        travelLimiteNumber: {
+        /* 床型 */
+        bedModel: {
             type: DECIMAL,
-            field: 'travel_limite_number'
+            field: 'bed_model'
         },
-        /* 旅游开始时间 */
-        travelBeginTime: {
+        /* 房间大小 */
+        roomSize: {
             type: DATE,
-            field: 'travel_begin_time',
-            get() {
-                return this.getDataValue('travelBeginTime') && Moment(this.getDataValue('travelBeginTime')).format('YYYY-MM-DD');
-            }
+            field: 'room_size'
         },
-        /* 旅游结束时间 */
-        travelEndTime: {
+        /* 可入住人数 */
+        stayPersonNum: {
             type: DATE,
-            field: 'travel_end_time',
-            get() {
-                return this.getDataValue('travelEndTime') && Moment(this.getDataValue('travelEndTime')).format('YYYY-MM-DD');
-            }
+            field: 'stay_person_num'
         },
-        /* 旅游成人价格 */
-        manPrice: {
+        /* 网络 */
+        internet: {
             type: DECIMAL,
-            field: 'man_price'
+            field: 'internet'
         },
-        /* 旅游未成人价格 */
-        childPrice: {
+        /* 窗景 */
+        windowScenery: {
             type: DECIMAL,
-            field: 'child_price'
+            field: 'window_scenery'
         },
-        /* 出发地 */
-        travelFrom: {
+        /* 窗户 */
+        window: {
             type: STRING(255),
-            field: 'travel_from'
+            field: 'window'
         },
-        /* 目的地 */
-        travelTo: {
+        /* 卫浴 */
+        bathroom: {
             type: STRING(255),
-            field: 'travel_to'
+            field: 'bathroom'
         },
-        /* 旅游用车 */
-        travelUsecar: {
+        /* 早餐 */
+        breakfast: {
             type: STRING(255),
-            field: 'travel_usecar'
+            field: 'breakfast'
         },
-        /* 线路游玩 */
-        linePlay: {
+        /* 饮品 */
+        drink: {
             type: STRING(255),
-            field: 'line_play'
+            field: 'drink'
         },
-        /* 旅游详情介绍 */
-        travelDesc: {
+        /* 设施 */
+        facilities: {
             type: TEXT,
-            field: 'travel_desc'
+            field: 'facilities'
         },
-        /* 费用说明 */
-        expenseDesc: {
-          type: TEXT,
-          field: 'expense_desc'
-        },
-        /* 路线须知 */
-        lineInfo: {
+        /* 支付类型 */
+        payType: {
             type: TEXT,
-            field: 'line_info'
+            field: 'pay_type'
+        },
+        /* 是否可以取消 */
+        canCancel: {
+            type: STRING(255),
+            field: 'can_cancel'
+        },
+        /* 是否可以加床 */
+        canAddbed: {
+            type: STRING(255),
+            field: 'can_addbed'
+        },
+        /* 内宾 */
+        innerNeed: {
+            type: STRING(255),
+            field: 'inner_need'
         },
         /* 修改人 */
         updateBy: {
@@ -137,8 +141,8 @@ module.exports = app => {
         }
     }, {
         freezeTableName: true,
-        tableName: 'travel_info',
+        tableName: 'hotel_info',
         timestamps: true,
     });
-    return Travel;
+    return Hotel;
 };

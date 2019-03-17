@@ -2,55 +2,56 @@
 
 const Service = require('egg').Service;
 
-class TravelService extends Service {
+class HotelService extends Service {
 
     async queryList(params) {
         const ctx = this.ctx;
         const Sequelize = this.app.Sequelize;
-        const Travel = ctx.model.Travel;
-        const TravelSign = ctx.model.TravelSign;
+        const Hotel = ctx.model.Hotel;
         const Attachment = ctx.model.Attachment;
-        Travel.hasMany(TravelSign, {foreignKey: 'travelId'});
-        Travel.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        Hotel.belongsTo(Attachment, {foreignKey: 'thumbnail'});
         const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
         const whereCondition = {
             '$or': {
-                travelTheme: {
+                hotelName: {
                     '$like': '%' + keyWords + '%'
                 },
             }
         };
 
         const dataList = await Promise.all([
-            Travel.findAll({
+            Hotel.findAll({
                 where: whereCondition,
             }),
-            Travel.findAll({
+            Hotel.findAll({
                 where: whereCondition,
                 attributes: [
                     'id',
                     'thumbnail',
-                    'travelTheme',
-                    'travelLastTime',
-                    'travelHas',
-                    'travelLimiteNumber',
-                    'travelBeginTime',
-                    'travelEndTime',
-                    'manPrice',
-                    'travelFrom',
-                    'travelTo',
-                    'travelUsecar',
-                    'linePlay',
-                    'travelDesc',
+                    'hotelName',
+                    'telephone',
+                    'hotelAddress',
+                    'hotelType',
+                    'bedModel',
+                    'roomSize',
+                    'stayPersonNum',
+                    'internet',
+                    'windowScenery',
+                    'window',
+                    'bathroom',
+                    'breakfast',
+                    'drink',
+                    'facilities',
+                    'payType',
+                    'canCancel',
+                    'canAddbed',
+                    'innerNeed',
                     'updateBy',
                     'createBy',
                     'updated_at',
                     'created_at',
                 ],
                 include: [{
-                    model: TravelSign,
-                    attributes: ['travelId']
-                }, {
                     model: Attachment,
                     attributes: ['id', 'fileType']
                 }],
@@ -81,7 +82,6 @@ class TravelService extends Service {
             attributes: [
                 'id',
                 'thumbnail',
-                'travelTheme',
                 'travelLastTime',
                 'travelHas',
                 'travelLimiteNumber',
@@ -228,4 +228,4 @@ class TravelService extends Service {
     }
 }
 
-module.exports = TravelService;
+module.exports = HotelService;
