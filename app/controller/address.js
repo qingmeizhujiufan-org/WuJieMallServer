@@ -36,7 +36,7 @@ class AddressController extends BaseController {
     const ctx = this.ctx;
     const fieldsValue = ctx.request.body;
     fieldsValue.isDefault = fieldsValue.isDefault ? 1 : 0;
-    
+
     const result = await ctx.service.address.add(fieldsValue);
 
     if (result.rowsAffected) {

@@ -4,7 +4,7 @@ const Moment = require('moment');
 
 module.exports = app => {
     const {UUIDV1, INTEGER, STRING, DECIMAL, DATE, TEXT} = app.Sequelize;
-    const Hotel = app.model.define('Hotel', {
+    const Room = app.model.define('Room', {
         /* 民宿ID */
         id: {
             type: UUIDV1,
@@ -12,61 +12,21 @@ module.exports = app => {
             field: 'id',
             defaultValue: UUIDV1,
         },
-        /* 民宿缩略图 */
-        thumbnail: {
-            type: STRING(255),
-            field: 'thumbnail'
-        },
-        /* 民宿图 */
-        headerPic: {
-            type: STRING(255),
-            field: 'header_pic'
-        },
-        /* 民宿详情图 */
+        /* 民宿房间详情图 */
         detailPic: {
             type: STRING(255),
             field: 'detail_pic'
         },
-        /* 民宿名称 */
-        hotelName: {
+        /* 民宿id */
+        hotelId: {
             type: STRING(255),
-            field: 'hotel_name'
-        },
-        /* 咨询电话 */
-        telephone: {
-            type: STRING(32),
-            field: 'telephone'
-        },
-        /* 固定电话 */
-        hotelPhone: {
-            type: STRING(32),
-            field: 'hotel_phone'
-        },
-        /* 地址 */
-        hotelAddress: {
-            type: STRING(255),
-            field: 'hotel_address'
+            field: 'hotel_id'
         },
         /* 民宿类型 */
-        hotelType: {
+        roomType: {
             type: INTEGER,
-            field: 'hotel_type'
+            field: 'room_type'
         },
-        /* 民宿状态 */
-        hotelStatus: {
-            type: INTEGER,
-            field: 'hotel_status'
-        },
-        // 备注
-        mark: {
-            type: STRING(255),
-            field: 'hotel_mark'
-        },
-        /* 民宿状态明文 */
-        // hotelTypeText: {
-        //     type: STRING(255),
-        //     field: 'hotel_status_text'
-        // },
         /* 床型 */
         bedModel: {
             type: DECIMAL,
@@ -161,8 +121,8 @@ module.exports = app => {
         }
     }, {
         freezeTableName: true,
-        tableName: 'hotel_info',
+        tableName: 'room_info',
         timestamps: true,
     });
-    return Hotel;
+    return Room;
 };
