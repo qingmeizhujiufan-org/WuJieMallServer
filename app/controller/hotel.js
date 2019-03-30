@@ -118,7 +118,7 @@ class HotelController extends BaseController {
     /* 获取最新三条主题旅游信息 */
     async queryListTop3() {
         const ctx = this.ctx;
-        const result = await ctx.service.travel.queryListTop3();
+        const result = await ctx.service.hotel.queryListTop3();
         if (result) {
             this.success({
                 backData: result,
