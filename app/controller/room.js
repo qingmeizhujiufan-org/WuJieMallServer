@@ -44,17 +44,13 @@ class RoomController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         fieldsValue.id = uuidv1();
+        fieldsValue.roomRemian = fieldsValue.roomNumber;
         const result = await ctx.service.room.add(fieldsValue);
-        const travelDay = fieldsValue.travelDay;
-        travelDay.map(item => {
-            item.travelId = fieldsValue.id;
-        });
-        const result_travel_day = await ctx.service.room.addTravelDay(travelDay);
 
         if (result.rowsAffected) {
             this.success({
                 backData: result,
-                backMsg: "新增主题旅游成功！"
+                backMsg: "新增民宿房间成功！"
             });
         } else {
             this.fail({
@@ -66,18 +62,16 @@ class RoomController extends BaseController {
     async update() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
-        const travelDay = fieldsValue.travelDay;
-        const result = await ctx.service.travel.update(fieldsValue);
-        const result_travel_day = await ctx.service.travel.updateTravelDay(travelDay);
-
-        if (result.rowsAffected && result.rowsAffected[0] > 0) {
+        const result = await ctx.service.room.update(fieldsValue);
+      
+        if (result.rowsAffected) {
             this.success({
                 backData: result,
-                backMsg: "修改主题旅游信息成功！"
+                backMsg: "修改民宿房间信息成功！"
             });
         } else {
             this.fail({
-                backMsg: "修改主题旅游信息失败！"
+                backMsg: "修改民宿房间信息失败！"
             });
         }
     }
@@ -85,12 +79,11 @@ class RoomController extends BaseController {
     async delete() {
         const ctx = this.ctx;
         const params = ctx.request.body;
-        const result = await ctx.service.travel.delete(params);
-        const result_travel_day = await  ctx.service.travel.deleteTravelDay(params);
-
+        const result = await ctx.service.room.delete(params);
+       
         if (result) {
             this.success({
-                backMsg: "删除主题旅游信息成功！"
+                backMsg: "删除民宿房间信息成功！"
             });
         } else {
             this.fail({
@@ -100,7 +93,7 @@ class RoomController extends BaseController {
     }
 
 
-    /* 获取最新三条主题旅游信息 */
+    /* 获取最新三条民宿房间信息 */
     async queryListTop3() {
         const ctx = this.ctx;
         const result = await ctx.service.travel.queryListTop3();

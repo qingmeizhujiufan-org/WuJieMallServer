@@ -100,16 +100,16 @@ module.exports = app => {
     router.post('/api/hotel/delete', controller.hotel.delete);
 
 
-    // /* 查询名宿房间列表 */
-    // router.post('/api/room/queryList', controller.room.queryList);
-    //   /* 查询名宿房间详情 */
-    // router.post('/api/room/detail', controller.room.detail);
-    // /* 新增房间*/
-    // router.post('/api/room/add', controller.room.add);
-    // /* 更新名宿房间 */
-    // router.get('/api/room/update', controller.room.update);
-    // /* 删除名宿房间 */
-    // router.post('/api/room/delete', controller.room.delete);
+    /* 查询名宿房间列表 */
+    router.get('/api/room/queryList', controller.room.queryList);
+      /* 查询名宿房间详情 */
+    router.get('/api/room/queryDetail', controller.room.queryDetail);
+    /* 新增房间*/
+    router.post('/api/room/add', controller.room.add);
+    /* 更新名宿房间 */
+    router.post('/api/room/update', controller.room.update);
+    /* 删除名宿房间 */
+    router.post('/api/room/delete', controller.room.delete);
 
 
     /* 查询主题旅游列表 */

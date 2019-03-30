@@ -12,6 +12,10 @@ module.exports = app => {
             field: 'id',
             defaultValue: UUIDV1,
         },
+        thumbnail: {
+            type: STRING(255),
+            field: 'thumbnail'
+        },
         /* 民宿房间详情图 */
         detailPic: {
             type: STRING(255),
@@ -22,10 +26,35 @@ module.exports = app => {
             type: STRING(255),
             field: 'hotel_id'
         },
-        /* 民宿类型 */
+         /* 房间名称 */
+        roomName: {
+            type: STRING(255),
+            field: 'room_name'
+        },
+        /* 房间类型 */
         roomType: {
-            type: INTEGER,
+            type: STRING(255),
             field: 'room_type'
+        },
+          /* 房间价格 */
+        roomPrice: {
+            type: DECIMAL,
+            field: 'room_price'
+        },
+         /* 房间数量 */
+        roomNumber: {
+            type: INTEGER,
+            field: 'room_number'
+        },
+         /* 房间剩余数量 */
+        roomRemain: {
+            type: INTEGER,
+            field: 'room_remain'
+        },
+         /* 房间状态 */
+        roomStatus: {
+            type: INTEGER,
+            field: 'room_status'
         },
         /* 床型 */
         bedModel: {
@@ -34,22 +63,22 @@ module.exports = app => {
         },
         /* 房间大小 */
         roomSize: {
-            type: DATE,
+            type: STRING(255),
             field: 'room_size'
         },
         /* 可入住人数 */
         stayPersonNum: {
-            type: DATE,
+            type: INTEGER,
             field: 'stay_person_num'
         },
         /* 网络 */
         internet: {
-            type: DECIMAL,
+            type: STRING(255),
             field: 'internet'
         },
         /* 窗景 */
         windowScenery: {
-            type: DECIMAL,
+            type: STRING(255),
             field: 'window_scenery'
         },
         /* 窗户 */
@@ -84,18 +113,23 @@ module.exports = app => {
         },
         /* 是否可以取消 */
         canCancel: {
-            type: STRING(255),
+            type: INTEGER,
             field: 'can_cancel'
         },
         /* 是否可以加床 */
         canAddbed: {
-            type: STRING(255),
+            type: INTEGER,
             field: 'can_addbed'
         },
         /* 内宾 */
         innerNeed: {
             type: STRING(255),
             field: 'inner_need'
+        },
+        /* 优惠政策 */
+        sale: {
+            type: STRING(255),
+            field: 'sale'
         },
         /* 修改人 */
         updateBy: {
