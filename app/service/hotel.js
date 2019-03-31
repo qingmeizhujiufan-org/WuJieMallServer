@@ -38,6 +38,7 @@ class HotelService extends Service {
                     'hotelTypeText',
                     'hotelStatus',
                     'hotelStatusText',
+                    'initialCharge',
                     'updateBy',
                     'createBy',
                     'updated_at',

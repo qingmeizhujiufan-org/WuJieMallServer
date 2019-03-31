@@ -72,80 +72,10 @@ module.exports = app => {
       type: STRING(255),
       field: 'hotel_mark'
     },
-    /* 民宿状态明文 */
-    // hotelTypeText: {
-    //     type: STRING(255),
-    //     field: 'hotel_status_text'
-    // },
-    /* 床型 */
-    bedModel: {
+    /* 起步价 */
+      initialCharge: {
       type: DECIMAL,
-      field: 'bed_model'
-    },
-    /* 房间大小 */
-    roomSize: {
-      type: DATE,
-      field: 'room_size'
-    },
-    /* 可入住人数 */
-    stayPersonNum: {
-      type: DATE,
-      field: 'stay_person_num'
-    },
-    /* 网络 */
-    internet: {
-      type: DECIMAL,
-      field: 'internet'
-    },
-    /* 窗景 */
-    windowScenery: {
-      type: DECIMAL,
-      field: 'window_scenery'
-    },
-    /* 窗户 */
-    window: {
-      type: STRING(255),
-      field: 'window'
-    },
-    /* 卫浴 */
-    bathroom: {
-      type: STRING(255),
-      field: 'bathroom'
-    },
-    /* 早餐 */
-    breakfast: {
-      type: STRING(255),
-      field: 'breakfast'
-    },
-    /* 饮品 */
-    drink: {
-      type: STRING(255),
-      field: 'drink'
-    },
-    /* 设施 */
-    facilities: {
-      type: TEXT,
-      field: 'facilities'
-    },
-    /* 支付类型 */
-    payType: {
-      type: TEXT,
-      field: 'pay_type'
-    },
-    /* 是否可以取消 */
-    canCancel: {
-      type: STRING(255),
-      field: 'can_cancel'
-    },
-    /* 是否可以加床 */
-    canAddbed: {
-      type: STRING(255),
-      field: 'can_addbed'
-    },
-    /* 内宾 */
-    innerNeed: {
-      type: STRING(255),
-      field: 'inner_need'
+      field: 'initial_charge'
     },
     /* 修改人 */
     updateBy: {

@@ -31,25 +31,10 @@ module.exports = app => {
             type: STRING(255),
             field: 'room_name'
         },
-        /* 房间类型 */
-        roomType: {
-            type: STRING(255),
-            field: 'room_type'
-        },
           /* 房间价格 */
         roomPrice: {
             type: DECIMAL,
             field: 'room_price'
-        },
-         /* 房间数量 */
-        roomNumber: {
-            type: INTEGER,
-            field: 'room_number'
-        },
-         /* 房间剩余数量 */
-        roomRemain: {
-            type: INTEGER,
-            field: 'room_remain'
         },
          /* 房间状态 */
         roomStatus: {
@@ -113,12 +98,12 @@ module.exports = app => {
         },
         /* 是否可以取消 */
         canCancel: {
-            type: INTEGER,
+            type: STRING(32),
             field: 'can_cancel'
         },
         /* 是否可以加床 */
         canAddbed: {
-            type: INTEGER,
+            type: STRING(32),
             field: 'can_addbed'
         },
         /* 内宾 */
@@ -155,7 +140,7 @@ module.exports = app => {
         }
     }, {
         freezeTableName: true,
-        tableName: 'room_info',
+        tableName: 'hotel_room_info',
         timestamps: true,
     });
     return Room;
