@@ -50,6 +50,7 @@ class RoomService extends Service {
                     'canAddbed',
                     'innerNeed',
                     'sale',
+                    'state',
                     'updateBy',
                     'createBy',
                     'updated_at',
@@ -76,6 +77,129 @@ class RoomService extends Service {
         };
     }
 
+    async queryAdminList(params) {
+        const ctx = this.ctx;
+        const Sequelize = this.app.Sequelize;
+        const Room = ctx.model.HotelRoom;
+        const Attachment = ctx.model.Attachment;
+        Room.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        const {pageNumber = 1, pageSize = 10, keyWords = '', hotelId} = params;
+        const whereCondition = {
+            '$or': {
+                roomName: {
+                    '$like': '%' + keyWords + '%'
+                },
+            }
+        };
+
+        const dataList = await Promise.all([
+            Room.findAll({
+                where: whereCondition,
+            }),
+            Room.findAll({
+                where: whereCondition,
+                attributes: [
+                    'id',
+                    'detailPic',
+                    'hotelId',
+                    'roomName',
+                    'roomPrice',
+                    'roomStatus',
+                    'bedModel',
+                    'roomSize',
+                    'stayPersonNum',
+                    'internet',
+                    'windowScenery',
+                    'window',
+                    'bathroom',
+                    'breakfast',
+                    'drink',
+                    'facilities',
+                    'payType',
+                    'canCancel',
+                    'canAddbed',
+                    'innerNeed',
+                    'sale',
+                    'state',
+                    'updateBy',
+                    'createBy',
+                    'updated_at',
+                    'created_at'
+                ],
+                include: [{
+                    model: Attachment,
+                    attributes: ['id', 'fileType']
+                }],
+                order: [
+                    ['created_at', 'DESC']
+                ],
+                limit: pageSize,
+                offset: (pageNumber - 1) * pageSize,
+            })
+        ]);
+
+        return {
+            content: dataList[1],
+            pageNumber,
+            pageSize,
+            totalElements: dataList[0].length,
+            totalPages: Math.ceil(dataList[0].length / pageSize)
+        };
+    }
+
+    async queryMobileList(params) {
+        const ctx = this.ctx;
+        const Sequelize = this.app.Sequelize;
+        const Room = ctx.model.HotelRoom;
+        const Attachment = ctx.model.Attachment;
+        Room.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        const {hotelId} = params;
+
+        const dataList = await Room.findAll({
+            where: {
+                hotelId,
+                state: 2
+            },
+            attributes: [
+                'id',
+                'detailPic',
+                'hotelId',
+                'roomName',
+                'roomPrice',
+                'roomStatus',
+                'bedModel',
+                'roomSize',
+                'stayPersonNum',
+                'internet',
+                'windowScenery',
+                'window',
+                'bathroom',
+                'breakfast',
+                'drink',
+                'facilities',
+                'payType',
+                'canCancel',
+                'canAddbed',
+                'innerNeed',
+                'sale',
+                'state',
+                'updateBy',
+                'createBy',
+                'updated_at',
+                'created_at'
+            ],
+            include: [{
+                model: Attachment,
+                attributes: ['id', 'fileType']
+            }],
+            order: [
+                ['created_at', 'DESC']
+            ]
+        });
+
+        return dataList;
+    }
+
     async queryListTop3() {
         const ctx = this.ctx;
         const Room = ctx.model.HotelRoom;
@@ -97,6 +221,7 @@ class RoomService extends Service {
                 'RoomUsecar',
                 'linePlay',
                 'RoomDesc',
+                'state',
                 'updateBy',
                 'createBy',
                 'updated_at',
@@ -189,6 +314,54 @@ class RoomService extends Service {
             where: {RoomId: params.id}
         });
         return res;
+    }
+
+    /* 预订 */
+    async reserve(fieldsValue) {
+        const ctx = this.ctx;
+        const row = {
+            ...fieldsValue
+        };
+        const res = await ctx.model.HotelRoomReserve.create(row);
+        const status_res = await  ctx.model.HotelRoom.update({
+            roomStatus: 1
+        }, {
+            where: {id: row.roomId}
+        });
+
+        return {
+            rowsAffected: res,
+        };
+    }
+
+    /* 查询评论列表 */
+    async queryCommentList(params) {
+        const ctx = this.ctx;
+        const Sequelize = this.app.Sequelize;
+        const HotelRoomComment = ctx.model.HotelRoomComment;
+        const {roomId} = params;
+
+        const dataList = await HotelRoomComment.findAll({
+            where: {
+                roomId
+            },
+            attributes: [
+                'id',
+                'roomId',
+                'userId',
+                'pid',
+                'commentContent',
+                'commentStar',
+                'detailPic',
+                'updated_at',
+                'created_at'
+            ],
+            order: [
+                ['created_at', 'DESC']
+            ]
+        });
+
+        return dataList;
     }
 }
 

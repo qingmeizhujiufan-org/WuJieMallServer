@@ -20,6 +20,22 @@ class HotelController extends BaseController {
         }
     }
 
+    async queryMobileList() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        params.pageNumber = ctx.helper.parseInt(params.pageNumber);
+        params.pageSize = ctx.helper.parseInt(params.pageSize);
+        const result = await ctx.service.hotel.queryMobileList(params);
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: "查询列表成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
     async queryDetail() {
         const ctx = this.ctx;
         const params = ctx.query;
@@ -43,7 +59,6 @@ class HotelController extends BaseController {
     async add() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
-        fieldsValue.id = uuidv1();
         const result = await ctx.service.hotel.add(fieldsValue);
 
         if (result.rowsAffected) {
@@ -87,30 +102,6 @@ class HotelController extends BaseController {
         } else {
             this.fail({
                 backMsg: "删除失败！"
-            });
-        }
-    }
-
-    /* 报名自驾游 */
-    async signTravel() {
-        const ctx = this.ctx;
-        const fieldsValue = ctx.request.body;
-        fieldsValue.id = uuidv1();
-        const result = await ctx.service.travel.signTravel(fieldsValue);
-        const participants = fieldsValue.participants;
-        participants.map(item => {
-            item.travelSignId = fieldsValue.id;
-        });
-        const result_travel_sign_participants = await ctx.service.travel.addParticipants(participants);
-
-        if (result.rowsAffected) {
-            this.success({
-                backData: result,
-                backMsg: "报名成功！"
-            });
-        } else {
-            this.fail({
-                backMsg: "报名失败！"
             });
         }
     }

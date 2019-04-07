@@ -116,6 +116,11 @@ module.exports = app => {
             type: STRING(255),
             field: 'sale'
         },
+        /* 状态 */
+        state: {
+            type: INTEGER,
+            field: 'state'
+        },
         /* 修改人 */
         updateBy: {
             type: STRING(255),

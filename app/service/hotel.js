@@ -39,6 +39,7 @@ class HotelService extends Service {
                     'hotelStatus',
                     'hotelStatusText',
                     'initialCharge',
+                    'state',
                     'updateBy',
                     'createBy',
                     'updated_at',
@@ -84,6 +85,7 @@ class HotelService extends Service {
                 'hotelAddress',
                 'hotelType',
                 'hotelStatus',
+                'state',
                 'updateBy',
                 'createBy',
                 'updated_at',
@@ -101,6 +103,72 @@ class HotelService extends Service {
 
         return {
             content: dataList,
+        };
+    }
+
+    async queryMobileList(params) {
+        const ctx = this.ctx;
+        const Sequelize = this.app.Sequelize;
+        const Hotel = ctx.model.Hotel;
+        const Attachment = ctx.model.Attachment;
+        Hotel.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
+        const whereCondition = {
+            '$or': {
+                hotelName: {
+                    '$like': '%' + keyWords + '%'
+                },
+            },
+            '$and': {
+                state: 2
+            }
+        };
+
+        const dataList = await Promise.all([
+            Hotel.findAll({
+                where: whereCondition,
+            }),
+            Hotel.findAll({
+                where: whereCondition,
+                attributes: [
+                    'id',
+                    'thumbnail',
+                    'headerPic',
+                    'detailPic',
+                    'hotelName',
+                    'telephone',
+                    'hotelPhone',
+                    'hotelAddress',
+                    'hotelType',
+                    'hotelTypeText',
+                    'hotelStatus',
+                    'hotelStatusText',
+                    'initialCharge',
+                    'state',
+                    'updateBy',
+                    'createBy',
+                    'updated_at',
+                    'created_at'
+
+                ],
+                include: [{
+                    model: Attachment,
+                    attributes: ['id', 'fileType']
+                }],
+                order: [
+                    ['created_at', 'DESC']
+                ],
+                limit: pageSize,
+                offset: (pageNumber - 1) * pageSize,
+            })
+        ]);
+
+        return {
+            content: dataList[1],
+            pageNumber,
+            pageSize,
+            totalElements: dataList[0].length,
+            totalPages: Math.ceil(dataList[0].length / pageSize)
         };
     }
 

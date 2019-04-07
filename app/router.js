@@ -90,6 +90,8 @@ module.exports = app => {
     router.get('/api/hotel/queryList', controller.hotel.queryList);
     /* 查询主题旅游Top3 */
     router.get('/api/hotel/queryListTop3', controller.hotel.queryListTop3);
+    /* 移动端查询所有民宿 */
+    router.get('/api/hotel/queryMobileList', controller.hotel.queryMobileList);
     /* 查询特色名宿详情 */
     router.get('/api/hotel/queryDetail', controller.hotel.queryDetail);
     /* 新增特色名宿*/
@@ -102,7 +104,11 @@ module.exports = app => {
 
     /* 查询名宿房间列表 */
     router.get('/api/room/queryList', controller.room.queryList);
-      /* 查询名宿房间详情 */
+    /* 管理员查询所有房间列表 */
+    router.get('/api/room/queryAdminList', controller.room.queryAdminList);
+    /* 移动端查询所有房间 */
+    router.get('/api/room/queryMobileList', controller.room.queryMobileList);
+    /* 查询名宿房间详情 */
     router.get('/api/room/queryDetail', controller.room.queryDetail);
     /* 新增房间*/
     router.post('/api/room/add', controller.room.add);
@@ -110,7 +116,10 @@ module.exports = app => {
     router.post('/api/room/update', controller.room.update);
     /* 删除名宿房间 */
     router.post('/api/room/delete', controller.room.delete);
-
+    /* 预订 */
+    router.post('/api/room/reserve', controller.room.reserve);
+    /* 查询评论 */
+    router.get('/api/room/comment', controller.room.queryCommentList);
 
     /* 查询主题旅游列表 */
     router.get('/api/travel/queryList', controller.travel.queryList);

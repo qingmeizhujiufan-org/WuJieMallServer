@@ -20,6 +20,36 @@ class RoomController extends BaseController {
         }
     }
 
+    async queryAdminList() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        params.pageNumber = ctx.helper.parseInt(params.pageNumber);
+        params.pageSize = ctx.helper.parseInt(params.pageSize);
+        const result = await ctx.service.room.queryAdminList(params);
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: "查询列表成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
+    async queryMobileList() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        const result = await ctx.service.room.queryMobileList(params);
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: "查询列表成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
     async queryDetail() {
         const ctx = this.ctx;
         const params = ctx.query;
@@ -63,7 +93,7 @@ class RoomController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         const result = await ctx.service.room.update(fieldsValue);
-      
+
         if (result.rowsAffected) {
             this.success({
                 backData: result,
@@ -80,7 +110,7 @@ class RoomController extends BaseController {
         const ctx = this.ctx;
         const params = ctx.request.body;
         const result = await ctx.service.room.delete(params);
-       
+
         if (result) {
             this.success({
                 backMsg: "删除民宿房间信息成功！"
@@ -98,6 +128,48 @@ class RoomController extends BaseController {
         const ctx = this.ctx;
         const result = await ctx.service.travel.queryListTop3();
         if (result) {
+            this.success({
+                backData: result,
+                backMsg: "查询列表成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
+    /* 预订 */
+    async reserve() {
+        const ctx = this.ctx;
+        const fieldsValue = ctx.request.body;
+        const result = await ctx.service.room.reserve(fieldsValue);
+
+        if (result.rowsAffected) {
+            this.success({
+                backData: result,
+                backMsg: "预订成功！"
+            });
+        } else {
+            this.fail({
+                backMsg: "报名失败！"
+            });
+        }
+    }
+
+    /* 查询评论列表 */
+    async queryCommentList() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        const result = await ctx.service.room.queryCommentList(params);
+        if (result) {
+            const promiseList = [];
+            result.map(item => {
+                promiseList.push(ctx.service.attachment.queryListByIds(item.detailPic));
+            });
+            const resultList = await Promise.all(promiseList);
+            result.map((item, index) => {
+                item.detailPic = resultList[index];
+            });
+
             this.success({
                 backData: result,
                 backMsg: "查询列表成功！"
