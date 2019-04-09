@@ -2,64 +2,64 @@
 
 const Service = require('egg').Service;
 
-class ProductService extends Service {
+class FoodService extends Service {
 
     async queryList(params) {
         const ctx = this.ctx;
         const Sequelize = this.app.Sequelize;
         const Shop = ctx.model.Shop;
-        const ProductCategory = ctx.model.ProductCategory;
-        const Product = ctx.model.Product;
+        const FoodCategory = ctx.model.FoodCategory;
+        const Food = ctx.model.Food;
         const Attachment = ctx.model.Attachment;
-        Product.belongsTo(Shop, {foreignKey: 'shopId'});
-        Product.belongsTo(ProductCategory, {foreignKey: 'productCategoryId'});
-        Product.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        Food.belongsTo(Shop, {foreignKey: 'shopId'});
+        Food.belongsTo(FoodCategory, {foreignKey: 'foodCategoryId'});
+        Food.belongsTo(Attachment, {foreignKey: 'thumbnail'});
         const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
         const whereCondition = {
             '$or': {
-                productName: {
+                foodName: {
                     '$like': '%' + keyWords + '%'
                 },
-                productBrand: {
+                foodBrand: {
                     '$like': '%' + keyWords + '%'
                 },
-                productOrigin: {
+                foodOrigin: {
                     '$like': '%' + keyWords + '%'
                 },
             }
         };
 
         const dataList = await Promise.all([
-            Product.findAll({
+            Food.findAll({
                 where: whereCondition,
             }),
-            Product.findAll({
+            Food.findAll({
                 where: whereCondition,
                 attributes: [
                     'id',
                     'shopId',
                     [Sequelize.col('Shop.shop_name'), 'shopName'],
                     [Sequelize.col('Shop.shop_address'), 'shopAddress'],
-                    'productCategoryId',
-                    [Sequelize.col('ProductCategory.product_category_name'), 'productCategoryName'],
-                    'productCode',
-                    'productName',
-                    'productSummary',
-                    'productSellingprice',
-                    'productCostprice',
-                    'productUnit',
-                    'productSpec',
-                    'productModel',
-                    'productState',
-                    'productOrigin',
-                    'productUsage',
-                    'productStorage',
-                    'productTaste',
+                    'foodCategoryId',
+                    [Sequelize.col('FoodCategory.food_category_name'), 'foodCategoryName'],
+                    'foodCode',
+                    'foodName',
+                    'foodSummary',
+                    'foodSellingprice',
+                    'foodCostprice',
+                    'foodUnit',
+                    'foodSpec',
+                    'foodModel',
+                    'foodState',
+                    'foodOrigin',
+                    'foodUsage',
+                    'foodStorage',
+                    'foodTaste',
                     'distributionScope',
-                    'productBrand',
-                    'productBatching',
-                    'productDate',
-                    'productNetWeight',
+                    'foodBrand',
+                    'foodBatching',
+                    'foodDate',
+                    'foodNetWeight',
                     'mark',
                     'update_by',
                     'create_by',
@@ -70,7 +70,7 @@ class ProductService extends Service {
                     attributes: []
                 }
                 , {
-                    model: ProductCategory,
+                    model: FoodCategory,
                     attributes: []
                 }, {
                     model: Attachment,
@@ -99,10 +99,10 @@ class ProductService extends Service {
             pageSize = 10,
             id
         } = params;
-        const Product = this.ctx.model.Product;
+        const Food = this.ctx.model.Food;
         const dataList = await Promise.all([
-            Product.findAll(),
-            Product.findAll({
+            Food.findAll(),
+            Food.findAll({
                 where: {shopId: id},
                 order: [
                     ['created_at', 'DESC']
@@ -121,18 +121,18 @@ class ProductService extends Service {
         };
     }
 
-    async findProductsByShopId(params) {
+    async findFoodsByShopId(params) {
         const {id} = params;
-        const res = await this.ctx.model.Product.findAll({
+        const res = await this.ctx.model.Food.findAll({
             where: {shopId: id}
         });
         return res
     }
 
-    async findProductByCategoryId(params) {
+    async findFoodByCategoryId(params) {
         const {id} = params;
-        const res = await this.ctx.model.Product.findAll({
-            where: {productCategoryId: id}
+        const res = await this.ctx.model.Food.findAll({
+            where: {foodCategoryId: id}
         });
         return res
     }
@@ -140,7 +140,7 @@ class ProductService extends Service {
     async queryDetail(params) {
         const ctx = this.ctx;
         const {id} = params;
-        const res = await ctx.model.Product.findById(id);
+        const res = await ctx.model.Food.findById(id);
 
         return res;
     }
@@ -150,7 +150,7 @@ class ProductService extends Service {
         const row = {
             ...fieldsValue
         };
-        const res = await ctx.model.Product.create(row);
+        const res = await ctx.model.Food.create(row);
 
         return {
             rowsAffected: res,
@@ -160,7 +160,7 @@ class ProductService extends Service {
     async update(fieldsValue) {
         const ctx = this.ctx;
         const {id, ...restFieldsValue} = fieldsValue;
-        const res = await ctx.model.Product.update(restFieldsValue, {
+        const res = await ctx.model.Food.update(restFieldsValue, {
             where: {id}
         });
 
@@ -168,7 +168,7 @@ class ProductService extends Service {
     }
 
     async delete(params) {
-        const res = await this.ctx.model.Product.destroy({
+        const res = await this.ctx.model.Food.destroy({
             where: {id: params.id}
         });
         return res;
@@ -177,28 +177,28 @@ class ProductService extends Service {
     //查询所有分类
     async queryAllCategoryList() {
         const ctx = this.ctx;
-        const total = await ctx.model.ProductCategory.findAll();
+        const total = await ctx.model.FoodCategory.findAll();
         return total
     }
 
     //产品类别
     async queryCategoryList(params) {
         const ctx = this.ctx;
-        const ProductCategory = ctx.model.ProductCategory;
+        const FoodCategory = ctx.model.FoodCategory;
         const {pageNumber, pageSize, keyWords = ''} = params;
         const whereCondition = {
             '$or': {
-                productCategoryName: {
+                foodCategoryName: {
                     '$like': '%' + keyWords + '%'
                 }
             }
         };
 
         const dataList = await Promise.all([
-            ProductCategory.findAll({
+            FoodCategory.findAll({
                 where: whereCondition,
             }),
-            ProductCategory.findAll({
+            FoodCategory.findAll({
                 where: whereCondition,
                 order: [
                     ['created_at', 'DESC']
@@ -219,8 +219,8 @@ class ProductService extends Service {
 
     async categoryAdd(row) {
         const ctx = this.ctx;
-        const res = await ctx.model.ProductCategory.findOrCreate({
-            where: {productCategoryName: row.productCategoryName},
+        const res = await ctx.model.FoodCategory.findOrCreate({
+            where: {foodCategoryName: row.foodCategoryName},
             defaults: {...row}
         });
 
@@ -230,7 +230,7 @@ class ProductService extends Service {
     async categoryDetail(params) {
         const ctx = this.ctx;
         const {id} = params;
-        const res = await ctx.model.ProductCategory.findById(id);
+        const res = await ctx.model.FoodCategory.findById(id);
 
         return res;
     }
@@ -238,7 +238,7 @@ class ProductService extends Service {
     async categoryUpdate(fieldsValue) {
         const ctx = this.ctx;
         const {id, ...restFieldsValue} = fieldsValue;
-        const res = await ctx.model.ProductCategory.update(restFieldsValue, {
+        const res = await ctx.model.FoodCategory.update(restFieldsValue, {
             where: {id}
         });
 
@@ -247,11 +247,11 @@ class ProductService extends Service {
 
     async categoryDelete(params) {
         const {id} = params;
-        const res = await this.ctx.model.ProductCategory.destroy({
+        const res = await this.ctx.model.FoodCategory.destroy({
             where: {id}
         });
         return res;
     }
 }
 
-module.exports = ProductService;
+module.exports = FoodService;

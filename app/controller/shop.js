@@ -79,10 +79,10 @@ class ShopController extends BaseController {
         const ctx = this.ctx;
         const params = ctx.request.body;
         console.log('params ===', params);
-        const product = await ctx.service.product.findProductByShopId(params);
-        if (product.length) {
+        const food = await ctx.service.food.findFoodByShopId(params);
+        if (food.length) {
             this.fail({
-                backMsg: "当前店铺不可删除，请确保此商铺没有关联商品！"
+                backMsg: "当前店铺不可删除，请确保此商铺没有关联食品！"
             });
         } else {
             const result = await ctx.service.shop.delete(params);

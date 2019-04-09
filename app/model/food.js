@@ -4,7 +4,7 @@ const Moment = require('moment');
 
 module.exports = app => {
     const {UUIDV1, INTEGER, STRING, DECIMAL, DATE} = app.Sequelize;
-    const Product = app.model.define('Product', {
+    const Food = app.model.define('Food', {
         /* 产品ID */
         id: {
             type: UUIDV1,
@@ -18,77 +18,77 @@ module.exports = app => {
             field: 'shop_id'
         },
         /* 产品分类ID */
-        productCategoryId: {
+        foodCategoryId: {
             type: STRING(255),
-            field: 'product_category_id'
+            field: 'food_category_id'
         },
         /* 产品编码 */
-        productCode: {
+        foodCode: {
             type: STRING(255),
-            field: 'product_code'
+            field: 'food_code'
         },
         /* 产品名称 */
-        productName: {
+        foodName: {
             type: STRING(255),
-            field: 'product_name'
+            field: 'food_name'
         },
         /* 产品简介 */
-        productSummary: {
+        foodSummary: {
             type: STRING(255),
-            field: 'product_summary'
+            field: 'food_summary'
         },
         /* 产品售价 */
-        productSellingprice: {
+        foodSellingprice: {
             type: DECIMAL,
-            field: 'product_sellingprice'
+            field: 'food_sellingprice'
         },
         /* 产品成本价 */
-        productCostprice: {
+        foodCostprice: {
             type: DECIMAL,
-            field: 'product_costprice',
+            field: 'food_costprice',
             get() {
-                return this.getDataValue('productCostprice') && parseFloat(this.getDataValue('productCostprice'));
+                return this.getDataValue('foodCostprice') && parseFloat(this.getDataValue('foodCostprice'));
             }
         },
         /* 产品单位 */
-        productUnit: {
+        foodUnit: {
             type: STRING(255),
-            field: 'product_unit'
+            field: 'food_unit'
         },
         /* 产品规格 */
-        productSpec: {
+        foodSpec: {
             type: STRING(255),
-            field: 'product_spec'
+            field: 'food_spec'
         },
         /* 产品型号 */
-        productModel: {
+        foodModel: {
             type: STRING(255),
-            field: 'product_model'
+            field: 'food_model'
         },
         /* 产品状态 */
-        productState: {
+        foodState: {
             type: INTEGER,
-            field: 'product_state'
+            field: 'food_state'
         },
         /* 产品产地 */
-        productOrigin: {
+        foodOrigin: {
             type: STRING(255),
-            field: 'product_origin'
+            field: 'food_origin'
         },
         /* 产品食用 */
-        productUsage: {
+        foodUsage: {
             type: STRING(255),
-            field: 'product_usage'
+            field: 'food_usage'
         },
         /* 产品贮藏办法 */
-        productStorage: {
+        foodStorage: {
             type: STRING(255),
-            field: 'product_storage'
+            field: 'food_storage'
         },
         /* 产品口味 */
-        productTaste: {
+        foodTaste: {
             type: STRING(255),
-            field: 'product_taste'
+            field: 'food_taste'
         },
         /* 配送范围 */
         distributionScope: {
@@ -96,24 +96,24 @@ module.exports = app => {
             field: 'distribution_scope'
         },
         /* 产品品牌 */
-        productBrand: {
+        foodBrand: {
             type: STRING(255),
-            field: 'product_brand'
+            field: 'food_brand'
         },
         /* 产品配料 */
-        productBatching: {
+        foodBatching: {
             type: STRING(255),
-            field: 'product_batching'
+            field: 'food_batching'
         },
         /* 产品保质期 */
-        productDate: {
+        foodDate: {
             type: STRING(255),
-            field: 'product_date'
+            field: 'food_date'
         },
         /* 产品净含量 */
-        productNetWeight: {
+        foodNetWeight: {
             type: STRING(255),
-            field: 'product_net_weight'
+            field: 'food_net_weight'
         },
         /* 产品缩略图 */
         thumbnail: {
@@ -159,8 +159,8 @@ module.exports = app => {
         }
     }, {
         freezeTableName: true,
-        tableName: 'product_info',
+        tableName: 'food_info',
         timestamps: true,
     });
-    return Product;
+    return Food;
 };

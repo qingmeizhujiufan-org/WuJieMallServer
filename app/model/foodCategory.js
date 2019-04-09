@@ -3,42 +3,36 @@
 const Moment = require('moment');
 
 module.exports = app => {
-
-    const {UUIDV1, INTEGER, STRING, DATE} = app.Sequelize;
-    const APPTopSlider = app.model.define('APPTopSlider', {
-        //id
+    const {UUIDV1, INTEGER, STRING, DECIMAL, DATE} = app.Sequelize;
+    const FoodCategory = app.model.define('foodCategory', {
+        /* 产品分类ID */
         id: {
-            type: STRING(255),
-            defaultValue: UUIDV1,
+            type: UUIDV1,
             primaryKey: true,
-            field: 'id'
+            field: 'id',
+            defaultValue: UUIDV1
         },
-        //图片id
-        imgId: {
-            type: STRING(64),
-            field: 'img_id'
-        },
-        //跳转产品链接
-        foodLink: {
+        /* 产品分类名称 */
+        foodCategoryName: {
             type: STRING(255),
-            field: 'food_link'
+            field: 'food_category_name'
         },
-        //描述
-        desc: {
+        /* 产品分类编码 */
+        foodCategoryCode: {
             type: STRING(255),
-            field: 'desc'
+            field: 'food_category_code'
         },
-        //顺序编号
-        no: {
-            type: INTEGER,
-            field: 'no'
+        //产品类别图片
+        foodCategoryPic: {
+            type: STRING(255),
+            field: 'food_category_pic'
         },
-        //更新人员
+        /* 修改人 */
         updateBy: {
             type: STRING(255),
             field: 'update_by'
         },
-        //创建人员
+        /* 创建人 */
         createBy: {
             type: STRING(255),
             field: 'create_by'
@@ -57,8 +51,8 @@ module.exports = app => {
         }
     }, {
         freezeTableName: true,
-        tableName: 'app_topslider_info',
+        tableName: 'food_category_info',
         timestamps: true,
     });
-    return APPTopSlider;
+    return FoodCategory;
 };

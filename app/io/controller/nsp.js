@@ -20,7 +20,7 @@ class NspController extends Controller {
         }
     }
 
-    async addProductToAdmin() {
+    async addFoodToAdmin() {
         const {ctx, app} = this;
         const nsp = app.io.of('/');
 

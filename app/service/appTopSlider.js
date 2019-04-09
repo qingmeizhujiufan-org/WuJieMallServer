@@ -13,7 +13,7 @@ class RoleService extends Service {
         const topSliderList = await AppTopSlider.findAll({
             attributes: [
                 'id',
-                'productLink',
+                'foodLink',
                 'desc',
                 'no',
             ],

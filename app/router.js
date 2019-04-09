@@ -29,31 +29,31 @@ module.exports = app => {
   router.get('/api/role/queryList', UserInterceptor, controller.role.queryList);
 
   /* 查询产品列表 */
-  router.get('/api/product/queryList', controller.product.queryList);
+  router.get('/api/food/queryList', controller.food.queryList);
 
   /* 查询商铺推荐产品列表 */
-  router.get('/api/product/queryListByShopId', controller.product.queryListByShopId);
+  router.get('/api/food/queryListByShopId', controller.food.queryListByShopId);
 
   /* 查询产品详情 */
-  router.get('/api/product/queryDetail', controller.product.queryDetail);
+  router.get('/api/food/queryDetail', controller.food.queryDetail);
   /* 新增产品 */
-  router.post('/api/product/add', UserInterceptor, controller.product.add);
+  router.post('/api/food/add', UserInterceptor, controller.food.add);
   /* 更新产品信息 */
-  router.post('/api/product/update', UserInterceptor, controller.product.update);
+  router.post('/api/food/update', UserInterceptor, controller.food.update);
   /* 删除产品 */
-  router.post('/api/product/delete', UserInterceptor, controller.product.delete);
+  router.post('/api/food/delete', UserInterceptor, controller.food.delete);
   /* 查询产品全部分类列表 */
-  router.get('/api/product/queryAllCategoryList', controller.product.queryAllCategoryList);
+  router.get('/api/food/queryAllCategoryList', controller.food.queryAllCategoryList);
   /* 查询产品分类列表 */
-  router.get('/api/product/queryCategoryList', UserInterceptor, controller.product.queryCategoryList);
+  router.get('/api/food/queryCategoryList', UserInterceptor, controller.food.queryCategoryList);
   /* 新增产品分类 */
-  router.post('/api/product/categoryAdd', UserInterceptor, controller.product.categoryAdd);
+  router.post('/api/food/categoryAdd', UserInterceptor, controller.food.categoryAdd);
   /* 查看产品分类信息 */
-  router.get('/api/product/categoryDetail', UserInterceptor, controller.product.categoryDetail);
+  router.get('/api/food/categoryDetail', UserInterceptor, controller.food.categoryDetail);
   /* 更新产品分类信息 */
-  router.post('/api/product/categoryUpdate', UserInterceptor, controller.product.categoryUpdate);
+  router.post('/api/food/categoryUpdate', UserInterceptor, controller.food.categoryUpdate);
   /* 删除产品分类信息 */
-  router.post('/api/product/categoryDelete', UserInterceptor, controller.product.categoryDelete);
+  router.post('/api/food/categoryDelete', UserInterceptor, controller.food.categoryDelete);
 
 
   /* 查询商铺列表 */
@@ -129,7 +129,7 @@ module.exports = app => {
   router.post('/api/travelKeeper/add', controller.travelKeeper.add);
   /* 旅游商家更新 */
   router.post('/api/travelKeeper/update', controller.travelKeeper.update);
- 
+
   /* 查询主题旅游列表 */
   router.get('/api/travel/queryList', controller.travel.queryList);
   /* 查询主题旅游Top3 */

@@ -8,55 +8,55 @@ class FoodService extends Service {
         const ctx = this.ctx;
         const Sequelize = this.app.Sequelize;
         const Shop = ctx.model.Shop;
-        const ProductCategory = ctx.model.ProductCategory;
-        const Product = ctx.model.Product;
-        Product.belongsTo(Shop, {foreignKey: 'shopId'});
-        Product.belongsTo(ProductCategory, {foreignKey: 'productCategoryId'});
+        const FoodCategory = ctx.model.FoodCategory;
+        const Food = ctx.model.Food;
+        Food.belongsTo(Shop, {foreignKey: 'shopId'});
+        Food.belongsTo(FoodCategory, {foreignKey: 'foodCategoryId'});
         const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
         const whereCondition = {
             '$or': {
-                productName: {
+                foodName: {
                     '$like': '%' + keyWords + '%'
                 },
-                productBrand: {
+                foodBrand: {
                     '$like': '%' + keyWords + '%'
                 },
-                productOrigin: {
+                foodOrigin: {
                     '$like': '%' + keyWords + '%'
                 },
             }
         };
 
         const dataList = await Promise.all([
-            Product.findAll({
+            Food.findAll({
                 where: whereCondition,
             }),
-            Product.findAll({
+            Food.findAll({
                 where: whereCondition,
                 attributes: [
                     'id',
                     'shopId',
                     [Sequelize.col('Shop.shop_name'), 'shopName'],
-                    'productCategoryId',
-                    [Sequelize.col('ProductCategory.product_category_name'), 'productCategoryName'],
-                    'productCode',
-                    'productName',
-                    'productSummary',
-                    'productSellingprice',
-                    'productCostprice',
-                    'productUnit',
-                    'productSpec',
-                    'productModel',
-                    'productState',
-                    'productOrigin',
-                    'productUsage',
-                    'productStorage',
-                    'productTaste',
+                    'foodCategoryId',
+                    [Sequelize.col('FoodCategory.food_category_name'), 'foodCategoryName'],
+                    'foodCode',
+                    'foodName',
+                    'foodSummary',
+                    'foodSellingprice',
+                    'foodCostprice',
+                    'foodUnit',
+                    'foodSpec',
+                    'foodModel',
+                    'foodState',
+                    'foodOrigin',
+                    'foodUsage',
+                    'foodStorage',
+                    'foodTaste',
                     'distributionScope',
-                    'productBrand',
-                    'productBatching',
-                    'productDate',
-                    'productNetWeight',
+                    'foodBrand',
+                    'foodBatching',
+                    'foodDate',
+                    'foodNetWeight',
                     'mark',
                     'update_by',
                     'create_by',
@@ -67,7 +67,7 @@ class FoodService extends Service {
                     model: Shop,
                     attributes: []
                 }, {
-                    model: ProductCategory,
+                    model: FoodCategory,
                     attributes: []
                 }],
                 order: [
@@ -86,18 +86,18 @@ class FoodService extends Service {
         };
     }
 
-    async findProductByShopId(params) {
+    async findFoodByShopId(params) {
         const {id} = params;
-        const res = await this.ctx.model.Product.findAll({
+        const res = await this.ctx.model.Food.findAll({
             where: {shopId: id}
         });
         return res
     }
 
-    async findProductByCategoryId(params) {
+    async findFoodByCategoryId(params) {
         const {id} = params;
-        const res = await this.ctx.model.Product.findAll({
-            where: {productCategoryId: id}
+        const res = await this.ctx.model.Food.findAll({
+            where: {foodCategoryId: id}
         });
         return res
     }
@@ -105,7 +105,7 @@ class FoodService extends Service {
     async queryDetail(params) {
         const ctx = this.ctx;
         const {id} = params;
-        const res = await ctx.model.Product.findById(id);
+        const res = await ctx.model.Food.findById(id);
 
         return res;
     }
@@ -115,7 +115,7 @@ class FoodService extends Service {
         const row = {
             ...fieldsValue
         };
-        const res = await ctx.model.Product.create(row);
+        const res = await ctx.model.Food.create(row);
 
         return {
             rowsAffected: res,
@@ -125,7 +125,7 @@ class FoodService extends Service {
     async update(fieldsValue) {
         const ctx = this.ctx;
         const {id, ...restFieldsValue} = fieldsValue;
-        const res = await ctx.model.Product.update(restFieldsValue, {
+        const res = await ctx.model.Food.update(restFieldsValue, {
             where: {id}
         });
 
@@ -133,7 +133,7 @@ class FoodService extends Service {
     }
 
     async delete(params) {
-        const res = await this.ctx.model.Product.destroy({
+        const res = await this.ctx.model.Food.destroy({
             where: {id: params.id}
         });
         return res;
@@ -142,28 +142,28 @@ class FoodService extends Service {
     //查询所有分类
     async queryAllCategoryList() {
         const ctx = this.ctx;
-        const total = await ctx.model.ProductCategory.findAll();
+        const total = await ctx.model.FoodCategory.findAll();
         return total
     }
 
     //产品类别
     async queryCategoryList(params) {
         const ctx = this.ctx;
-        const ProductCategory = ctx.model.ProductCategory;
+        const FoodCategory = ctx.model.FoodCategory;
         const {pageNumber, pageSize, keyWords = ''} = params;
         const whereCondition = {
             '$or': {
-                productCategoryName: {
+                foodCategoryName: {
                     '$like': '%' + keyWords + '%'
                 }
             }
         };
 
         const dataList = await Promise.all([
-            ProductCategory.findAll({
+            FoodCategory.findAll({
                 where: whereCondition,
             }),
-            ProductCategory.findAll({
+            FoodCategory.findAll({
                 where: whereCondition,
                 order: [
                     ['created_at', 'DESC']
@@ -184,8 +184,8 @@ class FoodService extends Service {
 
     async categoryAdd(row) {
         const ctx = this.ctx;
-        const res = await ctx.model.ProductCategory.findOrCreate({
-            where: {productCategoryName: row.productCategoryName},
+        const res = await ctx.model.FoodCategory.findOrCreate({
+            where: {foodCategoryName: row.foodCategoryName},
             defaults: {...row}
         });
 
@@ -195,7 +195,7 @@ class FoodService extends Service {
     async categoryDetail(params) {
         const ctx = this.ctx;
         const {id} = params;
-        const res = await ctx.model.ProductCategory.findById(id);
+        const res = await ctx.model.FoodCategory.findById(id);
 
         return res;
     }
@@ -203,7 +203,7 @@ class FoodService extends Service {
     async categoryUpdate(fieldsValue) {
         const ctx = this.ctx;
         const {id, ...restFieldsValue} = fieldsValue;
-        const res = await ctx.model.ProductCategory.update(restFieldsValue, {
+        const res = await ctx.model.FoodCategory.update(restFieldsValue, {
             where: {id}
         });
 
@@ -212,7 +212,7 @@ class FoodService extends Service {
 
     async categoryDelete(params) {
         const {id} = params;
-        const res = await this.ctx.model.ProductCategory.destroy({
+        const res = await this.ctx.model.FoodCategory.destroy({
             where: {id}
         });
         return res;

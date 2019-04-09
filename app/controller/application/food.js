@@ -8,7 +8,7 @@ class FoodController extends BaseController {
         const params = ctx.query;
         params.pageNumber = ctx.helper.parseInt(params.pageNumber);
         params.pageSize = ctx.helper.parseInt(params.pageSize);
-        const result = await ctx.service.product.queryList(params);
+        const result = await ctx.service.food.queryList(params);
         if (result) {
             this.success({
                 backData: result,
@@ -42,7 +42,7 @@ class FoodController extends BaseController {
     //查询所有产品
     async queryAllCategoryList() {
         const ctx = this.ctx;
-        const result = await ctx.service.product.queryAllCategoryList();
+        const result = await ctx.service.food.queryAllCategoryList();
         if (result) {
             this.success({
                 backData: result,
@@ -59,11 +59,11 @@ class FoodController extends BaseController {
         const params = ctx.query;
         params.pageNumber = parseInt(params.pageNumber);
         params.pageSize = parseInt(params.pageSize);
-        const result = await ctx.service.product.queryCategoryList(params);
+        const result = await ctx.service.food.queryCategoryList(params);
         if (result) {
             for (let item of result.content) {
-                const pic = await ctx.service.attachment.queryListByIds(item.productCategoryPic);
-                item.productCategoryPic = pic;
+                const pic = await ctx.service.attachment.queryListByIds(item.foodCategoryPic);
+                item.foodCategoryPic = pic;
             }
 
             this.success({

@@ -9,7 +9,7 @@ class HomeController extends BaseController {
         console.log('params ===', params)
         params.pageNumber = ctx.helper.parseInt(params.pageNumber);
         params.pageSize = ctx.helper.parseInt(params.pageSize);
-        const result = await ctx.service.product.queryList(params);
+        const result = await ctx.service.food.queryList(params);
         if (result) {
 
             this.success({
@@ -27,7 +27,7 @@ class HomeController extends BaseController {
         console.log('params ===', params);
         params.pageNumber = ctx.helper.parseInt(params.pageNumber);
         params.pageSize = ctx.helper.parseInt(params.pageSize);
-        const result = await ctx.service.product.queryListByShopId(params);
+        const result = await ctx.service.food.queryListByShopId(params);
         if (result) {
             let content = result.content;
             for (let i in content) {
@@ -48,7 +48,7 @@ class HomeController extends BaseController {
     async queryDetail() {
         const ctx = this.ctx;
         const params = ctx.query;
-        const result = await ctx.service.product.queryDetail(params);
+        const result = await ctx.service.food.queryDetail(params);
 
         if (result) {
             const headerPicList = await ctx.service.attachment.queryListByIds(result.headerPic);
@@ -68,7 +68,7 @@ class HomeController extends BaseController {
     async add() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
-        const result = await ctx.service.product.add(fieldsValue);
+        const result = await ctx.service.food.add(fieldsValue);
 
         if (result.rowsAffected) {
             try {
@@ -77,7 +77,7 @@ class HomeController extends BaseController {
                 const nsp = app.io.of('/');
 
                 try {
-                    nsp.emit('review_product', '有新产品等待审核，请及时处理');
+                    nsp.emit('review_food', '有新产品等待审核，请及时处理');
                 } catch (error) {
                     app.logger.error(error);
                 }
@@ -99,7 +99,7 @@ class HomeController extends BaseController {
     async update() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
-        const result = await ctx.service.product.update(fieldsValue);
+        const result = await ctx.service.food.update(fieldsValue);
 
         if (result.rowsAffected) {
             this.success({
@@ -116,7 +116,7 @@ class HomeController extends BaseController {
     async delete() {
         const ctx = this.ctx;
         const params = ctx.request.body;
-        const result = await ctx.service.product.delete(params);
+        const result = await ctx.service.food.delete(params);
 
         if (result) {
             this.success({
@@ -132,7 +132,7 @@ class HomeController extends BaseController {
     //查询所有产品
     async queryAllCategoryList() {
         const ctx = this.ctx;
-        const result = await ctx.service.product.queryAllCategoryList();
+        const result = await ctx.service.food.queryAllCategoryList();
         if (result) {
             this.success({
                 backData: result,
@@ -149,11 +149,11 @@ class HomeController extends BaseController {
         const params = ctx.query;
         params.pageNumber = parseInt(params.pageNumber);
         params.pageSize = parseInt(params.pageSize);
-        const result = await ctx.service.product.queryCategoryList(params);
+        const result = await ctx.service.food.queryCategoryList(params);
         if (result) {
             for (let item of result.content) {
-                const pic = await ctx.service.attachment.queryListByIds(item.productCategoryPic);
-                item.productCategoryPic = pic;
+                const pic = await ctx.service.attachment.queryListByIds(item.foodCategoryPic);
+                item.foodCategoryPic = pic;
             }
 
             this.success({
@@ -169,7 +169,7 @@ class HomeController extends BaseController {
     async categoryAdd() {
         const ctx = this.ctx;
         const params = ctx.request.body;
-        const result = await ctx.service.product.categoryAdd(params);
+        const result = await ctx.service.food.categoryAdd(params);
         if (result[1]) {
             this.success({
                 backData: result,
@@ -186,11 +186,11 @@ class HomeController extends BaseController {
     async categoryDetail() {
         const ctx = this.ctx;
         const params = ctx.query;
-        const result = await ctx.service.product.categoryDetail(params);
+        const result = await ctx.service.food.categoryDetail(params);
 
         if (result) {
-            const productCategoryPic = await ctx.service.attachment.queryListByIds(result.productCategoryPic);
-            result.productCategoryPic = productCategoryPic;
+            const foodCategoryPic = await ctx.service.attachment.queryListByIds(result.foodCategoryPic);
+            result.foodCategoryPic = foodCategoryPic;
 
             this.success({
                 backData: result,
@@ -205,7 +205,7 @@ class HomeController extends BaseController {
     async categoryUpdate() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
-        const result = await ctx.service.product.categoryUpdate(fieldsValue);
+        const result = await ctx.service.food.categoryUpdate(fieldsValue);
 
         if (result) {
             this.success({
@@ -224,14 +224,14 @@ class HomeController extends BaseController {
         const ctx = this.ctx;
         const params = ctx.request.body;
         console.log('params ===', params);
-        const product = await ctx.service.product.findProductByCategoryId(params);
-        console.log(product)
-        if (product.length > 0) {
+        const food = await ctx.service.food.findFoodByCategoryId(params);
+        console.log(food)
+        if (food.length > 0) {
             this.fail({
-                backMsg: "当前分类不可删除，请确保此分类下没有关联商品！"
+                backMsg: "当前分类不可删除，请确保此分类下没有关联食品！"
             });
         } else {
-            const result = await ctx.service.product.categoryDelete(params);
+            const result = await ctx.service.food.categoryDelete(params);
             console.log('result ===', result)
             if (result) {
                 this.success({
