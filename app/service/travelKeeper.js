@@ -181,6 +181,16 @@ class TravelKeeperService extends Service {
     return { rowsAffected: res };
   }
 
+  async check(fieldsValue) {
+    const ctx = this.ctx;
+    const { id, ...restFieldsValue } = fieldsValue;
+    const res = await ctx.model.travelKeeper.update(restFieldsValue, {
+      where: { id }
+    });
+
+    return { rowsAffected: res };
+  }
+
   async delete(params) {
     const res = await this.ctx.model.TravelKeeper.destroy({
       where: { id: params.id }

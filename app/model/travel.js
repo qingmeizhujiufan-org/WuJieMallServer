@@ -113,6 +113,11 @@ module.exports = app => {
             type: TEXT,
             field: 'line_info'
         },
+        /* 审核状态*/
+        checkStatus: {
+            type: INTEGER,
+            field: 'check_status'
+        },
         /* 修改人 */
         updateBy: {
             type: STRING(255),
