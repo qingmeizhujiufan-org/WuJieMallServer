@@ -17,6 +17,21 @@ module.exports = app => {
             type: UUIDV1,
             field: 'travel_id'
         },
+        /* 商家ID */
+        travelkeeperId: {
+            type: UUIDV1,
+            field: 'travelkeeper_id'
+        },
+        /* 订单ID */
+        orderId: {
+            type: UUIDV1,
+            field: 'order_id'
+        },
+        /* 用户ID */
+        userId: {
+            type: UUIDV1,
+            field: 'user_id'
+        },
         /* 报名团期 */
         signDate: {
             type: DATE,
@@ -51,6 +66,11 @@ module.exports = app => {
         totalMoney: {
             type: DECIMAL,
             field: 'total_money'
+        },
+        /* 订单状态 */
+        state: {
+            type: INTEGER,
+            field: 'state'
         },
         created_at: {
             type: DATE,

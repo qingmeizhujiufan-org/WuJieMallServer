@@ -12,6 +12,11 @@ module.exports = app => {
             field: 'id',
             defaultValue: UUIDV1,
         },
+        /* 商家ID */
+        travelkeeperId: {
+            type: UUIDV1,
+            field: 'travelkeeper_id'
+        },
         /* 旅游缩略图 */
         thumbnail: {
             type: STRING(255),
@@ -105,8 +110,8 @@ module.exports = app => {
         },
         /* 费用说明 */
         expenseDesc: {
-          type: TEXT,
-          field: 'expense_desc'
+            type: TEXT,
+            field: 'expense_desc'
         },
         /* 路线须知 */
         lineInfo: {
