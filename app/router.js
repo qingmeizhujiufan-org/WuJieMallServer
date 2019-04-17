@@ -120,6 +120,8 @@ module.exports = app => {
     router.post('/api/room/reserve', controller.room.reserve);
     /* 查询评论 */
     router.get('/api/room/comment', controller.room.queryCommentList);
+     /* 民宿订单列表查询 */
+    router.get('/api/room/queryOrderList', controller.room.queryOrderList);
 
     /* 旅游商家列表查询 */
     router.get('/api/travelKeeper/queryList', controller.travelKeeper.queryList);
@@ -131,8 +133,6 @@ module.exports = app => {
     router.post('/api/travelKeeper/update', controller.travelKeeper.update);
     /* 旅游商家更新 */
     router.post('/api/travelKeeper/check', controller.travelKeeper.check);
-    /* 旅游订单列表查询 */
-    router.get('/api/travelKeeper/queryOrderList', controller.travelKeeper.queryOrderList);
 
 
     /* 查询主题旅游列表 */
@@ -151,6 +151,8 @@ module.exports = app => {
     router.post('/api/travel/signTravel', controller.travel.signTravel);
     /* 新增主题旅游审核 */
     router.post('/api/travel/check', controller.travel.check);
+     /* 旅游订单列表查询 */
+    router.get('/api/travel/queryOrderList', controller.travel.queryOrderList);
 
     /* 收获地址列表查询*/
     router.get('/api/address/queryList', controller.address.queryList);

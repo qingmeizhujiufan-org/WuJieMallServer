@@ -334,6 +334,37 @@ class RoomService extends Service {
         };
     }
 
+    /* 查询订单列表 */
+    async queryOrderList(params) {
+        const ctx = this.ctx;
+        const Sequelize = this.app.Sequelize;
+        const HotelRoomReserve = ctx.model.HotelRoomReserve;
+        const {roomId} = params;
+
+        const dataList = await Room.HotelRoomReserve({
+            where: {
+                roomId
+            },
+            attributes: [
+                'id',
+                'roomId',
+                'userId',
+                'pid',
+                'hotelName',
+                'roomName',
+                'roomType',
+                'detailPic',
+                'updated_at',
+                'created_at'
+            ],
+            order: [
+                ['created_at', 'DESC']
+            ]
+        });
+
+        return dataList;
+    }
+
     /* 查询评论列表 */
     async queryCommentList(params) {
         const ctx = this.ctx;

@@ -42,10 +42,16 @@ module.exports = app => {
             type: STRING(32),
             field: 'person'
         },
-        /* 住点人姓名 */
+
+        /* 住点人电话*/
         telephone: {
             type: STRING(11),
             field: 'telephone'
+        },
+        /* 订单状态*/
+        stuatus: {
+            type: INTEGER,
+            field: 'stuatus'
         },
         created_at: {
             type: DATE,
