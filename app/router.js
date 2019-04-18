@@ -121,7 +121,7 @@ module.exports = app => {
     /* 查询评论 */
     router.get('/api/room/comment', controller.room.queryCommentList);
      /* 民宿订单列表查询 */
-    router.get('/api/room/queryOrderList', controller.room.queryOrderList);
+    // router.get('/api/room/queryOrderList', controller.room.queryOrderList);
 
     /* 旅游商家列表查询 */
     router.get('/api/travelKeeper/queryList', controller.travelKeeper.queryList);

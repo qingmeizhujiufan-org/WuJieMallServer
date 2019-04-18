@@ -8,6 +8,12 @@ module.exports = appInfo => {
     // use for cookie sign key, should change to your own and keep security
     config.keys = appInfo.name + '_1543235988607_825';
 
+    // 微信登录app信息
+    config.wechat = {
+        appId: 'wxdd6ab56296fa5c11',
+        appSecret: '045e74a0b171791571694c6f6248cbfd'
+    };
+
     // add your config here
     config.middleware = [];
 

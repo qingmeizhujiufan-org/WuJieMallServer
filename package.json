@@ -21,7 +21,8 @@
         "passport-local": "^1.0.0",
         "stream-to-array": "^2.3.0",
         "stream-wormhole": "^1.1.0",
-        "uuid": "^3.3.2"
+        "uuid": "^3.3.2",
+        "wechat-oauth": "^1.5.0"
     },
     "devDependencies": {
         "autod": "^3.0.1",
