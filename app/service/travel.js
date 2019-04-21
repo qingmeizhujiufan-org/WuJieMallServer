@@ -4,288 +4,292 @@ const Service = require('egg').Service;
 
 class TravelService extends Service {
 
-  async queryList(params) {
-    const ctx = this.ctx;
-    const Sequelize = this.app.Sequelize;
-    const Travel = ctx.model.Travel;
-    const TravelSign = ctx.model.TravelSign;
-    const Attachment = ctx.model.Attachment;
-    Travel.hasMany(TravelSign, { foreignKey: 'travelId' });
-    Travel.belongsTo(Attachment, { foreignKey: 'thumbnail' });
-    const { pageNumber = 1, pageSize = 10, keyWords = '' } = params;
-    const whereCondition = {
-      '$or': {
-        travelTheme: {
-          '$like': '%' + keyWords + '%'
-        },
-      }
-    };
+    async queryList(params) {
+        const ctx = this.ctx;
+        const Sequelize = this.app.Sequelize;
+        const Travel = ctx.model.Travel;
+        const TravelSign = ctx.model.TravelSign;
+        const Attachment = ctx.model.Attachment;
+        Travel.hasMany(TravelSign, {foreignKey: 'travelId'});
+        Travel.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
+        const whereCondition = {
+            '$or': {
+                travelTheme: {
+                    '$like': '%' + keyWords + '%'
+                },
+            }
+        };
 
-    const dataList = await Promise.all([
-      Travel.findAll({
-        where: whereCondition,
-      }),
-      Travel.findAll({
-        where: whereCondition,
-        attributes: [
-          'id',
-          'thumbnail',
-          'travelTheme',
-          'travelLastTime',
-          'travelHas',
-          'travelLimiteNumber',
-          'travelBeginTime',
-          'travelEndTime',
-          'manPrice',
-          'travelFrom',
-          'travelTo',
-          'travelUsecar',
-          'linePlay',
-          'travelDesc',
-          'checkStatus',
-          'updateBy',
-          'createBy',
-          'updated_at',
-          'created_at',
-        ],
-        include: [{
-          model: TravelSign,
-          attributes: ['travelId']
-        }, {
-          model: Attachment,
-          attributes: ['id', 'fileType']
-        }],
-        order: [
-          ['created_at', 'DESC']
-        ],
-        limit: pageSize,
-        offset: (pageNumber - 1) * pageSize,
-      })
-    ]);
+        const dataList = await Promise.all([
+            Travel.findAll({
+                where: whereCondition,
+            }),
+            Travel.findAll({
+                where: whereCondition,
+                attributes: [
+                    'id',
+                    'thumbnail',
+                    'travelTheme',
+                    'travelLastTime',
+                    'travelHas',
+                    'travelLimiteNumber',
+                    'travelBeginTime',
+                    'travelEndTime',
+                    'manPrice',
+                    'travelFrom',
+                    'travelTo',
+                    'travelUsecar',
+                    'linePlay',
+                    'travelDesc',
+                    'checkStatus',
+                    'isRecommend',
+                    'updateBy',
+                    'createBy',
+                    'updated_at',
+                    'created_at',
+                ],
+                include: [{
+                    model: TravelSign,
+                    attributes: ['travelId']
+                }, {
+                    model: Attachment,
+                    attributes: ['id', 'fileType']
+                }],
+                order: [
+                    ['created_at', 'DESC']
+                ],
+                limit: pageSize,
+                offset: (pageNumber - 1) * pageSize,
+            })
+        ]);
 
-    return {
-      content: dataList[1],
-      pageNumber,
-      pageSize,
-      totalElements: dataList[0].length,
-      totalPages: Math.ceil(dataList[0].length / pageSize)
-    };
-  }
-
-  async queryListTop3() {
-    const ctx = this.ctx;
-    const Travel = ctx.model.Travel;
-    const Attachment = ctx.model.Attachment;
-    Travel.belongsTo(Attachment, { foreignKey: 'thumbnail' });
-
-    const dataList = await Travel.findAll({
-      attributes: [
-        'id',
-        'thumbnail',
-        'travelTheme',
-        'travelLastTime',
-        'travelHas',
-        'travelLimiteNumber',
-        'travelBeginTime',
-        'travelEndTime',
-        'manPrice',
-        'travelFrom',
-        'travelTo',
-        'travelUsecar',
-        'linePlay',
-        'travelDesc',
-        'updateBy',
-        'createBy',
-        'updated_at',
-        'created_at',
-      ],
-      include: [{
-        model: Attachment,
-        attributes: ['id', 'fileType']
-      }],
-      order: [
-        ['created_at', 'DESC']
-      ],
-      limit: 3
-    });
-
-    return {
-      content: dataList,
-    };
-  }
-
-  async queryDetail(params) {
-    const ctx = this.ctx;
-    const Travel = ctx.model.Travel;
-    const TravelDay = ctx.model.TravelDay;
-    const TravelSign = ctx.model.TravelSign;
-    Travel.hasMany(TravelSign, { foreignKey: 'travelId' });
-    const { id } = params;
-    const res = await ctx.model.Travel.findOne({
-      where: {
-        id
-      },
-      include: [{
-        associate: Travel.hasMany(TravelDay, { foreignKey: 'travelId', sourceKey: 'id' }),
-        model: TravelDay,
-      }, {
-        associate: Travel.hasMany(TravelSign, { foreignKey: 'travelId', sourceKey: 'id' }),
-        model: TravelSign,
-      }]
-    });
-
-    return res;
-  }
-
-  async add(fieldsValue) {
-    const ctx = this.ctx;
-    const row = {
-      checkStatus: 0,
-      ...fieldsValue
-    };
-    const res = await ctx.model.Travel.create(row);
-
-    return {
-      rowsAffected: res,
-    };
-  }
-
-  async update(fieldsValue) {
-    const ctx = this.ctx;
-    const { id, ...restFieldsValue } = fieldsValue;
-    const res = await ctx.model.Travel.update(restFieldsValue, {
-      where: { id }
-    });
-
-    return { rowsAffected: res };
-  }
-
-  async check(fieldsValue) {
-    const ctx = this.ctx;
-    const { id, ...restFieldsValue } = fieldsValue;
-    const res = await ctx.model.Travel.update(restFieldsValue, {
-      where: { id }
-    });
-
-    return { rowsAffected: res };
-  }
-
-
-  async delete(params) {
-    const res = await this.ctx.model.Travel.destroy({
-      where: { id: params.id }
-    });
-    return res;
-  }
-
-  async addTravelDay(fieldsValueList) {
-    const ctx = this.ctx;
-    const res = await ctx.model.TravelDay.bulkCreate(fieldsValueList);
-
-    return {
-      rowsAffected: res,
-    };
-  }
-
-  async updateTravelDay(fieldsValueList) {
-    const ctx = this.ctx;
-    let updateList = [];
-    for (let i = 0; i < fieldsValueList.length; i++) {
-      let item = fieldsValueList[i];
-      updateList.push(
-        ctx.model.TravelDay.update(item, {
-          where: { id: item.id }
-        })
-      );
+        return {
+            content: dataList[1],
+            pageNumber,
+            pageSize,
+            totalElements: dataList[0].length,
+            totalPages: Math.ceil(dataList[0].length / pageSize)
+        };
     }
-    const res = await Promise.all(updateList);
 
-    return { rowsAffected: res };
-  }
+    async queryListTop3() {
+        const ctx = this.ctx;
+        const Travel = ctx.model.Travel;
+        const Attachment = ctx.model.Attachment;
+        Travel.belongsTo(Attachment, {foreignKey: 'thumbnail'});
 
-  async delete(params) {
-    const res = await this.ctx.model.Travel.destroy({
-      where: { id: params.id }
-    });
-    return res;
-  }
+        const dataList = await Travel.findAll({
+            where: {
+                isRecommend: 1
+            },
+            attributes: [
+                'id',
+                'thumbnail',
+                'travelTheme',
+                'travelLastTime',
+                'travelHas',
+                'travelLimiteNumber',
+                'travelBeginTime',
+                'travelEndTime',
+                'manPrice',
+                'travelFrom',
+                'travelTo',
+                'travelUsecar',
+                'linePlay',
+                'travelDesc',
+                'updateBy',
+                'createBy',
+                'updated_at',
+                'created_at',
+            ],
+            include: [{
+                model: Attachment,
+                attributes: ['id', 'fileType']
+            }],
+            order: [
+                ['created_at', 'DESC']
+            ],
+            limit: 3
+        });
 
-  async deleteTravelDay(params) {
-    const res = await this.ctx.model.TravelDay.destroy({
-      where: { travelId: params.id }
-    });
-    return res;
-  }
+        return {
+            content: dataList,
+        };
+    }
 
-  /* 报名自驾游 */
-  async signTravel(fieldsValue) {
-    const ctx = this.ctx;
-    fieldsValue.orderId = `${new Date().getTime()}${fieldsValue.userId.substr(-4)}`;
-    const row = {
-      ...fieldsValue
-    };
-    const res = await ctx.model.TravelSign.create(row);
+    async queryDetail(params) {
+        const ctx = this.ctx;
+        const Travel = ctx.model.Travel;
+        const TravelDay = ctx.model.TravelDay;
+        const TravelSign = ctx.model.TravelSign;
+        Travel.hasMany(TravelSign, {foreignKey: 'travelId'});
+        const {id} = params;
+        const res = await ctx.model.Travel.findOne({
+            where: {
+                id
+            },
+            include: [{
+                associate: Travel.hasMany(TravelDay, {foreignKey: 'travelId', sourceKey: 'id'}),
+                model: TravelDay,
+            }, {
+                associate: Travel.hasMany(TravelSign, {foreignKey: 'travelId', sourceKey: 'id'}),
+                model: TravelSign,
+            }]
+        });
 
-    return {
-      rowsAffected: res,
-    };
-  }
+        return res;
+    }
 
-  /* 查询订单列表 */
-  async queryOrderList(params) {
-    const ctx = this.ctx;
-    const Sequelize = this.app.Sequelize;
-    const Travel = ctx.model.Travel;
-    const TravelSign = ctx.model.TravelSign;
-    TravelSign.belongsTo(Travel, { foreignKey: 'travelId', targetKey: 'id' });
-    const { pageNumber = 1, pageSize = 10, userId = '', state = 0 } = params;
-    const whereCondition = {
-      userId,
-      state
-    };
+    async add(fieldsValue) {
+        const ctx = this.ctx;
+        const row = {
+            checkStatus: 0,
+            ...fieldsValue
+        };
+        const res = await ctx.model.Travel.create(row);
 
-    const dataList = await Promise.all([
-      TravelSign.findAll({
-        where: whereCondition
-      }),
-      TravelSign.findAll({
-        where: whereCondition,
-        attributes: [
-          'id',
-          'travelId',
-          'state',
-          'updated_at',
-          'created_at',
-        ],
-        include: [{
-          model: Travel
-        }],
-        order: [
-          ['created_at', 'DESC']
-        ],
-        limit: +pageSize,
-        offset: (pageNumber - 1) * pageSize,
-      })
-    ]);
+        return {
+            rowsAffected: res,
+        };
+    }
 
-    return {
-      content: dataList[1],
-      pageNumber,
-      pageSize,
-      totalElements: dataList[0].length,
-      totalPages: Math.ceil(dataList[0].length / pageSize)
-    };
-  }
+    async update(fieldsValue) {
+        const ctx = this.ctx;
+        const {id, ...restFieldsValue} = fieldsValue;
+        const res = await ctx.model.Travel.update(restFieldsValue, {
+            where: {id}
+        });
 
-  /* 添加参与者 */
-  async addParticipants(fieldsValueList) {
-    const ctx = this.ctx;
-    const res = await ctx.model.TravelSignParticipant.bulkCreate(fieldsValueList);
+        return {rowsAffected: res};
+    }
 
-    return {
-      rowsAffected: res,
-    };
-  }
+    async check(fieldsValue) {
+        const ctx = this.ctx;
+        const {id, ...restFieldsValue} = fieldsValue;
+        const res = await ctx.model.Travel.update(restFieldsValue, {
+            where: {id}
+        });
+
+        return {rowsAffected: res};
+    }
+
+
+    async delete(params) {
+        const res = await this.ctx.model.Travel.destroy({
+            where: {id: params.id}
+        });
+        return res;
+    }
+
+    async addTravelDay(fieldsValueList) {
+        const ctx = this.ctx;
+        const res = await ctx.model.TravelDay.bulkCreate(fieldsValueList);
+
+        return {
+            rowsAffected: res,
+        };
+    }
+
+    async updateTravelDay(fieldsValueList) {
+        const ctx = this.ctx;
+        let updateList = [];
+        for (let i = 0; i < fieldsValueList.length; i++) {
+            let item = fieldsValueList[i];
+            updateList.push(
+                ctx.model.TravelDay.update(item, {
+                    where: {id: item.id}
+                })
+            );
+        }
+        const res = await Promise.all(updateList);
+
+        return {rowsAffected: res};
+    }
+
+    async delete(params) {
+        const res = await this.ctx.model.Travel.destroy({
+            where: {id: params.id}
+        });
+        return res;
+    }
+
+    async deleteTravelDay(params) {
+        const res = await this.ctx.model.TravelDay.destroy({
+            where: {travelId: params.id}
+        });
+        return res;
+    }
+
+    /* 报名自驾游 */
+    async signTravel(fieldsValue) {
+        const ctx = this.ctx;
+        fieldsValue.orderId = `${new Date().getTime()}${fieldsValue.userId.substr(-4)}`;
+        const row = {
+            ...fieldsValue
+        };
+        const res = await ctx.model.TravelSign.create(row);
+
+        return {
+            rowsAffected: res,
+        };
+    }
+
+    /* 查询订单列表 */
+    async queryOrderList(params) {
+        const ctx = this.ctx;
+        const Sequelize = this.app.Sequelize;
+        const Travel = ctx.model.Travel;
+        const TravelSign = ctx.model.TravelSign;
+        TravelSign.belongsTo(Travel, {foreignKey: 'travelId', targetKey: 'id'});
+        const {pageNumber = 1, pageSize = 10, userId = '', state = 0} = params;
+        const whereCondition = {
+            userId,
+            state
+        };
+
+        const dataList = await Promise.all([
+            TravelSign.findAll({
+                where: whereCondition
+            }),
+            TravelSign.findAll({
+                where: whereCondition,
+                attributes: [
+                    'id',
+                    'travelId',
+                    'state',
+                    'updated_at',
+                    'created_at',
+                ],
+                include: [{
+                    model: Travel
+                }],
+                order: [
+                    ['created_at', 'DESC']
+                ],
+                limit: +pageSize,
+                offset: (pageNumber - 1) * pageSize,
+            })
+        ]);
+
+        return {
+            content: dataList[1],
+            pageNumber,
+            pageSize,
+            totalElements: dataList[0].length,
+            totalPages: Math.ceil(dataList[0].length / pageSize)
+        };
+    }
+
+    /* 添加参与者 */
+    async addParticipants(fieldsValueList) {
+        const ctx = this.ctx;
+        const res = await ctx.model.TravelSignParticipant.bulkCreate(fieldsValueList);
+
+        return {
+            rowsAffected: res,
+        };
+    }
 }
 
 module.exports = TravelService;

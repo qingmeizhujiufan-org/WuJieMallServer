@@ -178,6 +178,23 @@ class RoomController extends BaseController {
             this.fail({backMsg: "查询失败！"});
         }
     }
+
+    /* 推荐 */
+    async recommend() {
+        const ctx = this.ctx;
+        const fieldsValue = ctx.request.body;
+        const result = ctx.model.Room.update({
+            isRecommend: fieldsValue.isRecommend
+        }, {where: {id: fieldsValue.id}});
+        if(result) {
+            this.success({
+                backData: result,
+                backMsg: "更新成功！"
+            })
+        }else {
+            this.fail({backMsg: "更新失败！"});
+        }
+    }
 }
 
 module.exports = RoomController;

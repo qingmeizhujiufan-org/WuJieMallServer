@@ -6,7 +6,7 @@ class Wechat {
     constructor(appId, appSecret) {
         this.appId = appId;
         this.appSecret = appSecret;
-        this.client = new OAuth(this.appId, this.appSecret, this.getToken, this.setToken);
+        this.client = new OAuth(this.appId, this.appSecret);
     }
     //从缓存中获取用户的assets token
     getToken(openid, callback) {

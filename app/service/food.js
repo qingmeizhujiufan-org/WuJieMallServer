@@ -61,6 +61,7 @@ class FoodService extends Service {
                     'foodDate',
                     'foodNetWeight',
                     'mark',
+                    'isRecommend',
                     'update_by',
                     'create_by',
                     'updated_at',

@@ -244,6 +244,23 @@ class HomeController extends BaseController {
             }
         }
     }
+
+    /* 推荐 */
+    async recommend() {
+        const ctx = this.ctx;
+        const fieldsValue = ctx.request.body;
+        const result = ctx.model.Food.update({
+            isRecommend: fieldsValue.isRecommend
+        }, {where: {id: fieldsValue.id}});
+        if(result) {
+            this.success({
+                backData: result,
+                backMsg: "更新成功！"
+            })
+        }else {
+            this.fail({backMsg: "更新失败！"});
+        }
+    }
 }
 
 module.exports = HomeController;

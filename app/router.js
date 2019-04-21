@@ -54,7 +54,8 @@ module.exports = app => {
     router.post('/api/food/categoryUpdate', UserInterceptor, controller.food.categoryUpdate);
     /* 删除产品分类信息 */
     router.post('/api/food/categoryDelete', UserInterceptor, controller.food.categoryDelete);
-
+    /* 推荐 */
+    router.post('/api/food/recommend', controller.food.recommend);
 
     /* 查询商铺列表 */
     router.get('/api/shop/queryList', UserInterceptor, controller.shop.queryList);
@@ -75,6 +76,8 @@ module.exports = app => {
     /*
      * APP接口
      */
+    /* 微信授权登录 */
+    router.get('/api/app/login', controller.app.login);
     /* 移动获取顶部滚动图片 */
     router.get('/api/app/queryTopSliderList', controller.app.queryTopSliderList);
     /* 查询顶部滚动图片详情 */
@@ -122,6 +125,8 @@ module.exports = app => {
     router.get('/api/room/comment', controller.room.queryCommentList);
      /* 民宿订单列表查询 */
     // router.get('/api/room/queryOrderList', controller.room.queryOrderList);
+    /* 推荐 */
+    router.post('/api/room/recommend', controller.room.recommend);
 
     /* 旅游商家列表查询 */
     router.get('/api/travelKeeper/queryList', controller.travelKeeper.queryList);
@@ -133,7 +138,8 @@ module.exports = app => {
     router.post('/api/travelKeeper/update', controller.travelKeeper.update);
     /* 旅游商家更新 */
     router.post('/api/travelKeeper/check', controller.travelKeeper.check);
-
+    /* 旅游订单列表查询 */
+    router.get('/api/travelKeeper/queryOrderList', controller.travelKeeper.queryOrderList);
 
     /* 查询主题旅游列表 */
     router.get('/api/travel/queryList', controller.travel.queryList);
@@ -151,8 +157,8 @@ module.exports = app => {
     router.post('/api/travel/signTravel', controller.travel.signTravel);
     /* 新增主题旅游审核 */
     router.post('/api/travel/check', controller.travel.check);
-     /* 旅游订单列表查询 */
-    router.get('/api/travel/queryOrderList', controller.travel.queryOrderList);
+    /* 推荐 */
+    router.post('/api/travel/recommend', controller.travel.recommend);
 
     /* 收获地址列表查询*/
     router.get('/api/address/queryList', controller.address.queryList);

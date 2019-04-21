@@ -135,6 +135,11 @@ module.exports = app => {
             type: STRING(255),
             field: 'mark'
         },
+        /* 是否推荐 */
+        isRecommend: {
+          type: INTEGER,
+          field: 'is_recommend'
+        },
         /* 修改人 */
         updateBy: {
             type: STRING(255),
