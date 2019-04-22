@@ -138,8 +138,7 @@ module.exports = app => {
     router.post('/api/travelKeeper/update', controller.travelKeeper.update);
     /* 旅游商家更新 */
     router.post('/api/travelKeeper/check', controller.travelKeeper.check);
-    /* 旅游订单列表查询 */
-    router.get('/api/travelKeeper/queryOrderList', controller.travelKeeper.queryOrderList);
+    
 
     /* 查询主题旅游列表 */
     router.get('/api/travel/queryList', controller.travel.queryList);
@@ -159,6 +158,8 @@ module.exports = app => {
     router.post('/api/travel/check', controller.travel.check);
     /* 推荐 */
     router.post('/api/travel/recommend', controller.travel.recommend);
+    /* 旅游订单列表查询 */
+    router.get('/api/travel/queryOrderList', controller.travel.queryOrderList);
        /* 旅游订单列表查询 */
     router.get('/api/travel/queryOrderDetail', controller.travel.queryOrderDetail);
 

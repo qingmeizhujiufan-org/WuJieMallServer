@@ -141,13 +141,13 @@ class TravelController extends BaseController {
         }
     }
 
-      /* 查询订单列表 */
+    /* 查询报名订单 */
     async queryOrderList() {
         const ctx = this.ctx;
         const params = ctx.query;
+        params.pageNumber = ctx.helper.parseInt(params.pageNumber);
+        params.pageSize = ctx.helper.parseInt(params.pageSize);
         const result = await ctx.service.travel.queryOrderList(params);
-        // const headerPicList = await ctx.service.attachment.queryListByIds(result.Travel.headerPic);
-        // result.Travel.headerPic = headerPicList;
         if (result) {
             this.success({
                 backData: result,

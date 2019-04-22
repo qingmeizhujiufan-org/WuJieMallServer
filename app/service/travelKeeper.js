@@ -82,7 +82,8 @@ class TravelKeeperService extends Service {
                 'headerPic',
                 'detailPic',
                 'travelKeeperName',
-                'IDNumber','keeperName',
+                'IDNumber',
+                'keeperName',
                 'telephone',
                 'phone',
                 'travelKeeperAddress',
@@ -209,68 +210,6 @@ class TravelKeeperService extends Service {
         });
 
         return {rowsAffected: res};
-    }
-
-    /* 查询旅游订单 */
-    async queryOrderList(params) {
-        const ctx = this.ctx;
-        const Sequelize = this.app.Sequelize;
-        const TravelSign = ctx.model.TravelSign;
-        const TravelSignParticipant = ctx.model.TravelSignParticipant;
-        TravelSign.hasMany(TravelSignParticipant, {foreignKey: 'id'});
-        const {travelkeeperId, pageNumber = 1, pageSize = 10, keyWords = ''} = params;
-        const whereCondition = {
-            '$or': {
-                orderId: {
-                    '$like': '%' + keyWords + '%'
-                },
-            },
-            '$and': {
-                travelkeeperId: travelkeeperId
-            }
-        };
-
-        const dataList = await Promise.all([
-            TravelSign.findAll({
-                where: whereCondition,
-            }),
-            TravelSign.findAll({
-                where: whereCondition,
-                attributes: [
-                    'id',
-                    'travelId',
-                    'travelkeeperId',
-                    'orderId',
-                    'userId',
-                    'signDate',
-                    'manNum',
-                    'childNum',
-                    'contract',
-                    'contractPhone',
-                    'plateNumber',
-                    'totalMoney',
-                    'state',
-                    'updated_at',
-                    'created_at',
-                ],
-                include: [{
-                    model: TravelSignParticipant
-                }],
-                order: [
-                    ['created_at', 'DESC']
-                ],
-                limit: pageSize,
-                offset: (pageNumber - 1) * pageSize,
-            })
-        ]);
-
-        return {
-            content: dataList[1],
-            pageNumber,
-            pageSize,
-            totalElements: dataList[0].length,
-            totalPages: Math.ceil(dataList[0].length / pageSize)
-        };
     }
 }
 
