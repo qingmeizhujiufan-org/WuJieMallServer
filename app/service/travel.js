@@ -281,6 +281,49 @@ class TravelService extends Service {
         };
     }
 
+    /* 查询订单详情 */
+  async queryOrderDetail(params) {
+    const ctx = this.ctx;
+    const Sequelize = this.app.Sequelize;
+    const Travel = ctx.model.Travel;
+    const TravelKeeper =  ctx.model.TravelKeeper;
+    const TravelSign = ctx.model.TravelSign;
+    TravelSign.belongsTo(Travel, { foreignKey: 'travelId', targetKey: 'id' });
+    TravelSign.belongsTo(TravelKeeper, { foreignKey: 'travelkeeperId', targetKey: 'id' });
+    const { id = '' } = params;
+
+    const res = TravelSign.findOne({
+      where: { id: id },
+      // attributes: [
+      //   'id',
+      //   'thumbnail',
+      //   'travelTheme',
+      //   'travelLastTime',
+      //   'travelHas',
+      //   'travelLimiteNumber',
+      //   'travelBeginTime',
+      //   'travelEndTime',
+      //   'manPrice',
+      //   'travelFrom',
+      //   'travelTo',
+      //   'travelUsecar',
+      //   'linePlay',
+      //   'travelDesc',
+      //   'updateBy',
+      //   'createBy',
+      //   'updated_at',
+      //   'created_at',
+      // ],
+      include: [{
+        model: Travel
+      }, {
+        model: TravelKeeper
+      }]
+    })
+
+    return res
+  }
+
     /* 添加参与者 */
     async addParticipants(fieldsValueList) {
         const ctx = this.ctx;

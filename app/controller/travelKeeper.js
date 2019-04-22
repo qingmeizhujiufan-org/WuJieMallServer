@@ -139,21 +139,21 @@ class travelKeeperController extends BaseController {
         }
     }
 
-    async check() {
-        const ctx = this.ctx;
-        const params = ctx.request.body;
-        const result = await ctx.service.travelKeeper.check(params);
+    // async check() {
+    //     const ctx = this.ctx;
+    //     const params = ctx.request.body;
+    //     const result = await ctx.service.travelKeeper.check(params);
 
-        if (result) {
-            this.success({
-                backMsg: "删除旅游商家信息成功！"
-            });
-        } else {
-            this.fail({
-                backMsg: "删除失败！"
-            });
-        }
-    }
+    //     if (result) {
+    //         this.success({
+    //             backMsg: "删除旅游商家信息成功！"
+    //         });
+    //     } else {
+    //         this.fail({
+    //             backMsg: "删除失败！"
+    //         });
+    //     }
+    // }
 
     /* 获取最新三条旅游商家信息 */
     async queryListTop3() {

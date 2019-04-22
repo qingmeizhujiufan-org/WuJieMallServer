@@ -32,6 +32,16 @@ module.exports = app => {
             type: STRING(255),
             field: 'hotel_name'
         },
+          /* 身份证 */
+        keeperName: {
+            type: STRING(255),
+            field: 'keeper_name'
+        },
+          /* 身份证 */
+        IDNumber: {
+            type: STRING(255),
+            field: 'ID_number'
+        },
         /* 咨询电话 */
         telephone: {
             type: STRING(32),

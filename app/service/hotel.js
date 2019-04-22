@@ -31,6 +31,8 @@ class HotelService extends Service {
                     'headerPic',
                     'detailPic',
                     'hotelName',
+                    'keeperName',
+                    'IDNumber',
                     'telephone',
                     'hotelPhone',
                     'hotelAddress',

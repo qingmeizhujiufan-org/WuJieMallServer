@@ -159,6 +159,8 @@ module.exports = app => {
     router.post('/api/travel/check', controller.travel.check);
     /* 推荐 */
     router.post('/api/travel/recommend', controller.travel.recommend);
+       /* 旅游订单列表查询 */
+    router.get('/api/travel/queryOrderDetail', controller.travel.queryOrderDetail);
 
     /* 收获地址列表查询*/
     router.get('/api/address/queryList', controller.address.queryList);
