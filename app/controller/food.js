@@ -113,6 +113,23 @@ class HomeController extends BaseController {
         }
     }
 
+     async check() {
+        const ctx = this.ctx;
+        const fieldsValue = ctx.request.body;
+        const result = await ctx.service.food.check(fieldsValue);
+
+        if (result.rowsAffected) {
+            this.success({
+                backData: result,
+                backMsg: "食品信息审核成功！"
+            });
+        } else {
+            this.fail({
+                backMsg: "食品信息审核失败！"
+            });
+        }
+    }
+
     async delete() {
         const ctx = this.ctx;
         const params = ctx.request.body;

@@ -3,7 +3,7 @@
 const Moment = require('moment');
 
 module.exports = app => {
-    const {UUIDV1, STRING, DATE} = app.Sequelize;
+    const {UUIDV1, INTEGER,STRING, DATE} = app.Sequelize;
     const Shop = app.model.define('shop', {
         /* 店铺ID */
         id: {
@@ -67,6 +67,11 @@ module.exports = app => {
         updateBy: {
             type: STRING(255),
             field: 'update_by'
+        },
+            /* 审核状态 */
+        checkStatus: {
+          type: INTEGER,
+          field: 'check_status'
         },
         //店铺创建者
         createBy: {

@@ -235,52 +235,6 @@ class TravelService extends Service {
     };
   }
 
-  /* 查询订单列表 */
-  // async queryOrderList(params) {
-  //   const ctx = this.ctx;
-  //   const Sequelize = this.app.Sequelize;
-  //   const Travel = ctx.model.Travel;
-  //   const TravelSign = ctx.model.TravelSign;
-  //   TravelSign.belongsTo(Travel, { foreignKey: 'travelId', targetKey: 'id' });
-  //   const { pageNumber = 1, pageSize = 10, userId = '', state = 0 } = params;
-  //   const whereCondition = {
-  //     userId,
-  //     state
-  //   };
-
-  //   const dataList = await Promise.all([
-  //     TravelSign.findAll({
-  //       where: whereCondition
-  //     }),
-  //     TravelSign.findAll({
-  //       where: whereCondition,
-  //       attributes: [
-  //         'id',
-  //         'travelId',
-  //         'state',
-  //         'updated_at',
-  //         'created_at',
-  //       ],
-  //       include: [{
-  //         model: Travel
-  //       }],
-  //       order: [
-  //         ['created_at', 'DESC']
-  //       ],
-  //       limit: +pageSize,
-  //       offset: (pageNumber - 1) * pageSize,
-  //     })
-  //   ]);
-
-  //   return {
-  //     content: dataList[1],
-  //     pageNumber,
-  //     pageSize,
-  //     totalElements: dataList[0].length,
-  //     totalPages: Math.ceil(dataList[0].length / pageSize)
-  //   };
-  // }
-
   /* 查询旅游订单 */
   async queryOrderList(params) {
     const ctx = this.ctx;

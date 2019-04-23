@@ -2,38 +2,38 @@
 
 const Service = require('egg').Service;
 
-class TravelKeeperService extends Service {
+class FoodKeeperService extends Service {
     async queryList(params) {
         const ctx = this.ctx;
         const Sequelize = this.app.Sequelize;
-        const TravelKeeper = ctx.model.TravelKeeper;
+        const FoodKeeper = ctx.model.FoodKeeper;
         const Attachment = ctx.model.Attachment;
-        TravelKeeper.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        FoodKeeper.belongsTo(Attachment, {foreignKey: 'thumbnail'});
         const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
         const whereCondition = {
             '$or': {
-                travelKeeperName: {
+                foodKeeperName: {
                     '$like': '%' + keyWords + '%'
                 },
             }
         };
 
         const dataList = await Promise.all([
-            TravelKeeper.findAll({
+            FoodKeeper.findAll({
                 where: whereCondition,
             }),
-            TravelKeeper.findAll({
+            FoodKeeper.findAll({
                 where: whereCondition,
                 attributes: [
                     'id',
                     'headerPic',
                     'detailPic',
-                    'travelKeeperName',
+                    'foodKeeperName',
                     'telephone',
                     'keeperName',
                     'IDNumber',
                     'phone',
-                    'travelKeeperAddress',
+                    'foodKeeperAddress',
                     'mark',
                     'businessStatus',
                     'businessStatusText',
@@ -67,12 +67,12 @@ class TravelKeeperService extends Service {
     async queryMobileList(params) {
         const ctx = this.ctx;
         const Sequelize = this.app.Sequelize;
-        const TravelKeeper = ctx.model.TravelKeeper;
+        const FoodKeeper = ctx.model.FoodKeeper;
         const Attachment = ctx.model.Attachment;
-        TravelKeeper.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        FoodKeeper.belongsTo(Attachment, {foreignKey: 'thumbnail'});
         const {hotelId} = params;
 
-        const dataList = await TravelKeeper.findAll({
+        const dataList = await FoodKeeper.findAll({
             where: {
                 hotelId,
                 state: 2
@@ -81,12 +81,12 @@ class TravelKeeperService extends Service {
                 'id',
                 'headerPic',
                 'detailPic',
-                'travelKeeperName',
+                'foodKeeperName',
                 'IDNumber',
                 'keeperName',
                 'telephone',
                 'phone',
-                'travelKeeperAddress',
+                'foodKeeperAddress',
                 'mark',
                 'businessStatus',
                 'businessStatusText',
@@ -110,25 +110,25 @@ class TravelKeeperService extends Service {
 
     async queryListTop3() {
         const ctx = this.ctx;
-        const TravelKeeper = ctx.model.TravelKeeper;
+        const FoodKeeper = ctx.model.FoodKeeper;
         const Attachment = ctx.model.Attachment;
-        TravelKeeper.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        FoodKeeper.belongsTo(Attachment, {foreignKey: 'thumbnail'});
 
-        const dataList = await TravelKeeper.findAll({
+        const dataList = await FoodKeeper.findAll({
             attributes: [
                 'id',
                 'thumbnail',
-                'TravelKeeperLastTime',
-                'TravelKeeperHas',
-                'TravelKeeperLimiteNumber',
-                'TravelKeeperBeginTime',
-                'TravelKeeperEndTime',
+                'foodKeeperLastTime',
+                'foodKeeperHas',
+                'foodKeeperLimiteNumber',
+                'foodKeeperBeginTime',
+                'foodKeeperEndTime',
                 'manPrice',
-                'TravelKeeperFrom',
-                'TravelKeeperTo',
-                'TravelKeeperUsecar',
+                'foodKeeperFrom',
+                'foodKeeperTo',
+                'foodKeeperUsecar',
                 'linePlay',
-                'TravelKeeperDesc',
+                'foodKeeperDesc',
                 'state',
                 'updateBy',
                 'createBy',
@@ -150,77 +150,11 @@ class TravelKeeperService extends Service {
         };
     }
 
-     /* 查询旅游订单 */
-  async queryOrderList(params) {
-    const ctx = this.ctx;
-    const Sequelize = this.app.Sequelize;
-    const Travel = ctx.model.Travel;
-    const TravelSign = ctx.model.TravelSign;
-    const TravelSignParticipant = ctx.model.TravelSignParticipant;
-    TravelSign.belongsTo(Travel, { foreignKey: 'travelId', targetKey: 'id' });
-    TravelSign.hasMany(TravelSignParticipant, { foreignKey: 'id' });
-    const { pageNumber = 1, pageSize = 10, keyWords = '', travelkeeperId } = params;
-    const whereCondition = {
-      '$or': {
-        orderId: {
-          '$like': '%' + keyWords + '%'
-        },
-      },
-      '$and': {
-        travelkeeperId
-      }
-    };
-
-    const dataList = await Promise.all([
-      TravelSign.findAll({
-        where: whereCondition,
-      }),
-      TravelSign.findAll({
-        where: whereCondition,
-        attributes: [
-          'id',
-          'travelId',
-          'travelkeeperId',
-          'orderId',
-          'userId',
-          'signDate',
-          'manNum',
-          'childNum',
-          'contract',
-          'contractPhone',
-          'plateNumber',
-          'totalMoney',
-          'state',
-          'updated_at',
-          'created_at',
-        ],
-        include: [{
-          model: TravelSignParticipant
-        }, {
-          model: Travel
-        }],
-        order: [
-          ['created_at', 'DESC']
-        ],
-        limit: pageSize,
-        offset: (pageNumber - 1) * pageSize,
-      })
-    ]);
-
-    return {
-      content: dataList[1],
-      pageNumber,
-      pageSize,
-      totalElements: dataList[0].length,
-      totalPages: Math.ceil(dataList[0].length / pageSize)
-    };
-  }
-
     async queryDetail(params) {
         const ctx = this.ctx;
-        const TravelKeeper = ctx.model.TravelKeeper;
+        const FoodKeeper = ctx.model.FoodKeeper;
         const {id} = params;
-        const res = await ctx.model.TravelKeeper.findOne({
+        const res = await ctx.model.FoodKeeper.findOne({
             where: {
                 id
             }
@@ -234,7 +168,7 @@ class TravelKeeperService extends Service {
         const row = {
             ...fieldsValue
         };
-        const res = await ctx.model.TravelKeeper.create(row);
+        const res = await ctx.model.FoodKeeper.create(row);
 
         return {
             rowsAffected: res,
@@ -244,7 +178,7 @@ class TravelKeeperService extends Service {
     async update(fieldsValue) {
         const ctx = this.ctx;
         const {id, ...restFieldsValue} = fieldsValue;
-        const res = await ctx.model.TravelKeeper.update(restFieldsValue, {
+        const res = await ctx.model.FoodKeeper.update(restFieldsValue, {
             where: {id}
         });
 
@@ -254,7 +188,7 @@ class TravelKeeperService extends Service {
     async check(fieldsValue) {
         const ctx = this.ctx;
         const {id, ...restFieldsValue} = fieldsValue;
-        const res = await ctx.model.TravelKeeper.update(restFieldsValue, {
+        const res = await ctx.model.FoodKeeper.update(restFieldsValue, {
             where: {id}
         });
 
@@ -262,16 +196,16 @@ class TravelKeeperService extends Service {
     }
 
     async delete(params) {
-        const res = await this.ctx.model.TravelKeeper.destroy({
+        const res = await this.ctx.model.FoodKeeper.destroy({
             where: {id: params.id}
         });
         return res;
     }
 
-    async orderCheck(fieldsValue) {
+    async check(fieldsValue) {
         const ctx = this.ctx;
         const {id, ...restFieldsValue} = fieldsValue;
-        const res = await ctx.model.TravelSign.update(restFieldsValue, {
+        const res = await ctx.model.FoodKeeper.update(restFieldsValue, {
             where: {id}
         });
 
@@ -279,4 +213,4 @@ class TravelKeeperService extends Service {
     }
 }
 
-module.exports = TravelKeeperService;
+module.exports = FoodKeeperService;

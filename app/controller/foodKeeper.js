@@ -3,13 +3,13 @@
 const BaseController = require('../core/BaseController');
 const uuidv1 = require('uuid/v1');
 
-class travelKeeperController extends BaseController {
+class foodKeeperController extends BaseController {
     async queryList() {
         const ctx = this.ctx;
         const params = ctx.query;
         params.pageNumber = ctx.helper.parseInt(params.pageNumber);
         params.pageSize = ctx.helper.parseInt(params.pageSize);
-        const result = await ctx.service.travelKeeper.queryList(params);
+        const result = await ctx.service.foodKeeper.queryList(params);
         if (result) {
             this.success({
                 backData: result,
@@ -25,7 +25,7 @@ class travelKeeperController extends BaseController {
         const params = ctx.query;
         params.pageNumber = ctx.helper.parseInt(params.pageNumber);
         params.pageSize = ctx.helper.parseInt(params.pageSize);
-        const result = await ctx.service.travelKeeper.queryKeeperList(params);
+        const result = await ctx.service.foodKeeper.queryKeeperList(params);
         if (result) {
             this.success({
                 backData: result,
@@ -39,7 +39,7 @@ class travelKeeperController extends BaseController {
     async queryMobileList() {
         const ctx = this.ctx;
         const params = ctx.query;
-        const result = await ctx.service.travelKeeper.queryMobileList(params);
+        const result = await ctx.service.foodKeeper.queryMobileList(params);
         if (result) {
             this.success({
                 backData: result,
@@ -53,7 +53,7 @@ class travelKeeperController extends BaseController {
     async queryDetail() {
         const ctx = this.ctx;
         const params = ctx.query;
-        const result = await ctx.service.travelKeeper.queryDetail(params);
+        const result = await ctx.service.foodKeeper.queryDetail(params);
 
         if (result) {
             const headerPicList = await ctx.service.attachment.queryListByIds(result.headerPic);
@@ -74,12 +74,12 @@ class travelKeeperController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         fieldsValue.checkStatus = 0;
-        const result = await ctx.service.travelKeeper.add(fieldsValue);
+        const result = await ctx.service.foodKeeper.add(fieldsValue);
 
         if (result.rowsAffected) {
             this.success({
                 backData: result,
-                backMsg: "新增旅游商家成功！"
+                backMsg: "新增食品商家成功！"
             });
         } else {
             this.fail({
@@ -92,16 +92,16 @@ class travelKeeperController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         fieldsValue.checkStatus = 0;
-        const result = await ctx.service.travelKeeper.update(fieldsValue);
+        const result = await ctx.service.foodKeeper.update(fieldsValue);
 
         if (result.rowsAffected) {
             this.success({
                 backData: result,
-                backMsg: "修改旅游商家信息成功！"
+                backMsg: "修改食品商家信息成功！"
             });
         } else {
             this.fail({
-                backMsg: "修改旅游商家信息失败！"
+                backMsg: "修改食品商家信息失败！"
             });
         }
     }
@@ -109,16 +109,16 @@ class travelKeeperController extends BaseController {
     async check() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
-        const result = await ctx.service.travelKeeper.check(fieldsValue);
+        const result = await ctx.service.foodKeeper.check(fieldsValue);
 
         if (result.rowsAffected) {
             this.success({
                 backData: result,
-                backMsg: "旅游商家信息审核成功！"
+                backMsg: "食品商家信息审核成功！"
             });
         } else {
             this.fail({
-                backMsg: "旅游商家信息审核失败！"
+                backMsg: "食品商家信息审核失败！"
             });
         }
     }
@@ -126,11 +126,11 @@ class travelKeeperController extends BaseController {
     async delete() {
         const ctx = this.ctx;
         const params = ctx.request.body;
-        const result = await ctx.service.travelKeeper.delete(params);
+        const result = await ctx.service.foodKeeper.delete(params);
 
         if (result) {
             this.success({
-                backMsg: "删除旅游商家信息成功！"
+                backMsg: "删除食品商家信息成功！"
             });
         } else {
             this.fail({
@@ -139,39 +139,7 @@ class travelKeeperController extends BaseController {
         }
     }
 
-   /* 查询报名订单 */
-    async queryOrderList() {
-        const ctx = this.ctx;
-        const params = ctx.query;
-        params.pageNumber = ctx.helper.parseInt(params.pageNumber);
-        params.pageSize = ctx.helper.parseInt(params.pageSize);
-        const result = await ctx.service.travelKeeper.queryOrderList(params);
-        if (result) {
-            this.success({
-                backData: result,
-                backMsg: "查询列表成功！"
-            })
-        } else {
-            this.fail({backMsg: "查询失败！"});
-        }
-    }
-
-      /* 报名订单更新 */
-    async orderCheck() {
-        const ctx = this.ctx;
-        const params = ctx.request.body;;
-        const result = await ctx.service.travelKeeper.orderCheck(params);
-        if (result) {
-            this.success({
-                backData: result,
-                backMsg: "订单状态更新成功！"
-            })
-        } else {
-            this.fail({backMsg: "订单状态更新失败！"});
-        }
-    }
-
-    /* 获取最新三条旅游商家信息 */
+    /* 获取最新三条食品商家信息 */
     async queryListTop3() {
         const ctx = this.ctx;
         const result = await ctx.service.travel.queryListTop3();
@@ -189,7 +157,7 @@ class travelKeeperController extends BaseController {
     async reserve() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
-        const result = await ctx.service.travelKeeper.reserve(fieldsValue);
+        const result = await ctx.service.foodKeeper.reserve(fieldsValue);
 
         if (result.rowsAffected) {
             this.success({
@@ -207,7 +175,7 @@ class travelKeeperController extends BaseController {
     async queryCommentList() {
         const ctx = this.ctx;
         const params = ctx.query;
-        const result = await ctx.service.travelKeeper.queryCommentList(params);
+        const result = await ctx.service.foodKeeper.queryCommentList(params);
         if (result) {
             const promiseList = [];
             result.map(item => {
@@ -229,4 +197,4 @@ class travelKeeperController extends BaseController {
 
 }
 
-module.exports = travelKeeperController;
+module.exports = foodKeeperController;

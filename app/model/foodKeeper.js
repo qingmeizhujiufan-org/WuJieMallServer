@@ -4,39 +4,39 @@ const Moment = require('moment');
 
 module.exports = app => {
     const {UUIDV1, INTEGER, STRING, DECIMAL, DATE, TEXT} = app.Sequelize;
-    const Hotel = app.model.define('Hotel', {
-        /* 民宿ID */
+    const FoodKeeper = app.model.define('FoodKeeper', {
+        /* 旅游商家ID */
         id: {
             type: UUIDV1,
             primaryKey: true,
             field: 'id'
         },
-        /* 民宿缩略图 */
+        /* 旅游商家缩略图 */
         thumbnail: {
             type: STRING(255),
             field: 'thumbnail'
         },
-        /* 民宿图 */
+        /* 旅游商家图 */
         headerPic: {
             type: STRING(255),
             field: 'header_pic'
         },
-        /* 民宿详情图 */
+        /* 旅游商家详情图 */
         detailPic: {
             type: STRING(255),
             field: 'detail_pic'
         },
-        /* 民宿名称 */
-        hotelName: {
+        /* 旅游商家名称 */
+        foodKeeperName: {
             type: STRING(255),
-            field: 'hotel_name'
+            field: 'food_keeper_name'
         },
-          /* 身份证 */
+         /* 身份证 */
         keeperName: {
             type: STRING(255),
             field: 'keeper_name'
         },
-          /* 身份证 */
+        /* 身份证 */
         IDNumber: {
             type: STRING(255),
             field: 'ID_number'
@@ -44,52 +44,37 @@ module.exports = app => {
         /* 咨询电话 */
         telephone: {
             type: STRING(32),
-            field: 'telephone'
+            field: 'food_keeper_telephone'
         },
         /* 固定电话 */
-        hotelPhone: {
+        phone: {
             type: STRING(32),
-            field: 'hotel_phone'
+            field: 'food_keeper_phone'
         },
         /* 地址 */
-        hotelAddress: {
+        foodKeeperAddress: {
             type: STRING(255),
-            field: 'hotel_address'
-        },
-        /* 民宿类型 */
-        hotelType: {
-            type: INTEGER,
-            field: 'hotel_type'
-        },
-        /* 民宿类型明文 */
-        hotelTypeText: {
-            type: STRING(255),
-            field: 'hotel_type_text'
-        },
-        /* 民宿状态 */
-        hotelStatus: {
-            type: INTEGER,
-            field: 'hotel_status'
-        },
-        /* 民宿状态明文 */
-        hotelStatusText: {
-            type: STRING(255),
-            field: 'hotel_status_text'
+            field: 'food_keeper_address'
         },
         // 备注
         mark: {
             type: STRING(255),
-            field: 'hotel_mark'
+            field: 'mark'
         },
-        /* 起步价 */
-        initialCharge: {
-            type: DECIMAL,
-            field: 'initial_charge'
-        },
-        /* 状态 */
-        state: {
+        /* 营业状态 */
+        businessStatus: {
           type: INTEGER,
-          field: 'state'
+          field: 'business_status'
+        },
+        /* 营业状态明文 */
+        businessStatusText: {
+          type: STRING(255),
+          field: 'business_status_text'
+        },
+          /* 审核状态 */
+        checkStatus: {
+          type: INTEGER,
+          field: 'check_status'
         },
         /* 修改人 */
         updateBy: {
@@ -115,8 +100,8 @@ module.exports = app => {
         }
     }, {
         freezeTableName: true,
-        tableName: 'hotel_info',
+        tableName: 'food_keeper_info',
         timestamps: true,
     });
-    return Hotel;
+    return FoodKeeper;
 };

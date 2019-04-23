@@ -22,6 +22,16 @@ module.exports = app => {
             type: STRING(255),
             field: 'room_id'
         },
+        /* 客户 ID */
+        userId: {
+            type: STRING(255),
+            field: 'user_id'
+        },
+         /* 商家 ID */
+        keeperId: {
+            type: STRING(255),
+            field: 'keeper_id'
+        },
         /* 开始日期 */
         beginDate: {
             type: DATE,
@@ -49,9 +59,9 @@ module.exports = app => {
             field: 'telephone'
         },
         /* 订单状态*/
-        stuatus: {
+        status: {
             type: INTEGER,
-            field: 'stuatus'
+            field: 'status'
         },
         created_at: {
             type: DATE,

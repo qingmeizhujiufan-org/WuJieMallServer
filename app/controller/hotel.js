@@ -119,6 +119,38 @@ class HotelController extends BaseController {
             this.fail({backMsg: "查询失败！"});
         }
     }
+
+    /* 查询报名订单 */
+    async queryOrderList() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        params.pageNumber = ctx.helper.parseInt(params.pageNumber);
+        params.pageSize = ctx.helper.parseInt(params.pageSize);
+        const result = await ctx.service.hotel.queryOrderList(params);
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: "查询列表成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
+      /* 报名订单更新 */
+    async orderCheck() {
+        const ctx = this.ctx;
+        const params = ctx.request.body;;
+        const result = await ctx.service.hotel.orderCheck(params);
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: "订单状态更新成功！"
+            })
+        } else {
+            this.fail({backMsg: "订单状态更新失败！"});
+        }
+    }
 }
 
 module.exports = HotelController;
