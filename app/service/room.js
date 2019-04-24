@@ -319,9 +319,12 @@ class RoomService extends Service {
     /* 预订 */
     async reserve(fieldsValue) {
         const ctx = this.ctx;
+        fieldsValue.orderId = `${new Date().getTime()}${fieldsValue.userId.substr(-4)}`;
         const row = {
-            ...fieldsValue
+            ...fieldsValue,
+            status: 0
         };
+
         const res = await ctx.model.HotelRoomReserve.create(row);
         const status_res = await  ctx.model.HotelRoom.update({
             roomStatus: 1

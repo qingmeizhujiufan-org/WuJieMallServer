@@ -107,9 +107,9 @@ module.exports = app => {
     /* 删除特色名宿 */
     router.post('/api/hotel/delete', controller.hotel.delete);
     /* 名宿订单查询（用户端） */
-    router.post('/api/hotel/queryOrderList', controller.hotel.queryOrderList);
+    router.get('/api/hotel/queryOrderList', controller.hotel.queryOrderList);
      /* 名宿订单查询（管理端） */
-    router.post('/api/hotelKeeper/queryOrderList', controller.hotel.queryOrderList);
+    router.get('/api/hotelKeeper/queryOrderList', controller.hotel.queryOrderList);
      /* 订单确认 */
     router.post('/api/hotelKeeper/orderCheck', controller.hotel.orderCheck);
     /* 民宿订单删除 (客户端)*/

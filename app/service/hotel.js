@@ -221,20 +221,17 @@ class HotelService extends Service {
     const ctx = this.ctx;
     const Sequelize = this.app.Sequelize;
     const Hotel = ctx.model.Hotel;
-    const Room = ctx.model.Room;
+    const Room = ctx.model.HotelRoom;
     const HotelRoomReserve = ctx.model.HotelRoomReserve;
     const TravelSignParticipant = ctx.model.TravelSignParticipant;
     HotelRoomReserve.belongsTo(Hotel, { foreignKey: 'hotelId', targetKey: 'id' });
     HotelRoomReserve.belongsTo(Room, { foreignKey: 'roomId', targetKey: 'id' });
     const { pageNumber = 1, pageSize = 10, keyWords = '' } = params;
 
-    const whereCondition = {
-      '$or': {
-        orderId: {
-          '$like': '%' + keyWords + '%'
-        }
-      }
-    };
+    const whereCondition = {};
+    if (keyWords !== '') {
+        whereCondition.orderId = keyWords;
+    }
     if (params.keeperId !== undefined) {
       whereCondition.keeperId = params.keeperId
     }
@@ -243,13 +240,14 @@ class HotelService extends Service {
     }
 
     const dataList = await Promise.all([
-      TravelSign.findAll({
+      HotelRoomReserve.findAll({
         where: whereCondition,
       }),
-      TravelSign.findAll({
+      HotelRoomReserve.findAll({
         where: whereCondition,
         attributes: [
           'id',
+          'orderId',
           'hotelId',
           'roomId',
           'userId',
@@ -259,16 +257,17 @@ class HotelService extends Service {
           'endDate',
           'days',
           'person',
+          'telephone',
           'status',
           'totalMoney',
-          'state',
+          'status',
           'updated_at',
           'created_at',
         ],
         include: [{
-          model: TravelSignParticipant
+          model: Room
         }, {
-          model: Travel
+          model: Hotel
         }],
         order: [
           ['created_at', 'DESC']

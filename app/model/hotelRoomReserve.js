@@ -12,6 +12,11 @@ module.exports = app => {
             field: 'id',
             defaultValue: UUIDV1,
         },
+         /* 订单ID */
+        orderId: {
+            type: UUIDV1,
+            field: 'order_id'
+        },
         /* hotel ID */
         hotelId: {
             type: STRING(255),
@@ -47,6 +52,11 @@ module.exports = app => {
             type: INTEGER,
             field: 'days'
         },
+         /* 总额 */
+        totalMoney: {
+            type: DECIMAL,
+            field: 'total_money'
+        },
         /* 住点人姓名 */
         person: {
             type: STRING(32),
@@ -62,6 +72,11 @@ module.exports = app => {
         status: {
             type: INTEGER,
             field: 'status'
+        },
+         /* 评论状态*/
+        commentStatus: {
+            type: INTEGER,
+            field: 'comment_status'
         },
         created_at: {
             type: DATE,
