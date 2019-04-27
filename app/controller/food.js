@@ -6,11 +6,27 @@ class HomeController extends BaseController {
     async queryList() {
         const ctx = this.ctx;
         const params = ctx.query;
-        console.log('params ===', params)
         params.pageNumber = ctx.helper.parseInt(params.pageNumber);
         params.pageSize = ctx.helper.parseInt(params.pageSize);
         if(params.state) params.state = ctx.helper.parseInt(params.state);
         const result = await ctx.service.food.queryList(params);
+        if (result) {
+
+            this.success({
+                backData: result,
+                backMsg: "查询列表成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
+    async queryAdminList() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        params.pageNumber = ctx.helper.parseInt(params.pageNumber);
+        params.pageSize = ctx.helper.parseInt(params.pageSize);
+        const result = await ctx.service.food.queryAdminList(params);
         if (result) {
 
             this.success({

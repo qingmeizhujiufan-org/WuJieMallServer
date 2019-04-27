@@ -37,7 +37,7 @@ class FoodKeeperService extends Service {
                     'mark',
                     'businessStatus',
                     'businessStatusText',
-                    'checkStatus',
+                    'state',
                     'updateBy',
                     'createBy',
                     'updated_at',

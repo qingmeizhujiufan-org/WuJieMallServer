@@ -101,7 +101,7 @@ class FoodService extends Service {
     async queryAdminList(params) {
         const ctx = this.ctx;
         const Sequelize = this.app.Sequelize;
-        const FoodKeeper = ctx.model.foodKeeper;
+        const FoodKeeper = ctx.model.FoodKeeper;
         const FoodCategory = ctx.model.FoodCategory;
         const Food = ctx.model.Food;
         const Attachment = ctx.model.Attachment;
@@ -132,9 +132,9 @@ class FoodService extends Service {
                 where: whereCondition,
                 attributes: [
                     'id',
-                    'shopId',
-                    [Sequelize.col('Shop.shop_name'), 'shopName'],
-                    [Sequelize.col('Shop.shop_address'), 'shopAddress'],
+                    'foodkeeperId',
+                    [Sequelize.col('FoodKeeper.keeper_name'), 'keeperName'],
+                    [Sequelize.col('FoodKeeper.food_keeper_address'), 'keeperAddress'],
                     'foodCategoryId',
                     [Sequelize.col('FoodCategory.food_category_name'), 'foodCategoryName'],
                     'foodCode',
@@ -164,7 +164,7 @@ class FoodService extends Service {
                     'created_at',
                 ],
                 include: [{
-                    model: Shop,
+                    model: FoodKeeper,
                     attributes: []
                 }, {
                     model: FoodCategory,

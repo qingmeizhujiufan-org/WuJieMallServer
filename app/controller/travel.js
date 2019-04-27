@@ -20,6 +20,22 @@ class TravelController extends BaseController {
         }
     }
 
+    async queryAdminList() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        params.pageNumber = ctx.helper.parseInt(params.pageNumber);
+        params.pageSize = ctx.helper.parseInt(params.pageSize);
+        const result = await ctx.service.travel.queryList(params);
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: "查询列表成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
     async queryDetail() {
         const ctx = this.ctx;
         const params = ctx.query;

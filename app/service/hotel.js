@@ -177,7 +177,7 @@ class HotelService extends Service {
         return res;
     }
 
-    /* 查询旅游订单 */
+    /* 查询民宿订单 */
     async queryOrderList(params) {
         const ctx = this.ctx;
         const Sequelize = this.app.Sequelize;
@@ -187,17 +187,17 @@ class HotelService extends Service {
         const TravelSignParticipant = ctx.model.TravelSignParticipant;
         HotelRoomReserve.belongsTo(Hotel, {foreignKey: 'hotelId', targetKey: 'id'});
         HotelRoomReserve.belongsTo(Room, {foreignKey: 'roomId', targetKey: 'id'});
-        const {pageNumber = 1, pageSize = 10, keyWords = ''} = params;
+        const {pageNumber = 1, pageSize = 10, keyWords = '', hotelkeeperId, userId} = params;
 
         const whereCondition = {};
         if (keyWords !== '') {
             whereCondition.orderId = keyWords;
         }
-        if (params.keeperId !== undefined) {
-            whereCondition.keeperId = params.keeperId
+        if (hotelkeeperId !== undefined) {
+            whereCondition.hotelId = hotelkeeperId
         }
-        if (params.userId !== undefined) {
-            whereCondition.userId = params.userId
+        if (userId !== undefined) {
+            whereCondition.userId = userId
         }
 
         const dataList = await Promise.all([
@@ -212,8 +212,7 @@ class HotelService extends Service {
                     'hotelId',
                     'roomId',
                     'userId',
-                    'userId',
-                    'keeperId',
+                    'hotelkeeperId',
                     'beginDate',
                     'endDate',
                     'days',

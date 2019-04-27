@@ -28,9 +28,10 @@ module.exports = app => {
     /* 角色列表 */
     router.get('/api/role/queryList', UserInterceptor, controller.role.queryList);
 
-    /* 查询产品列表 */
+    /* 查询商家食品列表 */
     router.get('/api/food/queryList', controller.food.queryList);
-
+    /* 查询审核通过食品列表 */
+    router.get('/api/food/queryAdminList', controller.food.queryAdminList);
     /* 查询商铺推荐产品列表 */
     router.get('/api/food/queryListByShopId', controller.food.queryListByShopId);
 
@@ -157,6 +158,8 @@ module.exports = app => {
 
     /* 查询主题旅游列表 */
     router.get('/api/travel/queryList', controller.travel.queryList);
+    /* 查询审核通过旅游列表 */
+    router.get('/api/travel/queryAdminList', controller.travel.queryAdminList);
     /* 查询主题旅游Top3 */
     router.get('/api/travel/queryListTop3', controller.travel.queryListTop3);
     /* 查询旅游详情 */

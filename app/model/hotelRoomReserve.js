@@ -33,9 +33,9 @@ module.exports = app => {
             field: 'user_id'
         },
          /* 商家 ID */
-        keeperId: {
+        hotelkeeperId: {
             type: STRING(255),
-            field: 'keeper_id'
+            field: 'hotelkeeper_id'
         },
         /* 开始日期 */
         beginDate: {

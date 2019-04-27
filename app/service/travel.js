@@ -74,6 +74,76 @@ class TravelService extends Service {
         };
     }
 
+    async queryAdminList(params) {
+        const ctx = this.ctx;
+        const Sequelize = this.app.Sequelize;
+        const Travel = ctx.model.Travel;
+        const TravelSign = ctx.model.TravelSign;
+        const Attachment = ctx.model.Attachment;
+        Travel.hasMany(TravelSign, {foreignKey: 'travelId'});
+        Travel.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        const {pageNumber = 1, pageSize = 10, keyWords = '', state} = params;
+        const whereCondition = {
+            '$or': {
+                travelTheme: {
+                    '$like': '%' + keyWords + '%'
+                },
+            }
+        };
+        if (state !== undefined && state !== null) whereCondition['$and'] = {state};
+
+        const dataList = await Promise.all([
+            Travel.findAll({
+                where: whereCondition,
+            }),
+            Travel.findAll({
+                where: whereCondition,
+                attributes: [
+                    'id',
+                    'thumbnail',
+                    'travelTheme',
+                    'travelLastTime',
+                    'travelHas',
+                    'travelLimiteNumber',
+                    'travelBeginTime',
+                    'travelEndTime',
+                    'manPrice',
+                    'travelFrom',
+                    'travelTo',
+                    'travelUsecar',
+                    'linePlay',
+                    'travelDesc',
+                    'state',
+                    'isRecommend',
+                    'updateBy',
+                    'createBy',
+                    'updated_at',
+                    'created_at',
+                ],
+                include: [{
+                    model: TravelSign,
+                    attributes: ['travelId']
+                }, {
+                    model: Attachment,
+                    attributes: ['id', 'fileType']
+                }],
+                order: [
+                    ['created_at', 'DESC']
+                ],
+                limit: pageSize,
+                offset: (pageNumber - 1) * pageSize,
+            })
+        ]);
+
+        return {
+            content: dataList[1],
+            pageNumber,
+            pageSize,
+            totalElements: dataList[0].length,
+            totalPages: Math.ceil(dataList[0].length / pageSize)
+        };
+    }
+
     async queryListTop3() {
         const ctx = this.ctx;
         const Travel = ctx.model.Travel;
