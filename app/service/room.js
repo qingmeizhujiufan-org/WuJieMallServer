@@ -10,7 +10,7 @@ class RoomService extends Service {
         const Room = ctx.model.HotelRoom;
         const Attachment = ctx.model.Attachment;
         Room.belongsTo(Attachment, {foreignKey: 'thumbnail'});
-        const {pageNumber = 1, pageSize = 10, keyWords = '', hotelId} = params;
+        const {pageNumber = 1, pageSize = 10, keyWords = '', hotelkeeperId} = params;
         const whereCondition = {
             '$or': {
                 roomName: {
@@ -18,7 +18,7 @@ class RoomService extends Service {
                 },
             },
             '$and': {
-                hotelId: hotelId
+                hotelId: hotelkeeperId
             }
         };
 
@@ -83,7 +83,7 @@ class RoomService extends Service {
         const Room = ctx.model.HotelRoom;
         const Attachment = ctx.model.Attachment;
         Room.belongsTo(Attachment, {foreignKey: 'thumbnail'});
-        const {pageNumber = 1, pageSize = 10, keyWords = '', hotelId} = params;
+        const {pageNumber = 1, pageSize = 10, keyWords = '', state} = params;
         const whereCondition = {
             '$or': {
                 roomName: {
@@ -91,6 +91,7 @@ class RoomService extends Service {
                 },
             }
         };
+        if (state !== undefined && state !== null) whereCondition['$and'] = {state};
 
         const dataList = await Promise.all([
             Room.findAll({
@@ -120,6 +121,7 @@ class RoomService extends Service {
                     'canAddbed',
                     'innerNeed',
                     'sale',
+                    'isRecommend',
                     'state',
                     'updateBy',
                     'createBy',
@@ -202,30 +204,44 @@ class RoomService extends Service {
 
     async queryListTop3() {
         const ctx = this.ctx;
-        const Room = ctx.model.HotelRoom;
+        const HotelRoom = ctx.model.HotelRoom;
         const Attachment = ctx.model.Attachment;
-        Room.belongsTo(Attachment, {foreignKey: 'thumbnail'});
+        HotelRoom.belongsTo(Attachment, {foreignKey: 'thumbnail'});
 
-        const dataList = await Room.findAll({
+        const dataList = await HotelRoom.findAll({
+            where: {
+              '$and': {
+                  state: 2,
+                  isRecommend: 1
+              }
+            },
             attributes: [
                 'id',
-                'thumbnail',
-                'RoomLastTime',
-                'RoomHas',
-                'RoomLimiteNumber',
-                'RoomBeginTime',
-                'RoomEndTime',
-                'manPrice',
-                'RoomFrom',
-                'RoomTo',
-                'RoomUsecar',
-                'linePlay',
-                'RoomDesc',
+                'detailPic',
+                'hotelId',
+                'roomName',
+                'roomPrice',
+                'roomStatus',
+                'bedModel',
+                'roomSize',
+                'stayPersonNum',
+                'internet',
+                'windowScenery',
+                'window',
+                'bathroom',
+                'breakfast',
+                'drink',
+                'facilities',
+                'payType',
+                'canCancel',
+                'canAddbed',
+                'innerNeed',
+                'sale',
                 'state',
                 'updateBy',
                 'createBy',
                 'updated_at',
-                'created_at',
+                'created_at'
             ],
             include: [{
                 model: Attachment,

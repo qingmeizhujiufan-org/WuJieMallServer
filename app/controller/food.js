@@ -9,6 +9,7 @@ class HomeController extends BaseController {
         console.log('params ===', params)
         params.pageNumber = ctx.helper.parseInt(params.pageNumber);
         params.pageSize = ctx.helper.parseInt(params.pageSize);
+        if(params.state) params.state = ctx.helper.parseInt(params.state);
         const result = await ctx.service.food.queryList(params);
         if (result) {
 
@@ -44,6 +45,19 @@ class HomeController extends BaseController {
         }
     }
 
+    /* 获取最新三条食品信息 */
+    async queryListTop3() {
+        const ctx = this.ctx;
+        const result = await ctx.service.food.queryListTop3();
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: "查询列表成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
 
     async queryDetail() {
         const ctx = this.ctx;

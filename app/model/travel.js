@@ -119,9 +119,9 @@ module.exports = app => {
             field: 'line_info'
         },
         /* 审核状态*/
-        checkStatus: {
+        state: {
             type: INTEGER,
-            field: 'check_status'
+            field: 'state'
         },
         /* 是否推荐 */
         isRecommend: {

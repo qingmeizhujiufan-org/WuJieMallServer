@@ -122,7 +122,6 @@ class RoomController extends BaseController {
         }
     }
 
-
     /* 获取最新三条民宿房间信息 */
     async queryListTop3() {
         const ctx = this.ctx;
@@ -179,11 +178,25 @@ class RoomController extends BaseController {
         }
     }
 
+    /* 获取最新三条房间信息 */
+    async queryListTop3() {
+        const ctx = this.ctx;
+        const result = await ctx.service.room.queryListTop3();
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: "查询列表成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
     /* 推荐 */
     async recommend() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
-        const result = ctx.model.Room.update({
+        const result = ctx.model.HotelRoom.update({
             isRecommend: fieldsValue.isRecommend
         }, {where: {id: fieldsValue.id}});
         if(result) {

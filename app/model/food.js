@@ -13,9 +13,9 @@ module.exports = app => {
             defaultValue: UUIDV1
         },
         /* 产品店铺ID */
-        shopId: {
-            type: STRING(255),
-            field: 'shop_id'
+        foodkeeperId: {
+            type: UUIDV1,
+            field: 'foodkeeper_id'
         },
         /* 产品分类ID */
         foodCategoryId: {
@@ -140,10 +140,10 @@ module.exports = app => {
           type: INTEGER,
           field: 'is_recommend'
         },
-          /* 审核状态 */
-        checkStatus: {
+        /* 审核状态 */
+        state: {
           type: INTEGER,
-          field: 'check_status'
+          field: 'state'
         },
         /* 修改人 */
         updateBy: {

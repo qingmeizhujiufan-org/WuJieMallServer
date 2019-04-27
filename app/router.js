@@ -58,6 +58,8 @@ module.exports = app => {
     router.post('/api/food/recommend', controller.food.recommend);
      /* 食品审核 */
     router.post('/api/food/check', controller.food.check);
+    /* 查询食品Top3 */
+    router.get('/api/food/queryListTop3', controller.food.queryListTop3);
 
 
     /* 查询商铺列表 */
@@ -94,8 +96,6 @@ module.exports = app => {
 
     /* 查询特色名宿列表 */
     router.get('/api/hotel/queryList', controller.hotel.queryList);
-    /* 查询主题旅游Top3 */
-    router.get('/api/hotel/queryListTop3', controller.hotel.queryListTop3);
     /* 移动端查询所有民宿 */
     router.get('/api/hotel/queryMobileList', controller.hotel.queryMobileList);
     /* 查询特色名宿详情 */
@@ -117,6 +117,8 @@ module.exports = app => {
 
     /* 查询名宿房间列表 */
     router.get('/api/room/queryList', controller.room.queryList);
+    /* 查询房间Top3 */
+    router.get('/api/room/queryListTop3', controller.room.queryListTop3);
     /* 管理员查询所有房间列表 */
     router.get('/api/room/queryAdminList', controller.room.queryAdminList);
     /* 移动端查询所有房间 */
@@ -177,7 +179,7 @@ module.exports = app => {
     // router.get('/api/travel/orderDelete', controller.travel.orderDelete);
     /* 旅游订单详情查询*/
     router.get('/api/travel/queryOrderDetail', controller.travel.queryOrderDetail);
-   
+
 
     /* 收获地址列表查询*/
     router.get('/api/address/queryList', controller.address.queryList);

@@ -106,20 +106,6 @@ class HotelController extends BaseController {
         }
     }
 
-    /* 获取最新三条主题旅游信息 */
-    async queryListTop3() {
-        const ctx = this.ctx;
-        const result = await ctx.service.hotel.queryListTop3();
-        if (result) {
-            this.success({
-                backData: result,
-                backMsg: "查询列表成功！"
-            })
-        } else {
-            this.fail({backMsg: "查询失败！"});
-        }
-    }
-
     /* 查询报名订单 */
     async queryOrderList() {
         const ctx = this.ctx;
