@@ -184,11 +184,10 @@ class HotelService extends Service {
         const Hotel = ctx.model.Hotel;
         const Room = ctx.model.HotelRoom;
         const HotelRoomReserve = ctx.model.HotelRoomReserve;
-        const TravelSignParticipant = ctx.model.TravelSignParticipant;
         HotelRoomReserve.belongsTo(Hotel, {foreignKey: 'hotelId', targetKey: 'id'});
         HotelRoomReserve.belongsTo(Room, {foreignKey: 'roomId', targetKey: 'id'});
-        const {pageNumber = 1, pageSize = 10, keyWords = '', hotelkeeperId, userId} = params;
-
+        const {pageNumber = 1, pageSize = 10, keyWords = '', hotelkeeperId, userId, status} = params;
+        console.log(params);
         const whereCondition = {};
         if (keyWords !== '') {
             whereCondition.orderId = keyWords;
@@ -198,6 +197,9 @@ class HotelService extends Service {
         }
         if (userId !== undefined) {
             whereCondition.userId = userId
+        }
+        if (status !== undefined && status !== "") {
+            whereCondition.status = status
         }
 
         const dataList = await Promise.all([

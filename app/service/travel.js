@@ -315,7 +315,7 @@ class TravelService extends Service {
         const TravelSign = ctx.model.TravelSign;
         const TravelSignParticipant = ctx.model.TravelSignParticipant;
         TravelSign.belongsTo(Travel, {foreignKey: 'travelId', targetKey: 'id'});
-        TravelSign.hasMany(TravelSignParticipant, {foreignKey: 'id'});
+        TravelSign.hasMany(TravelSignParticipant, {foreignKey: 'travelSignId'});
         const {pageNumber = 1, pageSize = 10, keyWords = '', userId, state} = params;
         const whereCondition = {
             '$or': {
@@ -381,8 +381,11 @@ class TravelService extends Service {
         const Travel = ctx.model.Travel;
         const TravelKeeper = ctx.model.TravelKeeper;
         const TravelSign = ctx.model.TravelSign;
+        const TravelSignParticipant = ctx.model.TravelSignParticipant;
+
         TravelSign.belongsTo(Travel, {foreignKey: 'travelId', targetKey: 'id'});
         TravelSign.belongsTo(TravelKeeper, {foreignKey: 'travelkeeperId', targetKey: 'id'});
+        TravelSign.hasMany(TravelSignParticipant, {foreignKey: 'travelSignId',targetKey: 'id'});
         const {id = ''} = params;
 
         const res = TravelSign.findOne({
@@ -411,6 +414,8 @@ class TravelService extends Service {
                 model: Travel
             }, {
                 model: TravelKeeper
+            },{
+                model: TravelSignParticipant
             }]
         })
 
