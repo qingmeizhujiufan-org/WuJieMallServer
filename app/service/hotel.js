@@ -41,6 +41,7 @@ class HotelService extends Service {
                     'hotelStatus',
                     'hotelStatusText',
                     'initialCharge',
+                    'grade',
                     'state',
                     'updateBy',
                     'createBy',
@@ -107,6 +108,7 @@ class HotelService extends Service {
                     'hotelStatus',
                     'hotelStatusText',
                     'initialCharge',
+                    'grade',
                     'state',
                     'updateBy',
                     'createBy',
@@ -139,7 +141,7 @@ class HotelService extends Service {
         const ctx = this.ctx;
         const Hotel = ctx.model.Hotel;
         const {id} = params;
-        const res = await ctx.model.Hotel.findOne({
+        const res = await Hotel.findOne({
             where: {
                 id
             }
@@ -186,20 +188,12 @@ class HotelService extends Service {
         const HotelRoomReserve = ctx.model.HotelRoomReserve;
         HotelRoomReserve.belongsTo(Hotel, {foreignKey: 'hotelId', targetKey: 'id'});
         HotelRoomReserve.belongsTo(Room, {foreignKey: 'roomId', targetKey: 'id'});
-        const {pageNumber = 1, pageSize = 10, keyWords = '', hotelkeeperId, userId, status} = params;
-        console.log(params);
+        const {pageNumber = 1, pageSize = 10, ...rest} = params;
         const whereCondition = {};
-        if (keyWords !== '') {
-            whereCondition.orderId = keyWords;
-        }
-        if (hotelkeeperId !== undefined) {
-            whereCondition.hotelId = hotelkeeperId
-        }
-        if (userId !== undefined) {
-            whereCondition.userId = userId
-        }
-        if (status !== undefined && status !== "") {
-            whereCondition.status = status
+        for (let key in rest) {
+            if (rest[key]) {
+                whereCondition[key] = rest[key];
+            }
         }
 
         const dataList = await Promise.all([

@@ -77,7 +77,7 @@ class HotelController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         const result = await ctx.service.hotel.update(fieldsValue);
-        if (result.rowsAffected) {
+        if (result.rowsAffected && result.rowsAffected[0] > 0) {
             this.success({
                 backData: result,
                 backMsg: "修改民宿信息成功！"
@@ -93,7 +93,7 @@ class HotelController extends BaseController {
         const ctx = this.ctx;
         const params = ctx.request.body;
         const result = await ctx.service.travel.delete(params);
-        const result_travel_day = await  ctx.service.travel.deleteTravelDay(params);
+        const result_travel_day = await ctx.service.travel.deleteTravelDay(params);
 
         if (result) {
             this.success({
@@ -123,10 +123,11 @@ class HotelController extends BaseController {
         }
     }
 
-      /* 报名订单更新 */
+    /* 报名订单更新 */
     async orderCheck() {
         const ctx = this.ctx;
-        const params = ctx.request.body;;
+        const params = ctx.request.body;
+        ;
         const result = await ctx.service.hotel.orderCheck(params);
         if (result) {
             this.success({

@@ -165,6 +165,7 @@ class FoodKeeperService extends Service {
 
     async add(fieldsValue) {
         const ctx = this.ctx;
+        fieldsValue.state = 0;
         const row = {
             ...fieldsValue
         };

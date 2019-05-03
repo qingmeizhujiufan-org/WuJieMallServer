@@ -14,7 +14,7 @@ class FoodService extends Service {
         Food.belongsTo(FoodKeeper, {foreignKey: 'foodkeeperId'});
         Food.belongsTo(FoodCategory, {foreignKey: 'foodCategoryId'});
         Food.belongsTo(Attachment, {foreignKey: 'thumbnail'});
-        const {pageNumber = 1, pageSize = 10, keyWords = '', foodkeeperId} = params;
+        const {pageNumber = 1, pageSize = 10, keyWords = '', ...rest} = params;
         const whereCondition = {
             '$or': {
                 foodName: {
@@ -27,10 +27,13 @@ class FoodService extends Service {
                     '$like': '%' + keyWords + '%'
                 },
             },
-            '$and': {
-                foodkeeperId: foodkeeperId
-            }
+            '$and': {}
         };
+        for (let key in rest) {
+            if (rest[key]) {
+                whereCondition['$and'][key] = rest[key];
+            }
+        }
 
         const dataList = await Promise.all([
             Food.findAll({

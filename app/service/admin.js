@@ -6,9 +6,18 @@ const UUID = require('uuid');
 class AdminService extends Service {
 
     async login(params) {
-        // 假如 我们拿到用户名以及密码从数据库获取用户详细信息
-        const user = await this.ctx.model.Admin.findOne({where: params});
-        return user;
+        const ctx = this.ctx;
+        const User = ctx.model.Admin;
+        const Attachment = ctx.model.Attachment;
+        User.belongsTo(Attachment, {foreignKey: 'avatarSrc'});
+        const res = await ctx.model.Admin.findOne({
+            where: params,
+            include: [{
+                model: Attachment,
+                attributes: ['id', 'fileType']
+            }],
+        });
+        return res;
     }
 
     async queryList(params) {

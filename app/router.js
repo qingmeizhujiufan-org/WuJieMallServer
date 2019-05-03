@@ -57,7 +57,7 @@ module.exports = app => {
     router.post('/api/food/categoryDelete', UserInterceptor, controller.food.categoryDelete);
     /* 推荐 */
     router.post('/api/food/recommend', controller.food.recommend);
-     /* 食品审核 */
+    /* 食品审核 */
     router.post('/api/food/check', controller.food.check);
     /* 查询食品Top3 */
     router.get('/api/food/queryListTop3', controller.food.queryListTop3);
@@ -66,7 +66,7 @@ module.exports = app => {
     /* 查询商铺列表 */
     router.get('/api/foodKeeper/queryList', UserInterceptor, controller.foodKeeper.queryList);
     /* 查询商铺详情 */
-    router.get('/api/foodKeeper/queryDetail', UserInterceptor,controller.foodKeeper.queryDetail);
+    router.get('/api/foodKeeper/queryDetail', controller.foodKeeper.queryDetail);
     /* 新增商铺 */
     router.post('/api/foodKeeper/add', UserInterceptor, controller.foodKeeper.add);
     /* 更新商铺信息 */
@@ -109,9 +109,9 @@ module.exports = app => {
     router.post('/api/hotel/delete', controller.hotel.delete);
     /* 名宿订单查询（用户端） */
     router.get('/api/hotel/queryOrderList', controller.hotel.queryOrderList);
-     /* 名宿订单查询（管理端） */
+    /* 名宿订单查询（管理端） */
     router.get('/api/hotelKeeper/queryOrderList', controller.hotel.queryOrderList);
-     /* 订单确认 */
+    /* 订单确认 */
     router.post('/api/hotelKeeper/orderCheck', controller.hotel.orderCheck);
     /* 民宿订单删除 (客户端)*/
     // router.get('/api/hotel/orderDelete', controller.hotel.orderDelete);
@@ -136,7 +136,7 @@ module.exports = app => {
     router.post('/api/room/reserve', controller.room.reserve);
     /* 查询评论 */
     router.get('/api/room/comment', controller.room.queryCommentList);
-     /* 民宿订单列表查询 */
+    /* 民宿订单列表查询 */
     // router.get('/api/room/queryOrderList', controller.room.queryOrderList);
     /* 推荐 */
     router.post('/api/room/recommend', controller.room.recommend);
@@ -151,9 +151,9 @@ module.exports = app => {
     router.post('/api/travelKeeper/update', controller.travelKeeper.update);
     /* 旅游商家更新 */
     router.post('/api/travelKeeper/check', controller.travelKeeper.check);
-     /* 旅游订单列表查询(管理端)*/
+    /* 旅游订单列表查询(管理端)*/
     router.get('/api/travelKeeper/queryOrderList', controller.travelKeeper.queryOrderList);
-     /* 旅游商家订单确认 */
+    /* 旅游商家订单确认 */
     router.post('/api/travelKeeper/orderCheck', controller.travelKeeper.orderCheck);
 
     /* 查询主题旅游列表 */
@@ -178,7 +178,7 @@ module.exports = app => {
     router.post('/api/travel/recommend', controller.travel.recommend);
     /* 旅游订单列表查询 (客户端)*/
     router.get('/api/travel/queryOrderList', controller.travel.queryOrderList);
-     /* 旅游订单删除 (客户端)*/
+    /* 旅游订单删除 (客户端)*/
     // router.get('/api/travel/orderDelete', controller.travel.orderDelete);
     /* 旅游订单详情查询*/
     router.get('/api/travel/queryOrderDetail', controller.travel.queryOrderDetail);

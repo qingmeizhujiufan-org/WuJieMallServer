@@ -72,9 +72,9 @@ module.exports = app => {
           field: 'business_status_text'
         },
           /* 审核状态 */
-        checkStatus: {
+        state: {
           type: INTEGER,
-          field: 'check_status'
+          field: 'state'
         },
         /* 修改人 */
         updateBy: {

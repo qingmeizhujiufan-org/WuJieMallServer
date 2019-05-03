@@ -316,18 +316,20 @@ class TravelService extends Service {
         const TravelSignParticipant = ctx.model.TravelSignParticipant;
         TravelSign.belongsTo(Travel, {foreignKey: 'travelId', targetKey: 'id'});
         TravelSign.hasMany(TravelSignParticipant, {foreignKey: 'travelSignId'});
-        const {pageNumber = 1, pageSize = 10, keyWords = '', userId, state} = params;
+        const {pageNumber = 1, pageSize = 10, keyWords = '', ...rest} = params;
         const whereCondition = {
             '$or': {
                 orderId: {
                     '$like': '%' + keyWords + '%'
                 },
             },
-            '$and': {
-                userId,
-                state
-            }
+            '$and': {}
         };
+        for (let key in rest) {
+            if (rest[key]) {
+                whereCondition['$and'][key] = rest[key];
+            }
+        }
 
         const dataList = await Promise.all([
             TravelSign.findAll({
@@ -385,7 +387,7 @@ class TravelService extends Service {
 
         TravelSign.belongsTo(Travel, {foreignKey: 'travelId', targetKey: 'id'});
         TravelSign.belongsTo(TravelKeeper, {foreignKey: 'travelkeeperId', targetKey: 'id'});
-        TravelSign.hasMany(TravelSignParticipant, {foreignKey: 'travelSignId',targetKey: 'id'});
+        TravelSign.hasMany(TravelSignParticipant, {foreignKey: 'travelSignId', targetKey: 'id'});
         const {id = ''} = params;
 
         const res = TravelSign.findOne({
@@ -414,7 +416,7 @@ class TravelService extends Service {
                 model: Travel
             }, {
                 model: TravelKeeper
-            },{
+            }, {
                 model: TravelSignParticipant
             }]
         })

@@ -86,6 +86,11 @@ module.exports = app => {
             type: DECIMAL,
             field: 'initial_charge'
         },
+        /* 评分 */
+        grade: {
+            type: DECIMAL,
+            field: 'grade'
+        },
         /* 状态 */
         state: {
           type: INTEGER,
