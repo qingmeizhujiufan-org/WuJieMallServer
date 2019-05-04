@@ -109,6 +109,10 @@ module.exports = app => {
     router.post('/api/hotel/delete', controller.hotel.delete);
     /* 名宿订单查询（用户端） */
     router.get('/api/hotel/queryOrderList', controller.hotel.queryOrderList);
+    /* 民宿订单详情查询*/
+    router.get('/api/hotel/queryOrderDetail', controller.hotel.queryOrderDetail);
+    /* 民宿订单评论*/
+    router.post('/api/hotel/comment', controller.hotel.comment);
     /* 名宿订单查询（管理端） */
     router.get('/api/hotelKeeper/queryOrderList', controller.hotel.queryOrderList);
     /* 订单确认 */

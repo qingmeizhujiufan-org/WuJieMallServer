@@ -174,7 +174,7 @@ class TravelController extends BaseController {
         }
     }
 
-      /* 查询订单详情 */
+    /* 查询订单详情 */
     async queryOrderDetail() {
         const ctx = this.ctx;
         const params = ctx.query;

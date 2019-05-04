@@ -210,10 +210,10 @@ class RoomService extends Service {
 
         const dataList = await HotelRoom.findAll({
             where: {
-              '$and': {
-                  state: 2,
-                  isRecommend: 1
-              }
+                '$and': {
+                    state: 2,
+                    isRecommend: 1
+                }
             },
             attributes: [
                 'id',
@@ -342,7 +342,7 @@ class RoomService extends Service {
         };
 
         const res = await ctx.model.HotelRoomReserve.create(row);
-        const status_res = await  ctx.model.HotelRoom.update({
+        const status_res = await ctx.model.HotelRoom.update({
             roomStatus: 1
         }, {
             where: {id: row.roomId}
@@ -360,7 +360,7 @@ class RoomService extends Service {
         const HotelRoomReserve = ctx.model.HotelRoomReserve;
         const {roomId} = params;
 
-        const dataList = await Room.HotelRoomReserve({
+        const dataList = await HotelRoomReserve({
             where: {
                 roomId
             },
@@ -389,6 +389,10 @@ class RoomService extends Service {
         const ctx = this.ctx;
         const Sequelize = this.app.Sequelize;
         const HotelRoomComment = ctx.model.HotelRoomComment;
+        const User = ctx.model.User;
+        const Room = ctx.model.HotelRoom;
+        HotelRoomComment.belongsTo(User, {foreignKey: 'userId'});
+        HotelRoomComment.belongsTo(Room, {foreignKey: 'roomId'});
         const {roomId} = params;
 
         const dataList = await HotelRoomComment.findAll({
@@ -406,6 +410,11 @@ class RoomService extends Service {
                 'updated_at',
                 'created_at'
             ],
+            include: [{
+                model: User
+            }, {
+                model: Room
+            }],
             order: [
                 ['created_at', 'DESC']
             ]

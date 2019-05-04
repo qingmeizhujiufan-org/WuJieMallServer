@@ -215,6 +215,7 @@ class HotelService extends Service {
                     'person',
                     'telephone',
                     'status',
+                    'commentStatus',
                     'totalMoney',
                     'status',
                     'updated_at',
@@ -240,6 +241,44 @@ class HotelService extends Service {
             totalElements: dataList[0].length,
             totalPages: Math.ceil(dataList[0].length / pageSize)
         };
+    }
+
+    /* 查询订单详情 */
+    async queryOrderDetail(params) {
+        const ctx = this.ctx;
+        const HotelRoom = ctx.model.HotelRoom;
+        const Hotel = ctx.model.Hotel;
+        const HotelRoomReserve = ctx.model.HotelRoomReserve;
+
+        HotelRoomReserve.belongsTo(HotelRoom, {foreignKey: 'roomId', targetKey: 'id'});
+        HotelRoomReserve.belongsTo(Hotel, {foreignKey: 'hotelkeeperId', targetKey: 'id'});
+        const {id = ''} = params;
+
+        const res = HotelRoomReserve.findOne({
+            where: {id: id},
+            include: [{
+                model: HotelRoom
+            }, {
+                model: Hotel
+            }]
+        })
+
+        return res;
+    }
+
+    /* 评论 */
+    async comment(fieldsValue) {
+        const ctx = this.ctx;
+        const {orderId, ...restFieldsValue} = fieldsValue;
+        const res = await ctx.model.HotelRoomComment.create(restFieldsValue);
+        const res2 = await ctx.model.HotelRoomReserve.update({
+            status: 4,
+            commentStatus: 1
+        }, {
+            where: {id: orderId}
+        });
+
+        return {rowsAffected: res};
     }
 
     async orderCheck(fieldsValue) {

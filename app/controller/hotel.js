@@ -123,11 +123,52 @@ class HotelController extends BaseController {
         }
     }
 
+    /* 查询订单详情 */
+    async queryOrderDetail() {
+        const ctx = this.ctx;
+        const params = ctx.query;
+        const result = await ctx.service.hotel.queryOrderDetail(params);
+
+        if (result) {
+            this.success({
+                backData: result,
+                backMsg: "查询成功！"
+            })
+        } else {
+            this.fail({backMsg: "查询失败！"});
+        }
+    }
+
+    /* 订单评论 */
+    async comment() {
+        const ctx = this.ctx;
+        const params = ctx.request.body;
+
+        const result = await ctx.service.hotel.comment(params);
+
+        if (result) {
+            const promiseList = [];
+            result.map(item => {
+                promiseList.push(ctx.service.attachment.queryListByIds(item.detailPic));
+            });
+            const resultList = await Promise.all(promiseList);
+            result.map((item, index) => {
+                item.detailPic = resultList[index];
+            });
+            this.success({
+                backData: result,
+                backMsg: "评论成功！"
+            })
+        } else {
+            this.fail({backMsg: "评论失败！"});
+        }
+    }
+
     /* 报名订单更新 */
     async orderCheck() {
         const ctx = this.ctx;
         const params = ctx.request.body;
-        ;
+
         const result = await ctx.service.hotel.orderCheck(params);
         if (result) {
             this.success({

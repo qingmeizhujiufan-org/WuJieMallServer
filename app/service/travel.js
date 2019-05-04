@@ -6,21 +6,29 @@ class TravelService extends Service {
 
     async queryList(params) {
         const ctx = this.ctx;
-        const Sequelize = this.app.Sequelize;
         const Travel = ctx.model.Travel;
         const TravelSign = ctx.model.TravelSign;
         const Attachment = ctx.model.Attachment;
         Travel.hasMany(TravelSign, {foreignKey: 'travelId'});
         Travel.belongsTo(Attachment, {foreignKey: 'thumbnail'});
-        const {pageNumber = 1, pageSize = 10, keyWords = '', state} = params;
+        const {pageNumber = 1, pageSize = 10, keyWords = '', travelBeginTime, travelEndTime, ...rest} = params;
         const whereCondition = {
             '$or': {
                 travelTheme: {
                     '$like': '%' + keyWords + '%'
                 },
-            }
+            },
+            '$and': {}
         };
-        if (state !== undefined && state !== null) whereCondition['$and'] = {state};
+        if(travelBeginTime && travelEndTime) {
+            whereCondition['$and']['travelBeginTime'] = {'$gte': travelBeginTime};
+            whereCondition['$and']['travelEndTime'] = {'$lte': travelEndTime};
+        }
+        for (let key in rest) {
+            if (rest[key]) {
+                whereCondition['$and'][key] = rest[key];
+            }
+        }
 
         const dataList = await Promise.all([
             Travel.findAll({
@@ -82,15 +90,20 @@ class TravelService extends Service {
         const Attachment = ctx.model.Attachment;
         Travel.hasMany(TravelSign, {foreignKey: 'travelId'});
         Travel.belongsTo(Attachment, {foreignKey: 'thumbnail'});
-        const {pageNumber = 1, pageSize = 10, keyWords = '', state} = params;
+        const {pageNumber = 1, pageSize = 10, keyWords = '', ...rest} = params;
         const whereCondition = {
             '$or': {
                 travelTheme: {
                     '$like': '%' + keyWords + '%'
                 },
-            }
+            },
+            '$and': {}
         };
-        if (state !== undefined && state !== null) whereCondition['$and'] = {state};
+        for (let key in rest) {
+            if (rest[key]) {
+                whereCondition['$and'][key] = rest[key];
+            }
+        }
 
         const dataList = await Promise.all([
             Travel.findAll({
@@ -379,7 +392,6 @@ class TravelService extends Service {
     /* 查询订单详情 */
     async queryOrderDetail(params) {
         const ctx = this.ctx;
-        const Sequelize = this.app.Sequelize;
         const Travel = ctx.model.Travel;
         const TravelKeeper = ctx.model.TravelKeeper;
         const TravelSign = ctx.model.TravelSign;
@@ -421,7 +433,7 @@ class TravelService extends Service {
             }]
         })
 
-        return res
+        return res;
     }
 
     /* 添加参与者 */
