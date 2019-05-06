@@ -74,6 +74,7 @@ class RoomController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         fieldsValue.id = uuidv1();
+        fieldsValue.state = 0;
         fieldsValue.roomRemian = fieldsValue.roomNumber;
         const result = await ctx.service.room.add(fieldsValue);
 
@@ -92,8 +93,9 @@ class RoomController extends BaseController {
     async update() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
+        fieldsValue.state = 0;
         const result = await ctx.service.room.update(fieldsValue);
-
+     
         if (result.rowsAffected) {
             this.success({
                 backData: result,
@@ -105,6 +107,24 @@ class RoomController extends BaseController {
             });
         }
     }
+
+    async updateStatus() {
+        const ctx = this.ctx;
+        const fieldsValue = ctx.request.body;
+        const result = await ctx.service.room.updateStatus(fieldsValue);
+
+        if (result.rowsAffected) {
+            this.success({
+                backData: result,
+                backMsg: "修改民宿房间状态成功！"
+            });
+        } else {
+            this.fail({
+                backMsg: "修改民宿房间状态失败！"
+            });
+        }
+    }
+
 
     async delete() {
         const ctx = this.ctx;

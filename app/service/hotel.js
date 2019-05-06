@@ -283,9 +283,15 @@ class HotelService extends Service {
 
     async orderCheck(fieldsValue) {
         const ctx = this.ctx;
-        const {id, ...restFieldsValue} = fieldsValue;
+        const {id, roomId,...restFieldsValue} = fieldsValue;
         const res = await ctx.model.HotelRoomReserve.update(restFieldsValue, {
             where: {id}
+        });
+
+         const status_res = await ctx.model.HotelRoom.update({
+            roomStatus: 0
+        }, {
+            where: {id: roomId}
         });
 
         return {rowsAffected: res};

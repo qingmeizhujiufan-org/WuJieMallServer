@@ -60,6 +60,8 @@ class TravelController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         fieldsValue.id = uuidv1();
+        fieldsValue.checkStatus = 0;
+        
         const result = await ctx.service.travel.add(fieldsValue);
         const travelDay = fieldsValue.travelDay;
         travelDay.map(item => {

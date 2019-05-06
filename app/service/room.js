@@ -293,6 +293,16 @@ class RoomService extends Service {
         return {rowsAffected: res};
     }
 
+     async updateStatus(fieldsValue) {
+        const ctx = this.ctx;
+        const {id, ...restFieldsValue} = fieldsValue;
+        const res = await ctx.model.HotelRoom.updateStatus(restFieldsValue, {
+            where: {id}
+        });
+
+        return {rowsAffected: res};
+    }
+
     async delete(params) {
         const res = await this.ctx.model.HotelRoom.destroy({
             where: {id: params.id}
