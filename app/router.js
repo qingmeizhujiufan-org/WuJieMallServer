@@ -134,6 +134,8 @@ module.exports = app => {
     router.post('/api/room/add', controller.room.add);
     /* 更新名宿房间 */
     router.post('/api/room/update', controller.room.update);
+    /* 更新名宿房间状态 */
+    router.post('/api/room/updateStatus', controller.room.updateStatus);
     /* 删除名宿房间 */
     router.post('/api/room/delete', controller.room.delete);
     /* 预订 */

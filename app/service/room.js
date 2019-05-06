@@ -296,7 +296,7 @@ class RoomService extends Service {
      async updateStatus(fieldsValue) {
         const ctx = this.ctx;
         const {id, ...restFieldsValue} = fieldsValue;
-        const res = await ctx.model.HotelRoom.updateStatus(restFieldsValue, {
+        const res = await ctx.model.HotelRoom.update(restFieldsValue, {
             where: {id}
         });
 
