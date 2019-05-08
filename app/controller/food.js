@@ -1,5 +1,4 @@
 'use strict';
-
 const BaseController = require('../core/BaseController');
 
 class HomeController extends BaseController {
@@ -8,7 +7,7 @@ class HomeController extends BaseController {
         const params = ctx.query;
         params.pageNumber = ctx.helper.parseInt(params.pageNumber);
         params.pageSize = ctx.helper.parseInt(params.pageSize);
-        if(params.state) params.state = ctx.helper.parseInt(params.state);
+        if (params.state) params.state = ctx.helper.parseInt(params.state);
         const result = await ctx.service.food.queryList(params);
         if (result) {
 
@@ -98,6 +97,7 @@ class HomeController extends BaseController {
     async add() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
+        fieldsValue.state = 0;
         const result = await ctx.service.food.add(fieldsValue);
 
         if (result.rowsAffected) {
@@ -143,7 +143,7 @@ class HomeController extends BaseController {
         }
     }
 
-     async check() {
+    async check() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         const result = await ctx.service.food.check(fieldsValue);
@@ -299,12 +299,12 @@ class HomeController extends BaseController {
         const result = ctx.model.Food.update({
             isRecommend: fieldsValue.isRecommend
         }, {where: {id: fieldsValue.id}});
-        if(result) {
+        if (result) {
             this.success({
                 backData: result,
                 backMsg: "更新成功！"
             })
-        }else {
+        } else {
             this.fail({backMsg: "更新失败！"});
         }
     }

@@ -61,7 +61,7 @@ class TravelController extends BaseController {
         const fieldsValue = ctx.request.body;
         fieldsValue.id = uuidv1();
         fieldsValue.checkStatus = 0;
-        
+
         const result = await ctx.service.travel.add(fieldsValue);
         const travelDay = fieldsValue.travelDay;
         travelDay.map(item => {
@@ -140,6 +140,7 @@ class TravelController extends BaseController {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
         fieldsValue.id = uuidv1();
+        fieldsValue.state = 0;
         const result = await ctx.service.travel.signTravel(fieldsValue);
         const participants = fieldsValue.participants;
         participants.map(item => {

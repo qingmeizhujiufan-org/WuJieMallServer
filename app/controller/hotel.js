@@ -59,6 +59,7 @@ class HotelController extends BaseController {
     async add() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
+        fieldsValue.state = 0;
         const result = await ctx.service.hotel.add(fieldsValue);
 
         if (result.rowsAffected) {
@@ -76,6 +77,7 @@ class HotelController extends BaseController {
     async update() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
+        fieldsValue.state = 0;
         const result = await ctx.service.hotel.update(fieldsValue);
         if (result.rowsAffected && result.rowsAffected[0] > 0) {
             this.success({

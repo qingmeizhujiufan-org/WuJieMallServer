@@ -91,7 +91,7 @@ class travelKeeperController extends BaseController {
     async update() {
         const ctx = this.ctx;
         const fieldsValue = ctx.request.body;
-        fieldsValue.checkStatus = 0;
+        fieldsValue.state = 0;
         const result = await ctx.service.travelKeeper.update(fieldsValue);
 
         if (result.rowsAffected) {

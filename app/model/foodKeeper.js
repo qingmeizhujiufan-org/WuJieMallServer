@@ -71,7 +71,7 @@ module.exports = app => {
           type: STRING(255),
           field: 'business_status_text'
         },
-          /* 审核状态 */
+        /* 审核状态 */
         state: {
           type: INTEGER,
           field: 'state'

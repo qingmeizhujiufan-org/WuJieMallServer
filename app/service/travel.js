@@ -20,7 +20,7 @@ class TravelService extends Service {
             },
             '$and': {}
         };
-        if(travelBeginTime && travelEndTime) {
+        if (travelBeginTime && travelEndTime) {
             whereCondition['$and']['travelBeginTime'] = {'$gte': travelBeginTime};
             whereCondition['$and']['travelEndTime'] = {'$lte': travelEndTime};
         }
@@ -229,6 +229,7 @@ class TravelService extends Service {
     async add(fieldsValue) {
         const ctx = this.ctx;
         const row = {
+            state: 0,
             checkStatus: 0,
             ...fieldsValue
         };

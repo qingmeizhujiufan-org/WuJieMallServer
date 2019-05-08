@@ -31,12 +31,12 @@ module.exports = app => {
             type: STRING(255),
             field: 'hotel_name'
         },
-          /* 身份证 */
+        /* 身份证 */
         keeperName: {
             type: STRING(255),
             field: 'keeper_name'
         },
-          /* 身份证 */
+        /* 身份证 */
         IDNumber: {
             type: STRING(255),
             field: 'ID_number'
@@ -91,10 +91,10 @@ module.exports = app => {
             type: DECIMAL,
             field: 'grade'
         },
-        /* 状态 */
+        /* 审核状态 */
         state: {
-          type: INTEGER,
-          field: 'state'
+            type: INTEGER,
+            field: 'state'
         },
         /* 修改人 */
         updateBy: {

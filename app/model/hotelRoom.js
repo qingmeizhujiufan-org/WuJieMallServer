@@ -116,7 +116,7 @@ module.exports = app => {
             type: STRING(255),
             field: 'sale'
         },
-        /* 状态 */
+        /* 审核状态 */
         state: {
             type: INTEGER,
             field: 'state'
