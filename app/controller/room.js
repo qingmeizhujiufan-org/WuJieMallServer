@@ -1,5 +1,6 @@
 'use strict';
 
+const includes = require('lodash/includes');
 const BaseController = require('../core/BaseController');
 const uuidv1 = require('uuid/v1');
 
@@ -40,9 +41,18 @@ class RoomController extends BaseController {
         const ctx = this.ctx;
         const params = ctx.query;
         const result = await ctx.service.room.queryMobileList(params);
-        if (result) {
+        const roomList = await ctx.service.room.queryOrderListByTime(params);
+        const roomids = roomList.map(item => {
+            return item.roomId;
+        });
+        console.log(roomids);
+        const newRes = result.map((item, index) =>{
+            item.roomStatus = includes(roomids, item.id) ? 1 : 0;
+            return item;
+        })
+        if (newRes) {
             this.success({
-                backData: result,
+                backData: newRes,
                 backMsg: "查询列表成功！"
             })
         } else {
