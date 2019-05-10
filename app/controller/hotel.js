@@ -147,18 +147,20 @@ class HotelController extends BaseController {
         const params = ctx.request.body;
 
         const result = await ctx.service.hotel.comment(params);
-
-        if (result) {
-            const promiseList = [];
-            result.map(item => {
-                promiseList.push(ctx.service.attachment.queryListByIds(item.detailPic));
-            });
-            const resultList = await Promise.all(promiseList);
-            result.map((item, index) => {
-                item.detailPic = resultList[index];
-            });
+        console.log(result);
+        if (result && result.rowsAffected) {
+            const res =  result.rowsAffected;
+            const promiseList = await ctx.service.attachment.queryListByIds(res.detailPic);
+            res.detailPic = promiseList;
+            // result.map(item => {
+            //     promiseList.push(ctx.service.attachment.queryListByIds(item.detailPic));
+            // });
+            // const resultList = await Promise.all(promiseList);
+            // result.map((item, index) => {
+            //     item.detailPic = resultList[index];
+            // });
             this.success({
-                backData: result,
+                backData: res,
                 backMsg: "评论成功！"
             })
         } else {

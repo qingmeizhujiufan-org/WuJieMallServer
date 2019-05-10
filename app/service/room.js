@@ -219,7 +219,10 @@ class RoomService extends Service {
         endDate: {
           [Op.lte]: Moment(endDate).endOf('day')
         },
-        hotelId
+        hotelId,
+        status: {
+          [Op.notIn]: [3, 4]
+        }
       }
     };
 

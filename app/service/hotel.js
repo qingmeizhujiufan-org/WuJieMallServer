@@ -288,12 +288,6 @@ class HotelService extends Service {
             where: {id}
         });
 
-         const status_res = await ctx.model.HotelRoom.update({
-            roomStatus: 0
-        }, {
-            where: {id: roomId}
-        });
-
         return {rowsAffected: res};
     }
 }
