@@ -190,6 +190,7 @@ class HotelService extends Service {
         HotelRoomReserve.belongsTo(Room, {foreignKey: 'roomId', targetKey: 'id'});
         const {pageNumber = 1, pageSize = 10, ...rest} = params;
         const whereCondition = {};
+        
         for (let key in rest) {
             if (rest[key]) {
                 whereCondition[key] = rest[key];
@@ -272,7 +273,6 @@ class HotelService extends Service {
         const {orderId, ...restFieldsValue} = fieldsValue;
         const res = await ctx.model.HotelRoomComment.create(restFieldsValue);
         const res2 = await ctx.model.HotelRoomReserve.update({
-            status: 4,
             commentStatus: 1
         }, {
             where: {id: orderId}
